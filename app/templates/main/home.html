@@ -6,9 +6,10 @@
 <!-- Hero Section with Parallax Effect -->
 <div class="hero-section text-center">
     <div class="container">
-        <h1 class="display-4 logo-text">RefurbNest</h1>
+        
         <p class="lead">Because great tech deserves a second shot</p>
-        <a href="{{ url_for('main.list_products') }}" class="btn btn-tech btn-lg ripple">Explore Our Collection</a>
+    </br>
+        <a href="{{ url_for('main.list_products') }}" class="btn btn-tech btn-lg ripple mt-3">Explore Our Collection</a>
     </div>
 </div>
 
@@ -150,7 +151,7 @@
         position: relative;
         z-index: 1;
         animation: fadeInHero 1s ease-in-out;
-        
+
     }
 
     .hero-section::after {
