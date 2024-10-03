@@ -1,5 +1,5 @@
-from app import create_app, db  # Ensure you're importing from the correct app module
-from app.admin.models import User, Role  # Import your User and Role models
+from app import create_app, db  
+from app.admin.models import User, Role 
 from werkzeug.security import generate_password_hash
 import getpass
 
@@ -34,9 +34,14 @@ def create_admin_user():
                 role_id=admin_role.id  # Assign admin role
             )
             admin_user.set_password(password)  # Set the hashed password
-            db.session.add(admin_user)
-            db.session.commit()
-            print("Admin user created successfully.")
+            
+            try:
+                db.session.add(admin_user)
+                db.session.commit()
+                print("Admin user created successfully.")
+            except Exception as e:
+                db.session.rollback()  # Rollback in case of an error
+                print(f"Error occurred while creating user: {e}")
         else:
             print("Admin user already exists.")
 
