@@ -16,7 +16,7 @@ def login_required_with_message(view):
     def decorated_view(*args, **kwargs):
         if not current_user.is_authenticated:
             flash('Please log in to access this feature.', 'warning')
-            return redirect(url_for('auth.login'))  # Adjust to your login route
+            return redirect(url_for('auth.login')) 
         return view(*args, **kwargs)
     return decorated_view
 
@@ -66,6 +66,8 @@ def view_product(product_id):
     form = InquiryForm()
     return render_template('main/view_product.html', product=product, form=form,image_url=image_url)
 
+from urllib.parse import quote
+
 @main_bp.route('/inquire/<int:product_id>', methods=['POST'])
 def inquire_product(product_id):
     form = InquiryForm()
@@ -83,13 +85,17 @@ def inquire_product(product_id):
 
         # Encode the message for the WhatsApp URL
         encoded_message = quote(message)
-        whatsapp_url = f"https://wa.me/?text={encoded_message}"
+
+        # Replace 'YOUR_PHONE_NUMBER' with your actual WhatsApp number (in international format)
+        your_whatsapp_number = "YOUR_PHONE_NUMBER"  # e.g., "254712345678"
+        whatsapp_url = f"https://wa.me/{your_whatsapp_number}?text={encoded_message}"
 
         flash('Inquiry sent! You will be redirected to WhatsApp.', 'success')
         return redirect(whatsapp_url)
 
     flash('Please fill in your contact information.', 'danger')
     return redirect(url_for('main.view_product', product_id=product_id))
+
 
 
 # ---------------------------------------
