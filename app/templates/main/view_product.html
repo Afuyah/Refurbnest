@@ -28,15 +28,15 @@
                 <li class="list-group-item border-0 py-2"><strong>Generation:</strong> {{ product.generation }}</li>
             </ul>
 
-            <!-- WhatsApp Inquiry Button -->
-            <form method="GET" action="https://wa.me/{{ your_whatsapp_number }}" class="mb-4">
-                <input type="hidden" name="text" 
-                       value="I'm interested in {{ product.name }}. Details: {{ product.description }}. Price: ${{ product.price }}.">
-                <button type="submit" class="btn btn-lg btn-success btn-whatsapp w-100 d-flex align-items-center justify-content-center">
-                    <i class="fab fa-whatsapp mr-2"></i> Inquire via WhatsApp
-                </button>
-               
-            </form>
+           <!-- WhatsApp Inquiry Button -->
+<form method="GET" action="https://wa.me/{{ '+254711667718' }}" class="mb-4">
+    <input type="hidden" name="text" 
+           value="I'm interested in {{ product.name }}. Details: {{ product.description }}. Price: Ksh{{ product.price }}.">
+    <button type="submit" class="btn btn-lg btn-success btn-whatsapp w-100 d-flex align-items-center justify-content-center">
+        <i class="fab fa-whatsapp mr-2"></i> Inquire on WhatsApp
+    </button>
+</form>
+
             
         </div>
 

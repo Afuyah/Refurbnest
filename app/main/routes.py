@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from app.admin.models import Product, Brand, Category, ContactMessage, Wishlist, ProductImage
 from app.main.forms import InquiryForm, ContactForm, WishlistForm
 from app.admin.forms import ProductForm
@@ -102,10 +102,7 @@ def inquire_product(product_id):
 
         # Encode the message for the WhatsApp URL
         encoded_message = quote(message)
-
-       
-        your_whatsapp_number = "254700622298"  
-        whatsapp_url = f"https://wa.me/{your_whatsapp_number}?text={encoded_message}"
+        whatsapp_url = f"https://wa.me/254711667718?text={encoded_message}"
 
         flash('Inquiry sent! You will be redirected to WhatsApp.', 'success')
         return redirect(whatsapp_url)
