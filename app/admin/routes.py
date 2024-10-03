@@ -154,12 +154,24 @@ def edit_product(product_id):
 
 @admin_bp.route('/admin/delete_product/<int:product_id>', methods=['POST'])
 def delete_product(product_id):
-    product = Product.query.get_or_404(product_id)
-    form = ProductForm()
-    db.session.delete(product)
-    db.session.commit()
-    flash('Product deleted successfully!', 'success')
-    return redirect(url_for('admin.list_products'), form=form)
+    product = Product.query.get(product_id)
+    
+    if product:
+        try:
+            print(f'Attempting to delete product: {product.name}')
+            print(f'Associated images before deletion: {[image.id for image in product.images]}')
+
+            db.session.delete(product)  # This should cascade delete associated images
+            db.session.commit()
+            flash('Product deleted successfully.', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash('Error deleting product: ' + str(e), 'error')
+            print(f'Delete error: {e}')
+    else:
+        flash('Product not found.', 'error')
+
+    return redirect(url_for('admin.list_products'))
 
 # ---------------------------------------
 # Product Variety Routes

@@ -19,6 +19,11 @@ def create_app(config_class=None):
     login_manager.init_app(app)
     csrf.init_app(app)
 
+    # Setup login view and messages
+    login_manager.login_view = 'auth.login'  # Redirect to login route
+    login_manager.login_message = 'Please log in to access this page.'
+    login_manager.login_message_category = 'warning'
+
     # Blueprints
     from app.auth.routes import auth_bp
     from app.main.routes import main_bp
@@ -28,6 +33,7 @@ def create_app(config_class=None):
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(admin_bp, url_prefix='/admin')
 
+    # User loader for login management
     from app.admin.models import User
 
     @login_manager.user_loader

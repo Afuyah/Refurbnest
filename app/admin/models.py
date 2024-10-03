@@ -85,7 +85,7 @@ class Product(db.Model):
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
     
     # This backref will handle the relationship
-    images = db.relationship('ProductImage', backref='product', lazy=True)
+    images = db.relationship('ProductImage', backref='product', lazy=True, cascade='all, delete-orphan')
     
     def __repr__(self):
         return f'<Product {self.name}>'
@@ -95,7 +95,8 @@ class ProductImage(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     image_path = db.Column(db.String(500), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False, index=True)
+
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
 
