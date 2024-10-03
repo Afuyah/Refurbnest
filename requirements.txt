@@ -19,6 +19,7 @@ MarkupSafe==2.1.5
 packaging==24.1
 pg8000==1.31.2
 psycopg==3.2.3
+psycopg2-binary==2.9.9
 python-dateutil==2.9.0.post0
 scramp==1.4.5
 six==1.16.0
