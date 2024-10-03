@@ -72,52 +72,7 @@
         background-color: #f0f0f0;
     }
 
-    /* Logo Text Styling */
-    .logo-text {
-        font-family: 'Orbitron', sans-serif;
-        color: #28a745;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        animation: glitch 2s infinite;
-    }
-
-    @keyframes glitch {
-        0% {
-            text-shadow: 2px 2px 1px rgba(255, 0, 0, 0.75), -2px -2px 1px rgba(0, 255, 0, 0.75);
-        }
-        25% {
-            text-shadow: -2px -2px 1px rgba(255, 0, 0, 0.75), 2px 2px 1px rgba(0, 255, 0, 0.75);
-        }
-        50% {
-            text-shadow: 0 0 1px rgba(255, 0, 0, 0.75), 0 0 1px rgba(0, 255, 0, 0.75);
-        }
-    }
-
-    /* Ripple Effect for Buttons */
-    .ripple {
-        position: relative;
-        overflow: hidden;
-        transition: background 0.4s;
-    }
-
-    .ripple:after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background: rgba(255, 255, 255, 0.4);
-        border-radius: 100%;
-        transform: translate(-50%, -50%);
-        transition: width 0.6s ease, height 0.6s ease;
-    }
-
-    .ripple:hover:after {
-        width: 200%;
-        height: 200%;
-    }
+    
 
     /* Animate Headings */
     .animated-heading {

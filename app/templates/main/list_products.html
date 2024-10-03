@@ -64,18 +64,23 @@
 <style>
     body {
         background-color: #f5f5f7;
-        font-family: 'Roboto', sans-serif; /* Changed to match base styles */
+        font-family: 'Roboto', sans-serif;
     }
 
     h1 {
         font-size: 2.5rem;
         letter-spacing: 1px;
-        color: #1a1a1a; /* Darker color for better contrast */
+        color: #1a1a1a;
+        transition: color 0.3s;
+    }
+
+    h1:hover {
+        color: #007bff;
     }
 
     .filter-section label {
         font-size: 1.2rem;
-        color: #333; /* Adjusted label color */
+        color: #333;
     }
 
     /* Custom Select Styling */
@@ -110,6 +115,7 @@
         height: 350px;
         position: relative;
         background: #f1f1f1;
+        transition: transform 0.3s;
     }
 
     .img-container img {
