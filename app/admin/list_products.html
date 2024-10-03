@@ -1,0 +1,38 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h1>Products</h1>
+<a href="{{ url_for('admin.add_product') }}" class="btn btn-primary mb-3">Add New Product</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>{{ product.brand.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_product', product_id=product.id) }}" class="btn btn-info">Edit</a>
+                <form action="{{ url_for('admin.delete_product', product_id=product.id) }}" method="POST" style="display:inline-block;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

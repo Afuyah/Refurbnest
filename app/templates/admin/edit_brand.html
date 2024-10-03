@@ -1,0 +1,18 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Edit Brand{% endblock %}
+
+{% block content %}
+<h1>Edit Brand</h1>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.name.label }}<br>
+        {{ form.name(size=32) }}<br>
+        {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <input type="submit" value="Update">
+</form>
+{% endblock %}

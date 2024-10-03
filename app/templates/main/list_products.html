@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block title %} Products {% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <h1 class="font-weight-bold text-center text-dark mb-5">Our Products</h1>
+
+    <!-- Filter Section -->
+    <div class="filter-section text-center mb-5">
+        <label for="brand-filter" class="mr-3 font-weight-bold">Brand:</label>
+        <select id="brand-filter" class="custom-select w-auto" aria-label="Filter by Brand" onchange="filterProducts()">
+            <option value="">All Brands</option>
+            {% for brand in brands %}
+            <option value="{{ brand.id }}">{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="category-filter" class="ml-5 mr-3 font-weight-bold">Category:</label>
+        <select id="category-filter" class="custom-select w-auto" aria-label="Filter by Category" onchange="filterProducts()">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button onclick="resetFilters()" class="btn btn-outline-dark ml-4">Clear Filters</button>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="row" id="product-list">
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6 mb-5 product-item" data-brand="{{ product.brand_id }}" data-category="{{ product.category_id }}">
+            <div class="card border-0 shadow-lg">
+                <div class="img-container position-relative">
+                    <img data-src="{{ url_for('static', filename= product.image_url) }}" class="card-img-top lazy-load" alt="{{ product.name }}">
+
+                    <!-- Minimalist Hover Effect with Subtle Button -->
+                    <div class="img-overlay">
+                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="card-body text-center">
+                    <h5 class="card-title font-weight-bold">{{ product.name }}</h5>
+                    <p class="card-text text-muted">Ksh{{ product.price }}</p>
+
+                    <form method="POST" action="{{ url_for('main.add_to_wishlist', product_id=product.id) }}">
+                        {{ form.csrf_token }}
+                        <button type="submit" class="btn btn-outline-dark w-100 custom-btn">Add to Wishlist</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="text-center text-muted">No products available at this moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    body {
+        background-color: #f5f5f7;
+        font-family: 'Roboto', sans-serif; /* Changed to match base styles */
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+        color: #1a1a1a; /* Darker color for better contrast */
+    }
+
+    .filter-section label {
+        font-size: 1.2rem;
+        color: #333; /* Adjusted label color */
+    }
+
+    /* Custom Select Styling */
+    .custom-select {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 50px;
+        border: 2px solid #ddd;
+        transition: border-color 0.3s ease;
+    }
+
+    .custom-select:hover {
+        border-color: #bbb;
+    }
+
+    /* Card Styling */
+    .card {
+        border-radius: 16px;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        background-color: #ffffff;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Image Container & Hover Effect */
+    .img-container {
+        overflow: hidden;
+        border-radius: 16px 16px 0 0;
+        height: 350px;
+        position: relative;
+        background: #f1f1f1;
+    }
+
+    .img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .img-container:hover img {
+        transform: scale(1.1);
+        opacity: 0.85;
+    }
+
+    .img-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease;
+    }
+
+    .img-container:hover .img-overlay {
+        opacity: 1;
+    }
+
+    .btn-view {
+        background-color: #333;
+        padding: 0.7rem 2rem;
+        border-radius: 50px;
+        color: #fff;
+        transition: background-color 0.3s;
+    }
+
+    .btn-view:hover {
+        background-color: #000;
+    }
+
+    /* Custom Button */
+    .custom-btn {
+        font-size: 0.9rem;
+        padding: 0.7rem;
+        border-radius: 50px;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .custom-btn:hover {
+        background-color: #000;
+        color: #fff;
+        transform: translateY(-3px);
+    }
+
+    /* Lazy Load Styles */
+    .lazy-load {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .lazy-load.loaded {
+        opacity: 1;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .img-container {
+            height: 250px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        .filter-section label {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<!-- Lazy Load and Filter Script -->
+<script>
+    // Lazy Load Images
+    document.addEventListener('DOMContentLoaded', function () {
+        const lazyImages = document.querySelectorAll('.lazy-load');
+        
+        const lazyLoadObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.getAttribute('data-src');
+                    img.classList.add('loaded');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(image => {
+            lazyLoadObserver.observe(image);
+        });
+    });
+
+    // Filter Products
+    function filterProducts() {
+        const brandFilter = document.getElementById('brand-filter').value;
+        const categoryFilter = document.getElementById('category-filter').value;
+        const products = document.querySelectorAll('.product-item');
+
+        products.forEach(product => {
+            const brandMatch = brandFilter ? product.getAttribute('data-brand') === brandFilter : true;
+            const categoryMatch = categoryFilter ? product.getAttribute('data-category') === categoryFilter : true;
+
+            product.style.display = (brandMatch && categoryMatch) ? 'block' : 'none';
+        });
+    }
+
+    // Reset Filters
+    function resetFilters() {
+        document.getElementById('brand-filter').value = '';
+        document.getElementById('category-filter').value = '';
+        filterProducts();
+    }
+</script>
+
+{% endblock %}

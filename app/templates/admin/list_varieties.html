@@ -1,0 +1,36 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<h2>Product Varieties</h2>
+<a href="{{ url_for('admin.add_variety') }}" class="btn btn-primary">Add New Variety</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SKU</th>
+            <th>Weight</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th>Quantity in Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for variety in varieties %}
+        <tr>
+            <td>{{ variety.sku }}</td>
+            <td>{{ variety.weight }}</td>
+            <td>{{ variety.color }}</td>
+            <td>${{ variety.price }}</td>
+            <td>{{ variety.quantity_in_stock }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_variety', variety_id=variety.id) }}" class="btn btn-warning">Edit</a>
+                <form action="{{ url_for('admin.delete_variety', variety_id=variety.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this variety?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

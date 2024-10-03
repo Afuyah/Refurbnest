@@ -1,0 +1,74 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="font-weight-bold mb-4">Manage Products</h1>
+    <a href="{{ url_for('admin.add_product') }}" class="btn btn-primary mb-3">Add New Product</a>
+
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>
+                    <strong>{{ product.name }}</strong>
+                    <div class="text-muted">{{ product.description[:50] }}...</div>
+                </td>
+                <td>{{ product.category.name }}</td>
+                <td>{{ product.brand.name }}</td>
+                <td>Ksh{{ product.price }}</td>
+                <td>
+                    <a href="{{ url_for('admin.edit_product', product_id=product.id) }}" class="btn btn-info">Edit</a>
+                    <form action="{{ url_for('admin.delete_product', product_id=product.id) }}" method="POST" style="display:inline-block;">
+                        {{ form.csrf_token }}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No products found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .table {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .thead-dark th {
+        background-color: #343a40;
+        color: white;
+    }
+    tr:hover {
+        background-color: #e9ecef; /* Light hover effect */
+    }
+    .btn-info, .btn-danger {
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .btn-info:hover {
+        background-color: #17a2b8; /* Slightly brighter on hover */
+        color: white;
+    }
+    .btn-danger:hover {
+        background-color: #dc3545; /* Slightly brighter on hover */
+        color: white;
+    }
+</style>
+{% endblock %}

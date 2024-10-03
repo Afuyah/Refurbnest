@@ -1,0 +1,66 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Manage Brands{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary">Manage Brands</h1>
+        <a href="{{ url_for('admin.add_brand') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New Brand
+        </a>
+    </div>
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {% if brands %}
+                <ul class="list-group list-group-flush">
+                    {% for brand in brands %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="h5">{{ brand.name }}</span>
+                            <div>
+                                <a href="{{ url_for('admin.edit_brand', brand_id=brand.id) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal-{{ brand.id }}">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </li>
+
+                        <!-- Delete Confirmation Modal -->
+                        <div class="modal fade" id="deleteModal-{{ brand.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to delete the brand <strong>{{ brand.name }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <form action="{{ url_for('admin.delete_brand', brand_id=brand.id) }}" method="post" style="display:inline;">
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No brands available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Include necessary Bootstrap and FontAwesome JS for modal and icons functionality -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

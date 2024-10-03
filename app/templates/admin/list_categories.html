@@ -1,0 +1,124 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+<h1>Categories</h1>
+<a href="{{ url_for('admin.add_category') }}" class="btn btn-primary mb-3">Add New Category</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+        <tr>
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_category', category_id=category.id) }}" class="btn btn-info">Edit</a>
+                <form action="{{ url_for('admin.delete_category', category_id=category.id) }}" method="POST" style="display:inline-block;">
+                    {{ form.csrf_token }}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+    /* Global Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    /* Form Styling */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .form-control {
+        border-radius: 4px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+    }
+
+    .invalid-feedback {
+        display: block;
+        color: #dc3545;
+    }
+
+    /* Button Styling */
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        box-shadow: 0 4px 8px rgba(33, 136, 56, 0.2);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 8px rgba(0, 86, 179, 0.2);
+    }
+
+    /* Modal Styling */
+    .modal-header {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .modal-footer .btn {
+        margin-right: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+{% endblock %}

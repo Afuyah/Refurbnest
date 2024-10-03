@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container login-section mt-5">
+    <h2 class="text-center mb-4">Login</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('auth.login') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-group">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control", placeholder="Email Address") }}
+                            {% if form.email.errors %}
+                                <div class="text-danger">{{ form.email.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control", placeholder="Password") }}
+                            {% if form.password.errors %}
+                                <div class="text-danger">{{ form.password.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-tech btn-block") }}
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .login-section {
+        padding: 30px;
+        background-color: #f4f4f4;
+        border-radius: 8px;
+    }
+
+    .card {
+        border-radius: 8px;
+    }
+
+    .btn-tech {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-tech:hover {
+        background-color: #0056b3;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .text-danger {
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}

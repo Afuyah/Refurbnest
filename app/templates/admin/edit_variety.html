@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Edit Product Variety</h2>
+<form method="POST" action="{{ url_for('admin.edit_variety', variety_id=variety.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.product_id.label(class="form-label") }}
+        {{ form.product_id(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.weight.label(class="form-label") }}
+        {{ form.weight(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.color.label(class="form-label") }}
+        {{ form.color(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.sku.label(class="form-label") }}
+        {{ form.sku(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.price.label(class="form-label") }}
+        {{ form.price(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.quantity_in_stock.label(class="form-label") }}
+        {{ form.quantity_in_stock(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Update Variety</button>
+</form>
+{% endblock %}

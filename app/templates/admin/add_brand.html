@@ -1,0 +1,28 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Add Brand{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-primary mb-4">Add Brand</h1>
+    
+    <form method="post" class="needs-validation" novalidate>
+        {{ form.hidden_tag() }}
+
+        <!-- Brand Name Field -->
+        <div class="form-group">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", placeholder="Enter brand name", required=True) }}
+            <div class="invalid-feedback">Please enter a brand name.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add Brand
+        </button>
+    </form>
+</div>
+
+<!-- Bootstrap and FontAwesome JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

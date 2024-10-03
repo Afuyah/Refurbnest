@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - RefurbNest{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Parallax Effect -->
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 logo-text">RefurbNest</h1>
+        <p class="lead">Because great tech deserves a second shot</p>
+        <a href="{{ url_for('main.list_products') }}" class="btn btn-tech btn-lg ripple">Explore Our Collection</a>
+    </div>
+</div>
+
+<!-- Features Section with Smooth Animations -->
+<div class="features-section text-center mt-5">
+    <div class="container">
+        <h2 class="animated-heading">RefurbNest is the Smart Choice</h2>
+        <p class="text-muted mb-4">The right tech for the right reasons</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card aos-animate" data-aos="fade-up">
+                    <h3><i class="fas fa-cogs"></i> Unmatched Quality</h3>
+                    <p>Experience the performance of high-end tech without the premium price tag. Every product is rigorously tested to meet the highest standards—so you never have to worry.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    <h3><i class="fas fa-shield-alt"></i> Effortless Reliability</h3>
+                    <p>With RefurbNest, every device is built to last. Trust in years of dependable performance, freeing you to focus on what really matters.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card aos-animate" data-aos="fade-up" data-aos-delay="400">
+                    <h3><i class="fas fa-dollar-sign"></i> A Smarter Investment</h3>
+                    <p>Save big without sacrificing quality. Choose a future-proof solution that not only benefits your wallet but also the planet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action with Parallax Background -->
+<div class="cta-section text-center mt-5 parallax">
+    <div class="container">
+        <h2>Connect with Us</h2>
+        <p>Join our growing community to stay updated on the latest refurb trends, eco-friendly tips, and exclusive deals.</p>
+        <div class="social-icons mt-4">
+            <a href="https://www.facebook.com/RefurbNest" class="social-icon ripple" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/RefurbNest" class="social-icon ripple" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.tiktok.com/@RefurbNest" class="social-icon ripple" target="_blank" aria-label="TikTok">
+                <i class="fab fa-tiktok"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Modern Styles & Animations -->
+<style>
+    /* Font Imports */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+    /* General Body Styling */
+    body {
+        font-family: 'Helvetica Neue', sans-serif;
+        color: #333;
+        background-color: #f0f0f0;
+    }
+
+    /* Logo Text Styling */
+    .logo-text {
+        font-family: 'Orbitron', sans-serif;
+        color: #28a745;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        animation: glitch 2s infinite;
+    }
+
+    @keyframes glitch {
+        0% {
+            text-shadow: 2px 2px 1px rgba(255, 0, 0, 0.75), -2px -2px 1px rgba(0, 255, 0, 0.75);
+        }
+        25% {
+            text-shadow: -2px -2px 1px rgba(255, 0, 0, 0.75), 2px 2px 1px rgba(0, 255, 0, 0.75);
+        }
+        50% {
+            text-shadow: 0 0 1px rgba(255, 0, 0, 0.75), 0 0 1px rgba(0, 255, 0, 0.75);
+        }
+    }
+
+    /* Ripple Effect for Buttons */
+    .ripple {
+        position: relative;
+        overflow: hidden;
+        transition: background 0.4s;
+    }
+
+    .ripple:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 100%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .ripple:hover:after {
+        width: 200%;
+        height: 200%;
+    }
+
+    /* Animate Headings */
+    .animated-heading {
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /* Animations for Feature Cards */
+    .aos-animate {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    [data-aos].aos-animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Hero Section with Parallax Effect */
+    .hero-section {
+        background-image: url('https://media.istockphoto.com/id/1590532454/photo/mockup-of-a-realistic-modern-laptop-with-blank-screen-on-a-black-background.jpg?s=2048x2048&w=is&k=20&c=eVUPnWhfYz52yjdIjX7pQ-Dwi9v13WEj5GvEAuwjASg=');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: #fff;
+        padding: 120px 0;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        position: relative;
+        z-index: 1;
+        animation: fadeInHero 1s ease-in-out;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: -1;
+    }
+
+    .hero-section h1, .hero-section p {
+        color: #fff;
+        text-shadow: 0 6px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    @keyframes fadeInHero {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Features Section with Smooth Animations */
+    .features-section {
+        background-color: #f8f9fa;
+        padding: 80px 0;
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .feature-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 40px;
+        margin: 20px;
+        transition: transform 0.5s, box-shadow 0.5s;
+        background-color: #fff;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* CTA Section with Parallax */
+    .cta-section {
+        padding: 80px 0;
+        background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085');
+        background-size: cover;
+        background-attachment: fixed;
+        color: #fff;
+        position: relative;
+        z-index: 1;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .cta-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 123, 255, 0.7);
+        z-index: -1;
+    }
+
+    .cta-section h2 {
+        font-size: 2.5rem;
+        color: #fff;
+    }
+
+    /* Social Icons Styling */
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .social-icon {
+        font-size: 2rem;
+        color: #fff;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        padding: 12px;
+        transition: background-color 0.4s ease, transform 0.4s ease;
+    }
+
+    .social-icon:hover {
+        background-color: #fff;
+        color: #007bff;
+        transform: translateY(-6px);
+    }
+
+    /* Button Styling */
+    .btn-tech {
+        background-color: #28a745;
+        color: #fff;
+        padding: 12px 36px;
+        border-radius: 50px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-tech:hover {
+        background-color: #218838;
+        transform: translateY(-5px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 80px 0;
+        }
+
+        .cta-section {
+            padding: 60px 0;
+        }
+
+        .feature-card {
+            margin: 10px 0;
+        }
+
+        .social-icon {
+            font-size: 1.8rem;
+            padding: 8px;
+        }
+    }
+</style>
+
+<!-- AOS Library for Scroll Animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
+<script>
+    // Initialize AOS
+    AOS.init({
+        duration: 1000,
+        once: true,
+    });
+</script>
+
+<!-- Font Awesome for social icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}

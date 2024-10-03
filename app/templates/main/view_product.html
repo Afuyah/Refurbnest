@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 product-detail">
+    <div class="row">
+        <!-- Main Product Image with Zoom Effect -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="img-container position-relative">
+                {% if product.images and product.images|length > 0 %}
+                    <img id="main-image" src="{{ url_for('static', filename= product.images[0].image_path) }}" 
+                         class="img-fluid rounded shadow-lg" alt="{{ product.name }}">
+                {% else %}
+                    <img id="main-image" src="{{ url_for('static', filename='products/default.jpg') }}" 
+                         class="img-fluid rounded shadow-lg" alt="{{ product.name }}">
+                {% endif %}
+                <!-- Zoom icon -->
+                <div class="zoom-icon position-absolute d-flex align-items-center justify-content-center">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+            </div>
+
+            <!-- Thumbnail Image Section -->
+            <div class="thumbnail-container d-flex justify-content-center mt-4">
+                {% for image in product.images %}
+                    <div class="thumbnail-wrapper mx-2">
+                        <img src="{{ url_for('static', filename= image.image_path) }}" 
+                             class="img-thumbnail shadow-sm" 
+                             onclick="changeMainImage('{{ url_for('static', filename= image.image_path) }}')" 
+                             alt="Thumbnail of {{ product.name }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="col-lg-6 col-md-12">
+            <div class="product-info">
+                <h1 class="display-4 font-weight-bold mb-4">{{ product.name }}</h1>
+                <p class="lead text-muted mb-4">{{ product.description }}</p>
+
+                <!-- Price Information -->
+                <div class="price mb-5">
+                    <span class="h2 text-success font-weight-bold">Ksh{{ product.price }}</span>
+                </div>
+
+                <!-- Specifications List -->
+                <div class="specs mb-5">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 py-2"><strong>Storage:</strong> {{ product.storage }}</li>
+                        <li class="list-group-item border-0 py-2"><strong>RAM:</strong> {{ product.ram }}</li>
+                        <li class="list-group-item border-0 py-2"><strong>Processor:</strong> {{ product.processor }}</li>
+                        <li class="list-group-item border-0 py-2"><strong>Generation:</strong> {{ product.generation }}</li>
+                    </ul>
+                </div>
+
+                <!-- WhatsApp Inquiry Button -->
+                <form method="GET" action="https://wa.me/{{ your_whatsapp_number }}" class="mb-4">
+                    <input type="hidden" name="text" 
+                           value="I'm interested in {{ product.name }}. Details: {{ product.description }}. Price: ${{ product.price }}.">
+                    <button type="submit" class="btn btn-lg btn-success btn-whatsapp w-100 d-flex align-items-center justify-content-center">
+                        <i class="fab fa-whatsapp mr-2"></i> Inquire via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Varieties Table Section -->
+    <h3 class="mt-5 mb-3 font-weight-bold">Available Varieties</h3>
+    <table class="table table-striped mt-3 varieties-table">
+        <thead class="thead-light">
+            <tr>
+                <th>SKU</th>
+                <th>Weight</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Quantity in Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for variety in product.varieties %}
+            <tr>
+                <td>{{ variety.sku }}</td>
+                <td>{{ variety.weight }}</td>
+                <td>{{ variety.color }}</td>
+                <td>Ksh{{ variety.price }}</td>
+                <td>{{ variety.quantity_in_stock }}</td>
+                <td>
+                    <form action="{{ url_for('main.add_to_wishlist', product_id=product.id, variety_id=variety.id) }}" method="POST">
+                        {{ form.csrf_token }}
+                        <button type="submit" class="btn btn-outline-primary btn-sm">Add to Wishlist</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No varieties available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('main.list_products') }}" class="btn btn-secondary mt-4">Back to Products</a>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    /* General Styling */
+    .product-detail {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Image Container */
+    .img-container {
+        width: 100%;
+        max-height: 600px;
+        overflow: hidden;
+        border-radius: 12px;
+        position: relative;
+    }
+
+    /* Zoom Icon */
+    .zoom-icon {
+        bottom: 10px;
+        right: 10px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 30px;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 10px;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .img-container:hover .zoom-icon {
+        opacity: 1;
+    }
+
+    /* Main Image Zoom Effect */
+    #main-image {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .img-container:hover #main-image {
+        transform: scale(1.05);
+    }
+
+    /* Thumbnail Styles */
+    .thumbnail-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .thumbnail-wrapper {
+        cursor: pointer;
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+    }
+
+    .thumbnail-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .thumbnail-wrapper:hover img {
+        transform: scale(1.1);
+    }
+
+    .thumbnail-wrapper:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Product Info Styling */
+    .product-info h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .product-info .price {
+        font-size: 2rem;
+        color: #28a745;
+    }
+
+    .specs .list-group-item {
+        background: none;
+        border: none;
+        padding-left: 0;
+    }
+
+    .specs .list-group-item strong {
+        font-weight: 600;
+    }
+
+    /* WhatsApp Button Styles */
+    .btn-whatsapp {
+        background-color: #25D366;
+        color: white;
+        border-radius: 30px;
+        transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .btn-whatsapp:hover {
+        background-color: #128C7E;
+        transform: translateY(-3px);
+    }
+
+    /* Table Customization */
+    .varieties-table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .varieties-table tbody tr:hover {
+        background-color: #f1f1f1;
+        transition: background-color 0.3s;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .img-container {
+            max-height: 400px;
+        }
+
+        .thumbnail-wrapper {
+            width: 60px;
+            height: 60px;
+        }
+
+        .product-info h1 {
+            font-size: 2rem;
+        }
+
+        .product-info .price {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+<!-- JavaScript for Image Switching -->
+<script>
+    function changeMainImage(imageUrl) {
+        document.getElementById('main-image').src = imageUrl;
+    }
+</script>
+{% endblock %}

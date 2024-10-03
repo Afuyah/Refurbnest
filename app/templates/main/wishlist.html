@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Wishlist{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Your Collection</h1>
+    
+    {% if wishlist_items %}
+    <div class="row">
+        {% for item in wishlist_items %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg" style="transition: transform 0.3s;">
+                <div class="img-container" style="height: 300px; overflow: hidden;">
+                    <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" class="card-img-top" style="height: 100%; object-fit: cover; transition: transform 0.5s;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.product.name }}</h5>
+                    <p class="card-text text-success h5">Ksh{{ item.product.price }}</p>
+                    <form action="{{ url_for('main.remove_from_wishlist', wishlist_item_id=item.id) }}" method="POST" class="d-inline">
+                        {{ form.csrf_token }}
+                        <button type="submit" class="btn btn-danger btn-block">Remove from Collection</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center">Your Collection is empty.</p>
+    {% endif %}
+    
+    <div class="text-center mt-4">
+        <a href="{{ url_for('main.list_products') }}" class="btn btn-primary">Back to Products</a>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2; /* Bring container above parallax */
+    }
+
+    .img-container {
+        position: relative;
+        transition: transform 0.5s ease;
+    }
+
+    .img-container:hover {
+        transform: scale(1.1); /* 3D hover effect */
+    }
+
+    .card {
+        border-radius: 15px;
+        transition: transform 0.3s;
+        perspective: 1000px; /* For 3D effect */
+    }
+
+    .card:hover {
+        transform: translateY(-10px) rotateY(5deg); /* 3D rotation on hover */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    }
+
+    h1 {
+        color: #343a40;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    @media (max-width: 768px) {
+        .col-md-4 {
+            flex: 0 0 100%; /* Full width on small screens */
+            max-width: 100%;
+        }
+    }
+</style>
+
+<div class="parallax"></div>
+
+<style>
+    .parallax {
+        background-image: url('your-parallax-background-image.jpg'); /* Replace with your background image */
+        height: 400px; /* Adjust height as needed */
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        z-index: 1; /* Keep it behind the container */
+    }
+</style>
+
+{% endblock %}

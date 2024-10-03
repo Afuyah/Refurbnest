@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RefurbNest | Your Technology Hub{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s;
+        }
+
+        .navbar {
+            background-color: #1a1a1a;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #ffffff !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand:hover {
+            color: #007bff !important;
+        }
+
+        .navbar .nav-link {
+            color: #ffffff !important;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-link:hover {
+            color: #007bff !important;
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-top: 2rem;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-tech {
+            background-color: #007bff;
+            color: #ffffff;
+            transition: background-color 0.3s, transform 0.2s;
+            border-radius: 25px;
+        }
+
+        .btn-tech:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* Enhanced Scroll Effects */
+        .scroll-effect {
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        /* Responsive Navbar */
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            .navbar .nav-link {
+                font-size: 1rem;
+            }
+        }
+
+        /* Style enhancements for the footer */
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <a class="navbar-brand" href="{{ url_for('main.home') }}">RefurbNest</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.list_products') }}" aria-label="View Products">Store</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.view_wishlist') }}" aria-label="View Wishlist">My Collections</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.contact') }}" aria-label="Contact Us">Contact</a>
+                </li>
+                {% if current_user.is_authenticated %}
+                    {% if current_user.has_role('Admin') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.dashboard') }}" aria-label="Admin Dashboard">Admin Console</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}" aria-label="Logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}" aria-label="Login">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container fade-in mb-5">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                    {{ message }}<br>
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 RefurbNest | <a href="{{ url_for('main.privacy_policy') }}">Privacy Policy</a></p>
+    </footer>
+
+    <!-- Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Smooth Scroll for Internal Links -->
+    <script>
+        $(document).on('click', 'a[href^="#"]', function(event) {
+            event.preventDefault();
+
+            $('html, body').animate({
+                scrollTop: $($.attr(this, 'href')).offset().top
+            }, 500);
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 50) {
+                $('.navbar').addClass('bg-dark');
+            } else {
+                $('.navbar').removeClass('bg-dark');
+            }
+        });
+    </script>
+</body>
+
+</html>

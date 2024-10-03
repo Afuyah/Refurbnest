@@ -1,0 +1,65 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+<h1>Add New Product</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div class="form-group">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.price.label(class="form-label") }}
+        {{ form.price(class="form-control") }}
+    </div>
+    
+    
+
+    <div class="form-group">
+        {{ form.storage.label(class="form-label") }}
+        {{ form.storage(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.ram.label(class="form-label") }}
+        {{ form.ram(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.processor.label(class="form-label") }}
+        {{ form.processor(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.storage_type.label(class="form-label") }}
+        {{ form.storage_type(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.generation.label(class="form-label") }}
+        {{ form.generation(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.brand_id.label(class="form-label") }}
+        {{ form.brand_id(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.category_id.label(class="form-label") }}
+        {{ form.category_id(class="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-success">{{ form.submit.label }}</button>
+</form>
+{% endblock %}

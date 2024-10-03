@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RefurbNest | Your Technology Hub{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #1a1a1a;
+            transition: background-color 0.3s;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #007bff !important;
+        }
+
+        .container {
+            margin-top: 2rem;
+        }
+
+        .card {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-tech {
+            background-color: #007bff;
+            color: #ffffff;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn-tech:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <a class="navbar-brand" href="{{ url_for('main.home') }}">RefubNest</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated and current_user.has_role('Admin') %}
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_brands') }}">Brands</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_categories') }}">Categories</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_products') }}">Products</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_product_varieties') }}">Varieties</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container fade-in">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Admin Dashboard</h1>
+    <button id="theme-toggle" class="btn btn-secondary">Toggle Dark Mode</button>
+  </div>
+
+  <p class="lead">Welcome to the admin panel. Manage your e-commerce platform efficiently.</p>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-primary"><i class="fas fa-tags"></i> Brands</h5>
+          <p class="card-text">{{ brand_count }} total</p>
+          <a href="{{ url_for('admin.list_brands') }}" class="btn btn-outline-primary">Manage Brands</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-success"><i class="fas fa-th-list"></i> Categories</h5>
+          <p class="card-text">{{ category_count }} total</p>
+          <a href="{{ url_for('admin.list_categories') }}" class="btn btn-outline-success">Manage Categories</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-warning"><i class="fas fa-box"></i> Products</h5>
+          <p class="card-text">{{ product_count }} total</p>
+          <a href="{{ url_for('admin.list_products') }}" class="btn btn-outline-warning">Manage Products</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-info"><i class="fas fa-cube"></i> Product Varieties</h5>
+          <p class="card-text">{{ variety_count }} total</p>
+          <a href="{{ url_for('admin.list_product_varieties') }}" class="btn btn-outline-info">Manage Varieties</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Recent Activity</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Action</th>
+        <th scope="col">User</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for activity in recent_activities %}
+      <tr>
+        <td>{{ activity.action }}</td>
+        <td>{{ activity.user }}</td>
+        <td>{{ activity.date.strftime('%Y-%m-%d %H:%M') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Quick Actions</h3>
+  <div class="list-group mb-4">
+    <a href="{{ url_for('admin.list_brands') }}" class="list-group-item list-group-item-action">Manage Brands</a>
+    <a href="{{ url_for('admin.list_categories') }}" class="list-group-item list-group-item-action">Manage Categories</a>
+    <a href="{{ url_for('admin.list_products') }}" class="list-group-item list-group-item-action">Manage Products</a>
+    <a href="{{ url_for('admin.list_product_varieties') }}" class="list-group-item list-group-item-action">Manage Varieties</a>
+  </div>
+
+  <footer class="mt-4 text-center">
+    <p>&copy; {{ current_year }} Your Company. All rights reserved.</p>
+  </footer>
+</div>
+
+<script>
+  const toggleButton = document.getElementById('theme-toggle');
+  toggleButton.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+  });
+</script>
+
+<style>
+  body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  body.dark-mode .card {
+    background-color: #1e1e1e;
+    border-color: #333;
+  }
+
+  body.dark-mode .btn-outline-primary {
+    color: #bb86fc;
+    border-color: #bb86fc;
+  }
+
+  table {
+    background-color: #fff;
+  }
+
+  table tr:hover {
+    background-color: #f5f5f5;
+  }
+</style>
+{% endblock %}

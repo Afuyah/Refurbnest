@@ -1,0 +1,72 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}{{ form.name.label }} Category{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-primary mb-4">{{ form.name.label }} Category</h1>
+    
+    <form method="POST" class="needs-validation" novalidate>
+        {{ form.hidden_tag() }}
+
+        <!-- Form Group for Name Input -->
+        <div class="form-group mb-4">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", placeholder="Enter category name") }}
+            <div class="invalid-feedback">Please provide a valid category name.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-lg btn-success w-100">
+            <i class="fas fa-save"></i> {{ form.submit.label }}
+        </button>
+    </form>
+</div>
+
+<!-- Include necessary Bootstrap and FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom UX Enhancements -->
+<style>
+    .form-control {
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+    }
+    .btn-success {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        box-shadow: 0 4px 8px rgba(33, 136, 56, 0.2);
+    }
+    .form-label {
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>
+
+<!-- Optional JS for Frontend Validation (Bootstrap) -->
+<script>
+    // Bootstrap form validation
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+</script>
+{% endblock %}

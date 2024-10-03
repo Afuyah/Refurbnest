@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<div class="container contact-section mt-5">
+    <h1 class="text-center contact-header mb-4">Contact Us</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="alert alert-{{ messages[0][0] }} alert-dismissible fade show" role="alert">
+                {{ messages[0][1] }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="contact-form bg-light p-4 rounded shadow-sm">
+                <form method="POST" action="{{ url_for('main.contact') }}">
+                    {{ form.hidden_tag() }}
+
+                    <div class="form-group">
+                        {{ form.name.label(class="form-label") }}
+                        {{ form.name(class="form-control", placeholder="Your Name") }}
+                        {% for error in form.name.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", placeholder="Your Email Address") }}
+                        {% for error in form.email.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.subject.label(class="form-label") }}
+                        {{ form.subject(class="form-control", placeholder="Subject") }}
+                        {% for error in form.subject.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.message.label(class="form-label") }}
+                        {{ form.message(class="form-control", placeholder="Your Message", rows="5") }}
+                        {% for error in form.message.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="text-center">
+                        {{ form.submit(class="btn btn-tech btn-block") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .contact-section {
+        background-color: #f4f4f4;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-header {
+        color: #343a40;
+    }
+
+    .btn-tech {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-tech:hover {
+        background-color: #0056b3;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
