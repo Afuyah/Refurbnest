@@ -36,8 +36,26 @@ def home():
 
 @main_bp.route('/products', methods=['GET'])
 def list_products():
-    products = Product.query.all()
+    # Get brand and category filters from query parameters
+    brand_id = request.args.get('brand')
+    category_id = request.args.get('category')
+
+    query = Product.query
+
+    # Apply brand filtering if specified
+    if brand_id:
+        query = query.filter(Product.brand_id == brand_id)
+
+    # Apply category filtering if specified
+    if category_id:
+        query = query.filter(Product.category_id == category_id)
+
+    products = query.all()
     product_data = []
+
+    # If no products are found, consider an empty list or alternative action
+    if not products:
+        flash("No products available at this moment.", "info")  # Inform the user
 
     for product in products:
         # If no image exists, provide the correct fallback image path
@@ -54,7 +72,6 @@ def list_products():
 
     form = ProductForm()
     return render_template('main/list_products.html', products=product_data, form=form)
-
 
 
 
@@ -86,8 +103,8 @@ def inquire_product(product_id):
         # Encode the message for the WhatsApp URL
         encoded_message = quote(message)
 
-        # Replace 'YOUR_PHONE_NUMBER' with your actual WhatsApp number (in international format)
-        your_whatsapp_number = "YOUR_PHONE_NUMBER"  # e.g., "254712345678"
+       
+        your_whatsapp_number = "254700622298"  
         whatsapp_url = f"https://wa.me/{your_whatsapp_number}?text={encoded_message}"
 
         flash('Inquiry sent! You will be redirected to WhatsApp.', 'success')

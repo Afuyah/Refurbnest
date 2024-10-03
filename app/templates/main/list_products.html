@@ -7,24 +7,32 @@
     <h1 class="font-weight-bold text-center text-dark mb-5">Our Products</h1>
 
     <!-- Filter Section -->
-    <div class="filter-section text-center mb-5">
-        <label for="brand-filter" class="mr-3 font-weight-bold">Brand:</label>
-        <select id="brand-filter" class="custom-select w-auto" aria-label="Filter by Brand" onchange="filterProducts()">
-            <option value="">All Brands</option>
-            {% for brand in brands %}
-            <option value="{{ brand.id }}">{{ brand.name }}</option>
-            {% endfor %}
-        </select>
+    <div class="filter-section mb-5 text-center">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <label for="brand-filter" class="mr-3 font-weight-bold">Brand:</label>
+                <select id="brand-filter" class="custom-select w-auto" aria-label="Filter by Brand" onchange="filterProducts()">
+                    <option value="">All Brands</option>
+                    {% for brand in brands %}
+                    <option value="{{ brand.id }}" {% if request.args.get('brand') == brand.id|string %}selected{% endif %}>{{ brand.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label for="category-filter" class="ml-5 mr-3 font-weight-bold">Category:</label>
-        <select id="category-filter" class="custom-select w-auto" aria-label="Filter by Category" onchange="filterProducts()">
-            <option value="">All Categories</option>
-            {% for category in categories %}
-            <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endfor %}
-        </select>
+            <div class="col-auto">
+                <label for="category-filter" class="ml-5 mr-3 font-weight-bold">Category:</label>
+                <select id="category-filter" class="custom-select w-auto" aria-label="Filter by Category" onchange="filterProducts()">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.args.get('category') == category.id|string %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <button onclick="resetFilters()" class="btn btn-outline-dark ml-4">Clear Filters</button>
+            <div class="col-auto">
+                <button onclick="resetFilters()" class="btn btn-outline-dark ml-4">Clear Filters</button>
+            </div>
+        </div>
     </div>
 
     <!-- Product Grid -->
@@ -78,9 +86,26 @@
         color: #007bff;
     }
 
-    .filter-section label {
-        font-size: 1.2rem;
-        color: #333;
+    .filter-section {
+        margin: 20px 0; /* Adjust spacing as needed */
+    }
+
+    .custom-select {
+        border-radius: 5px; /* Rounded corners for selects */
+    }
+
+    @media (max-width: 576px) {
+        .filter-section {
+            flex-direction: column; /* Stack on small screens */
+        }
+        
+        .filter-section .col-auto {
+            margin-bottom: 10px; /* Space between stacked items */
+        }
+        
+        .filter-section label {
+            margin-bottom: 5px; /* Space between label and select */
+        }
     }
 
     /* Custom Select Styling */
@@ -226,21 +251,25 @@
     function filterProducts() {
         const brandFilter = document.getElementById('brand-filter').value;
         const categoryFilter = document.getElementById('category-filter').value;
-        const products = document.querySelectorAll('.product-item');
 
-        products.forEach(product => {
-            const brandMatch = brandFilter ? product.getAttribute('data-brand') === brandFilter : true;
-            const categoryMatch = categoryFilter ? product.getAttribute('data-category') === categoryFilter : true;
-
-            product.style.display = (brandMatch && categoryMatch) ? 'block' : 'none';
-        });
+        // Build the URL with query parameters
+        const baseUrl = window.location.pathname;
+        const params = new URLSearchParams();
+        
+        if (brandFilter) params.append('brand', brandFilter);
+        if (categoryFilter) params.append('category', categoryFilter);
+        
+        // Redirect to the new URL with filters applied
+        window.location.href = `${baseUrl}?${params.toString()}`;
     }
 
     // Reset Filters
     function resetFilters() {
         document.getElementById('brand-filter').value = '';
         document.getElementById('category-filter').value = '';
-        filterProducts();
+        
+        // Redirect to the base products URL without any query parameters
+        window.location.href = window.location.pathname;
     }
 </script>
 

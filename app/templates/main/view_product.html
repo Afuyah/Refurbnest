@@ -35,8 +35,9 @@
                 <button type="submit" class="btn btn-lg btn-success btn-whatsapp w-100 d-flex align-items-center justify-content-center">
                     <i class="fab fa-whatsapp mr-2"></i> Inquire via WhatsApp
                 </button>
-                <p class="lead text-muted mb-4">{{ product.description }}</p>
+               
             </form>
+            
         </div>
 
         <!-- Image Carousel Section -->
@@ -61,47 +62,15 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="container mt-4"> 
+                <h3>Description</h3>
+            <p class="lead text-muted mb-4">{{ product.description }}</p></div>
     </div>
 
-    <!-- Varieties Table Section -->
-    <h3 class="mt-5 mb-3 font-weight-bold">Available Varieties</h3>
-    <table class="table table-responsive mt-3 varieties-table">
-        <thead class="thead-light">
-            <tr>
-                <th>SKU</th>
-                <th>Weight</th>
-                <th>Color</th>
-                <th>Price</th>
-                <th>Quantity in Stock</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for variety in product.varieties %}
-            <tr>
-                <td>{{ variety.sku }}</td>
-                <td>{{ variety.weight }}</td>
-                <td>{{ variety.color }}</td>
-                <td>Ksh{{ variety.price }}</td>
-                <td>{{ variety.quantity_in_stock }}</td>
-                <td>
-                    <form action="{{ url_for('main.add_to_wishlist', product_id=product.id, variety_id=variety.id) }}" method="POST">
-                        {{ form.csrf_token }}
-                        <button type="submit" class="btn btn-outline-primary btn-sm">Add to Wishlist</button>
-                    </form>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="6" class="text-center">No varieties available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
     <a href="{{ url_for('main.list_products') }}" class="btn btn-secondary mt-4">Back to Products</a>
-</div>
 
+</div>
 <!-- Custom Styles -->
 <style>
     /* Parallax Hero */
