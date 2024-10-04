@@ -45,7 +45,7 @@
 
                     <!-- Minimalist Hover Effect with Subtle Button -->
                     <div class="img-overlay">
-                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark btn-view">View</a>
+                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark btn-view">View Details</a>
                     </div>
                 </div>
 
@@ -53,10 +53,8 @@
                     <h5 class="card-title font-weight-bold">{{ product.name }}</h5>
                     <p class="card-text text-muted">Ksh{{ product.price }}</p>
 
-                    <form method="POST" action="{{ url_for('main.add_to_wishlist', product_id=product.id) }}">
-                        {{ form.csrf_token }}
-                        <button type="submit" class="btn btn-outline-dark w-100 custom-btn">Add to Wishlist</button>
-                    </form>
+                    
+            
                 </div>
             </div>
         </div>
