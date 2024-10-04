@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Products {% endblock %}
+{% block title %}Products{% endblock %}
 
 {% block content %}
 <div class="container-fluid mt-5">
@@ -43,7 +43,7 @@
                 <div class="img-container position-relative">
                     <img data-src="{{ url_for('static', filename= product.image_url) }}" class="card-img-top lazy-load" alt="{{ product.name }}">
 
-                    <!-- Minimalist Hover Effect with Subtle Button -->
+                    <!-- Hover Button -->
                     <div class="img-overlay">
                         <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark btn-view">View</a>
                     </div>
@@ -87,28 +87,27 @@
     }
 
     .filter-section {
-        margin: 20px 0; /* Adjust spacing as needed */
+        margin: 20px 0;
     }
 
     .custom-select {
-        border-radius: 5px; /* Rounded corners for selects */
+        border-radius: 5px;
     }
 
     @media (max-width: 576px) {
         .filter-section {
-            flex-direction: column; /* Stack on small screens */
+            flex-direction: column;
         }
-        
+
         .filter-section .col-auto {
-            margin-bottom: 10px; /* Space between stacked items */
+            margin-bottom: 10px;
         }
-        
+
         .filter-section label {
-            margin-bottom: 5px; /* Space between label and select */
+            margin-bottom: 5px;
         }
     }
 
-    /* Custom Select Styling */
     .custom-select {
         padding: 0.5rem 1rem;
         font-size: 1rem;
@@ -121,7 +120,6 @@
         border-color: #bbb;
     }
 
-    /* Card Styling */
     .card {
         border-radius: 16px;
         transition: transform 0.4s ease, box-shadow 0.4s ease;
@@ -133,7 +131,6 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
-    /* Image Container & Hover Effect */
     .img-container {
         overflow: hidden;
         border-radius: 16px 16px 0 0;
@@ -185,7 +182,6 @@
         background-color: #000;
     }
 
-    /* Custom Button */
     .custom-btn {
         font-size: 0.9rem;
         padding: 0.7rem;
@@ -199,7 +195,6 @@
         transform: translateY(-3px);
     }
 
-    /* Lazy Load Styles */
     .lazy-load {
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
@@ -209,7 +204,6 @@
         opacity: 1;
     }
 
-    /* Responsive Adjustments */
     @media (max-width: 768px) {
         .img-container {
             height: 250px;
@@ -230,7 +224,7 @@
     // Lazy Load Images
     document.addEventListener('DOMContentLoaded', function () {
         const lazyImages = document.querySelectorAll('.lazy-load');
-        
+
         const lazyLoadObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -255,10 +249,10 @@
         // Build the URL with query parameters
         const baseUrl = window.location.pathname;
         const params = new URLSearchParams();
-        
+
         if (brandFilter) params.append('brand', brandFilter);
         if (categoryFilter) params.append('category', categoryFilter);
-        
+
         // Redirect to the new URL with filters applied
         window.location.href = `${baseUrl}?${params.toString()}`;
     }
@@ -267,7 +261,7 @@
     function resetFilters() {
         document.getElementById('brand-filter').value = '';
         document.getElementById('category-filter').value = '';
-        
+
         // Redirect to the base products URL without any query parameters
         window.location.href = window.location.pathname;
     }
