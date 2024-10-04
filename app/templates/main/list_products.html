@@ -87,24 +87,24 @@
     }
 
     .filter-section {
-        margin: 20px 0; /* Adjust spacing as needed */
+        margin: 20px 0;
     }
 
     .custom-select {
-        border-radius: 5px; /* Rounded corners for selects */
+        border-radius: 5px;
     }
 
     @media (max-width: 576px) {
         .filter-section {
-            flex-direction: column; /* Stack on small screens */
+            flex-direction: column;
         }
 
         .filter-section .col-auto {
-            margin-bottom: 10px; /* Space between stacked items */
+            margin-bottom: 10px;
         }
 
         .filter-section label {
-            margin-bottom: 5px; /* Space between label and select */
+            margin-bottom: 5px;
         }
     }
 
@@ -222,12 +222,15 @@
         .filter-section label {
             font-size: 1rem;
         }
+
+        .product-item {
+            flex: 0 0 100%; /* Ensure single-column layout for small screens */
+        }
     }
 </style>
 
 <!-- Lazy Load and Filter Script -->
 <script>
-    // Lazy Load Images
     document.addEventListener('DOMContentLoaded', function () {
         const lazyImages = document.querySelectorAll('.lazy-load');
 
@@ -247,28 +250,23 @@
         });
     });
 
-    // Filter Products
     function filterProducts() {
         const brandFilter = document.getElementById('brand-filter').value;
         const categoryFilter = document.getElementById('category-filter').value;
 
-        // Build the URL with query parameters
         const baseUrl = window.location.pathname;
         const params = new URLSearchParams();
 
         if (brandFilter) params.append('brand', brandFilter);
         if (categoryFilter) params.append('category', categoryFilter);
 
-        // Redirect to the new URL with filters applied
         window.location.href = `${baseUrl}?${params.toString()}`;
     }
 
-    // Reset Filters
     function resetFilters() {
         document.getElementById('brand-filter').value = '';
         document.getElementById('category-filter').value = '';
 
-        // Redirect to the base products URL without any query parameters
         window.location.href = window.location.pathname;
     }
 </script>
