@@ -40,7 +40,7 @@
         {% for product in products %}
         <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
             <div class="card product-card shadow-sm">
-                <div class="card-body d-flex">
+                <div class="card-body d-flex flex-row align-items-center">
                     <img src="{{ url_for('static', filename=product.image_url) }}" class="product-image" alt="{{ product.name }}">
                     <div class="product-info ml-3">
                         <h5 class="card-title">{{ product.name }}</h5>
@@ -49,7 +49,7 @@
                             {{ form.csrf_token }}
                             <button type="submit" class="btn btn-outline-primary">Add to Wishlist</button>
                         </form>
-                       
+                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark mt-2">View</a>
                     </div>
                 </div>
             </div>
@@ -101,8 +101,8 @@
     }
 
     .product-image {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         object-fit: cover;
         border-radius: 8px;
     }
@@ -116,29 +116,31 @@
         .product-card {
             flex-direction: column;
             align-items: center;
+            text-align: center;
         }
 
         .product-image {
-            width: 80%;
+            width: 100%;
             height: auto;
+            margin-bottom: 10px;
         }
 
         .product-info {
-            text-align: center;
+            margin-left: 0;
         }
     }
 
     @media (min-width: 577px) and (max-width: 768px) {
         .product-image {
-            width: 90px;
-            height: 90px;
+            width: 70px;
+            height: 70px;
         }
     }
 
     @media (min-width: 769px) {
         .product-image {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
         }
     }
 </style>
