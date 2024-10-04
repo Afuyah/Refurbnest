@@ -6,50 +6,23 @@
 <div class="container mt-5">
     <h1 class="text-center text-dark mb-5">Our Products</h1>
 
-    <!-- Filter Section -->
-    <div class="filter-section mb-5 text-center">
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <label for="brand-filter" class="font-weight-bold">Brand:</label>
-                <select id="brand-filter" class="custom-select" onchange="filterProducts()">
-                    <option value="">All Brands</option>
-                    {% for brand in brands %}
-                    <option value="{{ brand.id }}" {% if request.args.get('brand') == brand.id|string %}selected{% endif %}>{{ brand.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-auto">
-                <label for="category-filter" class="font-weight-bold">Category:</label>
-                <select id="category-filter" class="custom-select" onchange="filterProducts()">
-                    <option value="">All Categories</option>
-                    {% for category in categories %}
-                    <option value="{{ category.id }}" {% if request.args.get('category') == category.id|string %}selected{% endif %}>{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-auto">
-                <button onclick="resetFilters()" class="btn btn-outline-dark ml-4">Clear Filters</button>
-            </div>
-        </div>
-    </div>
+   
 
     <!-- Product Grid -->
     <div class="row">
         {% for product in products %}
         <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-            <div class="card product-card shadow-sm">
+            <div class="card product-card ">
                 <div class="card-body d-flex flex-row align-items-center">
-                    <img src="{{ url_for('static', filename=product.image_url) }}" class="product-image" alt="{{ product.name }}">
+                    <img src="{{ url_for('static', filename=product.image_url) }}" class="product-image" alt="no name">
                     <div class="product-info ml-3">
-                        <h5 class="card-title">{{ product.name }}</h5>
+                        <h6 class="card-title">{{ product.name }}</h6>
                         <p class="card-text">Ksh{{ product.price }}</p>
-                        <form method="POST" action="{{ url_for('main.add_to_wishlist', product_id=product.id) }}">
+                       <!-- <form method="POST" action="{{ url_for('main.add_to_wishlist', product_id=product.id) }}">
                             {{ form.csrf_token }}
                             <button type="submit" class="btn btn-outline-primary">Add to Wishlist</button>
-                        </form>
-                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark mt-2">View</a>
+                        </form>-->
+                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark mt-2">View Details</a>
                     </div>
                 </div>
             </div>
@@ -89,7 +62,7 @@
 
     /* Card Styling */
     .product-card {
-        border-radius: 16px;
+        
         overflow: hidden;
         transition: transform 0.3s ease;
         background-color: #ffffff;
