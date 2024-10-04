@@ -35,24 +35,17 @@
         </div>
     </div>
 
-    <!-- Product Grid -->
+    <!-- Product List -->
     <div class="row" id="product-list">
         {% for product in products %}
-        <div class="col-lg-4 col-md-6 mb-4 product-item" data-brand="{{ product.brand_id }}" data-category="{{ product.category_id }}">
-            <div class="card border-0 shadow-sm">
+        <div class="col-12 mb-4 product-item" data-brand="{{ product.brand_id }}" data-category="{{ product.category_id }}">
+            <div class="card border-0 shadow-sm d-flex flex-row">
                 <div class="img-container">
-                    <img data-src="{{ url_for('static', filename= product.image_url) }}" class="card-img-top lazy-load" alt="{{ product.name }}">
-
-                    <!-- Minimalist Hover Effect with Subtle Button -->
-                    <div class="img-overlay">
-                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="btn btn-dark btn-view">View</a>
-                    </div>
+                    <img data-src="{{ url_for('static', filename= product.image_url) }}" class="card-img-left lazy-load" alt="{{ product.name }}">
                 </div>
-
-                <div class="card-body text-center">
+                <div class="card-body d-flex flex-column justify-content-between">
                     <h5 class="card-title font-weight-bold">{{ product.name }}</h5>
                     <p class="card-text text-muted">Ksh{{ product.price }}</p>
-
                     <form method="POST" action="{{ url_for('main.add_to_wishlist', product_id=product.id) }}">
                         {{ form.csrf_token }}
                         <button type="submit" class="btn btn-outline-dark w-100 custom-btn">Add to Wishlist</button>
@@ -108,25 +101,11 @@
         }
     }
 
-    /* Custom Select Styling */
-    .custom-select {
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-        border-radius: 50px;
-        border: 2px solid #ddd;
-        transition: border-color 0.3s ease;
-    }
-
-    .custom-select:hover {
-        border-color: #bbb;
-    }
-
     /* Card Styling */
     .card {
         border-radius: 16px;
         transition: transform 0.4s ease, box-shadow 0.4s ease;
         background-color: #ffffff;
-        overflow: hidden; /* Ensure content does not overflow */
     }
 
     .card:hover {
@@ -134,54 +113,18 @@
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
-    /* Image Container & Hover Effect */
+    /* Image Container */
     .img-container {
+        flex: 0 0 150px; /* Fixed width for the image */
+        height: 100%;
         overflow: hidden;
-        height: 250px; /* Adjust height for better responsiveness */
-        position: relative;
         background: #f1f1f1;
     }
 
-    .img-container img {
+    .card-img-left {
         width: 100%;
-        height: 100%;
+        height: auto;
         object-fit: cover;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .img-container:hover img {
-        transform: scale(1.1);
-        opacity: 0.85;
-    }
-
-    .img-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4);
-        opacity: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: opacity 0.3s ease;
-    }
-
-    .img-container:hover .img-overlay {
-        opacity: 1;
-    }
-
-    .btn-view {
-        background-color: #333;
-        padding: 0.5rem 1.5rem;
-        border-radius: 50px;
-        color: #fff;
-        transition: background-color 0.3s;
-    }
-
-    .btn-view:hover {
-        background-color: #000;
     }
 
     /* Custom Button */
@@ -209,15 +152,19 @@
     }
 
     /* Responsive Adjustments */
-    @media (min-width: 576px) {
-        .img-container {
-            height: 300px; /* Increase image height on medium screens */
+    @media (max-width: 768px) {
+        .card {
+            flex-direction: column; /* Stack card content on smaller screens */
         }
-    }
 
-    @media (min-width: 768px) {
         .img-container {
-            height: 350px; /* Further increase image height on large screens */
+            flex: 0 0 auto; /* Allow the image to resize */
+            height: 200px; /* Adjust height for better responsiveness */
+        }
+
+        .card-img-left {
+            height: 100%; /* Maintain image height */
+            width: auto; /* Adjust width */
         }
     }
 </style>
