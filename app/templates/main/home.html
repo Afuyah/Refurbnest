@@ -3,252 +3,328 @@
 {% block title %}Home - RefurbNest{% endblock %}
 
 {% block content %}
-<!-- Hero Section with Parallax Effect -->
-<div class="hero-section text-center">
-    <div class="container">
-        
-        <p class="lead">Because great tech deserves a second shot</p>
-    </br>
-        <a href="{{ url_for('main.list_products') }}" class="btn btn-tech btn-lg ripple mt-3">Explore Our Collection</a>
-    </div>
-</div>
-
-<!-- Features Section with Smooth Animations -->
-<div class="features-section text-center mt-5">
-    <div class="container">
-        <h2 class="animated-heading">RefurbNest is the Smart Choice</h2>
-        <p class="text-muted mb-4">The right tech for the right reasons</p>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="feature-card aos-animate" data-aos="fade-up">
-                    <h3><i class="fas fa-cogs"></i> Unmatched Quality</h3>
-                    <p>Experience the performance of high-end tech without the premium price tag. Every product is rigorously tested to meet the highest standards—so you never have to worry.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card aos-animate" data-aos="fade-up" data-aos-delay="200">
-                    <h3><i class="fas fa-shield-alt"></i> Effortless Reliability</h3>
-                    <p>With RefurbNest, every device is built to last. Trust in years of dependable performance, freeing you to focus on what really matters.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card aos-animate" data-aos="fade-up" data-aos-delay="400">
-                    <h3><i class="fas fa-dollar-sign"></i> A Smarter Investment</h3>
-                    <p>Save big without sacrificing quality. Choose a future-proof solution that not only benefits your wallet but also the planet.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Call to Action with Parallax Background -->
-<div class="cta-section text-center mt-5 parallax">
-    <div class="container">
-        <h2>Connect with Us</h2>
-        <p>Join our growing community to stay updated on the latest refurb trends, eco-friendly tips, and exclusive deals.</p>
-        <div class="social-icons mt-4">
-            <a href="https://www.facebook.com/Marketstat?mibextid=ZbWKwL" class="social-icon ripple" target="_blank" aria-label="Facebook">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://www.instagram.com/RefurbNest" class="social-icon ripple" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://www.tiktok.com/@RefurbNest" class="social-icon ripple" target="_blank" aria-label="TikTok">
-                <i class="fab fa-tiktok"></i>
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- Modern Styles & Animations -->
-<style>
-    /* Font Imports */
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
-
-    /* General Body Styling */
-    body {
-        font-family: 'Helvetica Neue', sans-serif;
-        color: #333;
-        background-color: #f0f0f0;
-    }
-
+<!-- Neurodesign-inspired Hero Section -->
+<section class="hero">
+    <div class="hero-gradient"></div>
+    <div class="neon-grid"></div>
     
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="text-stroke">Re</span><span class="text-fill">Imagine</span>
+            <span class="text-stroke">Tech</span>
+        </h1>
+        
+        <div class="hero-scroll">
+            <div class="scroll-indicator"></div>
+        </div>
+    </div>
 
-    /* Animate Headings */
-    .animated-heading {
-        font-size: 2.5rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        animation: fadeIn 1.5s ease-in-out;
+    <div class="hero-cta">
+        <a href="{{ url_for('main.list_products') }}" class="magnetic-btn">
+            <span class="btn-bg"></span>
+            <span class="btn-text">Explore Collection</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+<!-- Holographic Value Proposition Grid -->
+<section class="value-grid">
+    <div class="value-card card-1">
+        <div class="card-hologram"></div>
+        <h3>Premium Renewal</h3>
+        <p>Factory-grade refurbishment process with 72-point inspection</p>
+        <div class="card-ico">
+            <svg><!-- Quality icon --></svg>
+        </div>
+    </div>
+
+    <div class="value-card card-2">
+        <div class="card-hologram"></div>
+        <h3>Eco-Impact</h3>
+        <p>Reducing e-waste through intelligent device lifecycle management</p>
+        <div class="card-ico">
+            <svg><!-- Ecology icon --></svg>
+        </div>
+    </div>
+
+    <div class="value-card card-3">
+        <div class="card-hologram"></div>
+        <h3>Smart Savings</h3>
+        <p>Premium tech at 40-60% below retail with upgrade protection</p>
+        <div class="card-ico">
+            <svg><!-- Savings icon --></svg>
+        </div>
+    </div>
+</section>
+
+<!-- Parametric Social Proof Section -->
+<section class="social-proof">
+    <div class="proof-visual">
+        <div class="parametric-wave"></div>
+        <div class="stats-overlay">
+            <div class="stat">
+                <h4>15K+</h4>
+                <p>Devices Renewed</p>
+            </div>
+            <div class="stat">
+                <h4>98.7%</h4>
+                <p>Customer Satisfaction</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fluid Social Connector -->
+<div class="social-fluid">
+    <div class="fluid-container">
+        <a href="#" class="social-bubble fb">
+            <span class="social-ico"></span>
+            <span class="social-pulse"></span>
+        </a>
+        <a href="#" class="social-bubble ig">
+            <span class="social-ico"></span>
+            <span class="social-pulse"></span>
+        </a>
+        <a href="#" class="social-bubble tk">
+            <span class="social-ico"></span>
+            <span class="social-pulse"></span>
+        </a>
+    </div>
+</div>
+
+<style>
+:root {
+    --primary: #7C3AED;
+    --secondary: #10B981;
+    --neuro-dark: #0a0a0f;
+    --neuro-light: #f0f0fc;
+    --hologram-1: #7C3AED;
+    --hologram-2: #10B981;
+}
+
+/* Neurodesign Base */
+body {
+    background: var(--neuro-dark);
+    color: var(--neuro-light);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    position: relative;
+    isolation: isolate;
+}
+
+.hero-gradient {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle at 50% 0%, 
+        rgba(124, 58, 237, 0.15) 0%, 
+        transparent 60%);
+    animation: gradient-pulse 8s infinite;
+}
+
+@keyframes gradient-pulse {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.hero-title {
+    font-size: clamp(3rem, 8vw, 8rem);
+    line-height: 1.1;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.text-stroke {
+    -webkit-text-stroke: 2px var(--primary);
+    color: transparent;
+}
+
+.text-fill {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Magnetic Button */
+.magnetic-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 3rem;
+    border-radius: 100px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+.btn-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(130deg, var(--primary), var(--secondary));
+    opacity: 0.15;
+    transition: opacity 0.3s ease;
+}
+
+.magnetic-btn:hover .btn-bg {
+    opacity: 0.3;
+}
+
+.btn-text {
+    position: relative;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.btn-arrow {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+    transition: transform 0.3s ease;
+}
+
+.magnetic-btn:hover .btn-arrow {
+    transform: translateX(5px);
+}
+
+/* Holographic Cards */
+.value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem;
+}
+
+.value-card {
+    position: relative;
+    padding: 3rem;
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+}
+
+.card-hologram {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        var(--hologram-1),
+        var(--hologram-2),
+        var(--hologram-1)
+    );
+    opacity: 0.1;
+    animation: hologram-spin 10s linear infinite;
+}
+
+@keyframes hologram-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Social Fluid */
+.social-fluid {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.social-bubble {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.social-pulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .value-grid {
+        grid-template-columns: 1fr;
+        padding: 2rem;
     }
 
-    /* Animations for Feature Cards */
-    .aos-animate {
-        opacity: 0;
-        transform: translateY(20px);
+    .hero-title {
+        font-size: clamp(2rem, 12vw, 4rem);
     }
 
-    [data-aos].aos-animate {
-        opacity: 1;
-        transform: translateY(0);
+    .social-fluid {
+        bottom: 1rem;
+        right: 1rem;
     }
-
-    /* Hero Section with Parallax Effect */
-    .hero-section {
-        background-image: url('https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center;
-        color: #fff;
-        padding: 120px 0;
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-        position: relative;
-        z-index: 1;
-        animation: fadeInHero 1s ease-in-out;
-
-    }
-
-    .hero-section::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        z-index: -1;
-    }
-
-    .hero-section h1, .hero-section p {
-        color: #fff;
-        text-shadow: 0 6px 8px rgba(0, 0, 0, 0.6);
-    }
-
-    @keyframes fadeInHero {
-        from { opacity: 0; transform: translateY(-30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Features Section with Smooth Animations */
-    .features-section {
-        background-color: #f8f9fa;
-        padding: 80px 0;
-        animation: fadeIn 1.2s ease-in-out;
-    }
-
-    .feature-card {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 40px;
-        margin: 20px;
-        transition: transform 0.5s, box-shadow 0.5s;
-        background-color: #fff;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    /* CTA Section with Parallax */
-    .cta-section {
-        padding: 80px 0;
-        background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085');
-        background-size: cover;
-        background-attachment: fixed;
-        color: #fff;
-        position: relative;
-        z-index: 1;
-        animation: fadeIn 1.5s ease-in-out;
-    }
-
-    .cta-section::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 123, 255, 0.7);
-        z-index: -1;
-    }
-
-    .cta-section h2 {
-        font-size: 2.5rem;
-        color: #fff;
-    }
-
-    /* Social Icons Styling */
-    .social-icons {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-    }
-
-    .social-icon {
-        font-size: 2rem;
-        color: #fff;
-        border: 2px solid #fff;
-        border-radius: 50%;
-        padding: 12px;
-        transition: background-color 0.4s ease, transform 0.4s ease;
-    }
-
-    .social-icon:hover {
-        background-color: #fff;
-        color: #007bff;
-        transform: translateY(-6px);
-    }
-
-    /* Button Styling */
-    .btn-tech {
-        background-color: #28a745;
-        color: #fff;
-        padding: 12px 36px;
-        border-radius: 50px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-tech:hover {
-        background-color: #218838;
-        transform: translateY(-5px);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .hero-section {
-            padding: 80px 0;
-        }
-
-        .cta-section {
-            padding: 60px 0;
-        }
-
-        .feature-card {
-            margin: 10px 0;
-        }
-
-        .social-icon {
-            font-size: 1.8rem;
-            padding: 8px;
-        }
-    }
+}
 </style>
 
-<!-- AOS Library for Scroll Animations -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
 <script>
-    // Initialize AOS
-    AOS.init({
-        duration: 1000,
-        once: true,
+// Magnetic Button Effect
+document.querySelectorAll('.magnetic-btn').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        btn.style.setProperty('--x', `${x}px`);
+        btn.style.setProperty('--y', `${y}px`);
     });
+});
+
+// Intersection Observer for Animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.25 });
+
+document.querySelectorAll('.value-card').forEach(card => {
+    observer.observe(card);
+});
 </script>
 
-<!-- Font Awesome for social icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<!-- Include GSAP for Advanced Animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+gsap.from(".hero-title", {
+    duration: 1.5,
+    y: 100,
+    opacity: 0,
+    ease: "power4.out"
+});
+
+gsap.from(".magnetic-btn", {
+    duration: 1,
+    scale: 0.8,
+    opacity: 0,
+    ease: "back.out(1.7)",
+    delay: 0.5
+});
+</script>
 {% endblock %}

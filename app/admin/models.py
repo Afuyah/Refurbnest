@@ -90,19 +90,21 @@ class Product(db.Model):
     def __repr__(self):
         return f'<Product {self.name}>'
 
+# ---------------------------------------
+# Product Image Model
+# ---------------------------------------
 class ProductImage(db.Model):
     __tablename__ = 'product_images'
     
     id = db.Column(db.Integer, primary_key=True)
-    image_path = db.Column(db.String(500), nullable=False)
+    image_path = db.Column(db.String(500), nullable=False)  # URL instead of file path
     product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False, index=True)
 
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
 
-    # No explicit 'product' relationship needed, as the backref in Product handles it
     def __repr__(self):
-        return f'<ProductImage {self.image_path}>'
+        return f'<ProductImage {self.image_url}>'
 
 
 # ---------------------------------------

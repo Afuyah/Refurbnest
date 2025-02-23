@@ -1,0 +1,136 @@
+<!-- Social Links Component -->
+<div class="social-links">
+    <a href="https://www.facebook.com/Marketstat?mibextid=ZbWKwL" 
+       class="social-link" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Facebook">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    
+    <a href="https://www.instagram.com/RefurbNest" 
+       class="social-link" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    
+    <a href="https://www.tiktok.com/@RefurbNest" 
+       class="social-link" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="TikTok">
+      <i class="fab fa-tiktok"></i>
+    </a>
+    
+    <a href="https://twitter.com/RefurbNest" 
+       class="social-link" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Twitter">
+      <i class="fab fa-twitter"></i>
+    </a>
+    
+    <a href="https://www.linkedin.com/company/refurbnest" 
+       class="social-link" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="LinkedIn">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
+  </div>
+  
+  <style>
+  :root {
+    --social-primary: #2563eb;
+    --social-hover: #1e40af;
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .social-link {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .social-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--social-primary);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+  
+  .social-link:hover {
+    color: #fff;
+    transform: translateY(-3px);
+  }
+  
+  .social-link:hover::after {
+    transform: scale(1);
+  }
+  
+  .social-link i {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .social-link:hover i {
+    transform: scale(1.2);
+  }
+  
+  /* Platform-specific colors */
+  .social-link[aria-label="Facebook"]::after {
+    background: #1877f2;
+  }
+  
+  .social-link[aria-label="Instagram"]::after {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  }
+  
+  .social-link[aria-label="TikTok"]::after {
+    background: #000;
+  }
+  
+  .social-link[aria-label="Twitter"]::after {
+    background: #1da1f2;
+  }
+  
+  .social-link[aria-label="LinkedIn"]::after {
+    background: #0a66c2;
+  }
+  
+  @media (max-width: 768px) {
+    .social-links {
+      gap: 1rem;
+    }
+    
+    .social-link {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .social-link i {
+      font-size: 1rem;
+    }
+  }
+  </style>
