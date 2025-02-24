@@ -1,91 +1,297 @@
 {% extends 'base.html' %}
 
-{% block title %}Contact Us{% endblock %}
+{% block title %}Contact Us | RefurbNest{% endblock %}
 
 {% block content %}
-<div class="container contact-section mt-5">
-    <h1 class="text-center contact-header mb-4">Contact Us</h1>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="contact-container">
+    <div class="contact-wrapper">
+        <div class="contact-card glassmorphism">
+            <div class="contact-header">
+                <h1 class="gradient-text">Get in Touch</h1>
+                <p class="contact-subtext">We're here to help and answer any questions</p>
+            </div>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-            <div class="alert alert-{{ messages[0][0] }} alert-dismissible fade show" role="alert">
+            <div class="alert-message {{ messages[0][0] }} slide-in">
+                <i class="fas fa-info-circle"></i>
                 {{ messages[0][1] }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             {% endif %}
             {% endwith %}
 
-            <div class="contact-form bg-light p-4 rounded shadow-sm">
-                <form method="POST" action="{{ url_for('main.contact') }}">
-                    {{ form.hidden_tag() }}
+            <form method="POST" action="{{ url_for('main.contact') }}" class="contact-form">
+                {{ form.hidden_tag() }}
 
-                    <div class="form-group">
+                <div class="form-grid">
+                    <div class="form-group floating-input">
+                        {{ form.name(class="form-control", placeholder=" ") }}
                         {{ form.name.label(class="form-label") }}
-                        {{ form.name(class="form-control", placeholder="Your Name") }}
+                        <i class="fas fa-user input-icon"></i>
                         {% for error in form.name.errors %}
-                            <div class="text-danger">{{ error }}</div>
+                        <div class="form-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ error }}
+                        </div>
                         {% endfor %}
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group floating-input">
+                        {{ form.email(class="form-control", placeholder=" ") }}
                         {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control", placeholder="Your Email Address") }}
+                        <i class="fas fa-envelope input-icon"></i>
                         {% for error in form.email.errors %}
-                            <div class="text-danger">{{ error }}</div>
+                        <div class="form-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ error }}
+                        </div>
                         {% endfor %}
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        {{ form.subject.label(class="form-label") }}
-                        {{ form.subject(class="form-control", placeholder="Subject") }}
-                        {% for error in form.subject.errors %}
-                            <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
+                <div class="form-group floating-input">
+                    {{ form.subject(class="form-control", placeholder=" ") }}
+                    {{ form.subject.label(class="form-label") }}
+                    <i class="fas fa-tag input-icon"></i>
+                    {% for error in form.subject.errors %}
+                    <div class="form-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ error }}
                     </div>
+                    {% endfor %}
+                </div>
 
-                    <div class="form-group">
-                        {{ form.message.label(class="form-label") }}
-                        {{ form.message(class="form-control", placeholder="Your Message", rows="5") }}
-                        {% for error in form.message.errors %}
-                            <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
+                <div class="form-group floating-input">
+                    {{ form.message(class="form-control", placeholder=" ", rows="5") }}
+                    {{ form.message.label(class="form-label") }}
+                    {% for error in form.message.errors %}
+                    <div class="form-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ error }}
                     </div>
+                    {% endfor %}
+                </div>
 
-                    <div class="text-center">
-                        {{ form.submit(class="btn btn-tech btn-block") }}
-                    </div>
-                </form>
+                {{ form.submit(class="btn btn-gradient") }}
+            </form>
+
+            <div class="contact-info">
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+254 700 622 298</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Mombasa, Kenya</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .contact-section {
-        background-color: #f4f4f4;
-        border-radius: 8px;
-        padding: 30px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
+:root {
+    --primary: #7C3AED;
+    --secondary: #10B981;
+    --surface: rgba(255, 255, 255, 0.05);
+    --text-primary: #F0F0FC;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+}
 
-    .contact-header {
-        color: #343a40;
-    }
+.contact-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    padding: 2rem;
+}
 
-    .btn-tech {
-        background-color: #007bff;
-        color: #fff;
-    }
+.contact-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
 
-    .btn-tech:hover {
-        background-color: #0056b3;
-    }
+.contact-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
 
-    .form-label {
-        font-weight: 500;
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-subtext {
+    color: var(--text-primary);
+    opacity: 0.8;
+    text-align: center;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.floating-input {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--surface);
+    border: 2px solid transparent;
+    border-radius: 0.75rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.form-label {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+    opacity: 0.6;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    transform: translateY(-1.5rem);
+    font-size: 0.875rem;
+    opacity: 1;
+}
+
+.input-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-primary);
+    opacity: 0.6;
+}
+
+.btn-gradient {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+}
+
+.contact-info {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-primary);
+    opacity: 0.8;
+}
+
+.info-item i {
+    color: var(--primary);
+}
+
+.alert-message {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.alert-message.success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--secondary);
+}
+
+.alert-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid #ef4444;
+}
+
+@keyframes slide-in {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
     }
+    
+    .contact-card {
+        padding: 1.5rem;
+    }
+    
+    .gradient-text {
+        font-size: 2rem;
+    }
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Auto-hide alerts after 5 seconds
+    const alerts = document.querySelectorAll('.alert-message');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 300);
+        }, 5000);
+    });
+
+    // Form validation
+    const form = document.querySelector('.contact-form');
+    form.addEventListener('submit', (e) => {
+        let isValid = true;
+        document.querySelectorAll('.form-control').forEach(input => {
+            if (!input.value.trim()) {
+                input.classList.add('invalid');
+                isValid = false;
+            }
+        });
+        if (!isValid) e.preventDefault();
+    });
+});
+</script>
 {% endblock %}
