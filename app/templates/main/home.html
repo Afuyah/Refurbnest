@@ -3,328 +3,364 @@
 {% block title %}Home - RefurbNest{% endblock %}
 
 {% block content %}
-<!-- Neurodesign-inspired Hero Section -->
+<!-- Neuro-Responsive Hero Section -->
 <section class="hero">
-    <div class="hero-gradient"></div>
-    <div class="neon-grid"></div>
-    
-    <div class="hero-content">
-        <h1 class="hero-title">
-            <span class="text-stroke">Re</span><span class="text-fill">Imagine</span>
-            <span class="text-stroke">Tech</span>
-        </h1>
-        
-        <div class="hero-scroll">
-            <div class="scroll-indicator"></div>
-        </div>
-    </div>
-
-    <div class="hero-cta">
-        <a href="{{ url_for('main.list_products') }}" class="magnetic-btn">
-            <span class="btn-bg"></span>
-            <span class="btn-text">Explore Collection</span>
-            <svg class="btn-arrow" viewBox="0 0 24 24">
-                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+  <div class="hero-container">
+    <div class="content-wrapper">
+      <h1 class="dynamic-heading">
+        <span class="gradient-stroke">Re</span><span class="neon-gradient">Imagine</span>
+        <span class="gradient-stroke">Tech</span>
+      </h1>
+      
+      <div class="cta-wrapper">
+        <a href="{{ url_for('main.list_products') }}" class="neu-button">
+          <span class="button-content">
+            Explore Collection
+            <svg class="button-icon" viewBox="0 0 24 24">
+              <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
             </svg>
+          </span>
+          <span class="button-backdrop"></span>
         </a>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- Holographic Value Proposition Grid -->
-<section class="value-grid">
-    <div class="value-card card-1">
-        <div class="card-hologram"></div>
-        <h3>Premium Renewal</h3>
-        <p>Factory-grade refurbishment process with 72-point inspection</p>
-        <div class="card-ico">
-            <svg><!-- Quality icon --></svg>
-        </div>
-    </div>
+<!-- Responsive Value Grid -->
+<section class="value-section">
+  <div class="adaptive-grid">
+    <!-- Card 1 -->
+    <article class="holographic-card">
+      <div class="card-inner">
+        <div class="card-visual"></div>
+        <h3 class="card-heading">Premium Renewal</h3>
+        <p class="card-text">72-point inspection process ensures like-new quality</p>
+      </div>
+    </article>
 
-    <div class="value-card card-2">
-        <div class="card-hologram"></div>
-        <h3>Eco-Impact</h3>
-        <p>Reducing e-waste through intelligent device lifecycle management</p>
-        <div class="card-ico">
-            <svg><!-- Ecology icon --></svg>
-        </div>
-    </div>
+    <!-- Card 2 -->
+    <article class="holographic-card">
+      <div class="card-inner">
+        <div class="card-visual"></div>
+        <h3 class="card-heading">Eco-Impact</h3>
+        <p class="card-text">Reducing e-waste through sustainable tech cycles</p>
+      </div>
+    </article>
 
-    <div class="value-card card-3">
-        <div class="card-hologram"></div>
-        <h3>Smart Savings</h3>
-        <p>Premium tech at 40-60% below retail with upgrade protection</p>
-        <div class="card-ico">
-            <svg><!-- Savings icon --></svg>
-        </div>
-    </div>
+    <!-- Card 3 -->
+    <article class="holographic-card">
+      <div class="card-inner">
+        <div class="card-visual"></div>
+        <h3 class="card-heading">Smart Savings</h3>
+        <p class="card-text">Premium tech at 40-60% below retail prices</p>
+      </div>
+    </article>
+  </div>
 </section>
 
-<!-- Parametric Social Proof Section -->
+<!-- Mobile-Optimized Social Proof -->
 <section class="social-proof">
-    <div class="proof-visual">
-        <div class="parametric-wave"></div>
-        <div class="stats-overlay">
-            <div class="stat">
-                <h4>15K+</h4>
-                <p>Devices Renewed</p>
-            </div>
-            <div class="stat">
-                <h4>98.7%</h4>
-                <p>Customer Satisfaction</p>
-            </div>
-        </div>
+  <div class="stats-container">
+    <div class="stat-item">
+      <div class="stat-value">15K+</div>
+      <div class="stat-label">Devices Renewed</div>
     </div>
+    <div class="stat-item">
+      <div class="stat-value">98.7%</div>
+      <div class="stat-label">Satisfaction Rate</div>
+    </div>
+  </div>
 </section>
 
-<!-- Fluid Social Connector -->
-<div class="social-fluid">
-    <div class="fluid-container">
-        <a href="#" class="social-bubble fb">
-            <span class="social-ico"></span>
-            <span class="social-pulse"></span>
-        </a>
-        <a href="#" class="social-bubble ig">
-            <span class="social-ico"></span>
-            <span class="social-pulse"></span>
-        </a>
-        <a href="#" class="social-bubble tk">
-            <span class="social-ico"></span>
-            <span class="social-pulse"></span>
-        </a>
-    </div>
-</div>
+<!-- Adaptive Social Links -->
+<nav class="social-nav">
+  <a href="#" class="social-link instagram" aria-label="Instagram">
+    <span class="link-icon"></span>
+  </a>
+  <a href="#" class="social-link twitter" aria-label="Twitter">
+    <span class="link-icon"></span>
+  </a>
+  <a href="#" class="social-link tiktok" aria-label="TikTok">
+    <span class="link-icon"></span>
+  </a>
+</nav>
 
 <style>
-:root {
-    --primary: #7C3AED;
-    --secondary: #10B981;
-    --neuro-dark: #0a0a0f;
-    --neuro-light: #f0f0fc;
-    --hologram-1: #7C3AED;
-    --hologram-2: #10B981;
+/* Modern Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Neurodesign Base */
+/* Responsive Base Styles */
+:root {
+  --primary: #7C3AED;
+  --secondary: #10B981;
+  --surface: #0F0F15;
+  --text-primary: #F0F0FC;
+  --text-secondary: #A0A0BC;
+  --gap-sm: 1rem;
+  --gap-md: 2rem;
+  --gap-lg: 4rem;
+  --radius: 1rem;
+  --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
 body {
-    background: var(--neuro-dark);
-    color: var(--neuro-light);
-    font-family: 'Space Grotesk', sans-serif;
-    overflow-x: hidden;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
 /* Hero Section */
 .hero {
-    height: 100vh;
-    position: relative;
-    isolation: isolate;
+  min-height: 100vh;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
 }
 
-.hero-gradient {
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    background: radial-gradient(circle at 50% 0%, 
-        rgba(124, 58, 237, 0.15) 0%, 
-        transparent 60%);
-    animation: gradient-pulse 8s infinite;
+.dynamic-heading {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 2rem;
 }
 
-@keyframes gradient-pulse {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+.gradient-stroke {
+  -webkit-text-stroke: 2px var(--primary);
+  color: transparent;
 }
 
-.hero-title {
-    font-size: clamp(3rem, 8vw, 8rem);
-    line-height: 1.1;
-    text-transform: uppercase;
-    position: relative;
+.neon-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.text-stroke {
-    -webkit-text-stroke: 2px var(--primary);
-    color: transparent;
+/* Adaptive Button */
+.neu-button {
+  position: relative;
+  display: inline-flex;
+  padding: 1rem 2.5rem;
+  border-radius: 100vw;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform var(--transition);
 }
 
-.text-fill {
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+.button-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  z-index: 2;
 }
 
-/* Magnetic Button */
-.magnetic-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem 3rem;
-    border-radius: 100px;
-    overflow: hidden;
-    transform-style: preserve-3d;
+.button-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: currentColor;
+  transition: transform var(--transition);
 }
 
-.btn-bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(130deg, var(--primary), var(--secondary));
-    opacity: 0.15;
-    transition: opacity 0.3s ease;
+.neu-button:hover .button-icon {
+  transform: translateX(0.5rem);
 }
 
-.magnetic-btn:hover .btn-bg {
-    opacity: 0.3;
+.button-backdrop {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, var(--primary), var(--secondary));
+  opacity: 0.1;
+  transition: opacity var(--transition);
 }
 
-.btn-text {
-    position: relative;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+.neu-button:hover .button-backdrop {
+  opacity: 0.2;
 }
 
-.btn-arrow {
-    width: 1.5rem;
-    height: 1.5rem;
-    fill: currentColor;
-    transition: transform 0.3s ease;
+/* Value Grid */
+.adaptive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--gap-md);
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.magnetic-btn:hover .btn-arrow {
-    transform: translateX(5px);
+.holographic-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Holographic Cards */
-.value-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 4rem;
+.card-heading {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
-.value-card {
-    position: relative;
-    padding: 3rem;
-    border-radius: 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    overflow: hidden;
+.card-text {
+  color: var(--text-secondary);
+  font-size: 0.9em;
 }
 
-.card-hologram {
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-        var(--hologram-1),
-        var(--hologram-2),
-        var(--hologram-1)
-    );
-    opacity: 0.1;
-    animation: hologram-spin 10s linear infinite;
+/* Social Proof */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--gap-md);
+  padding: var(--gap-lg) 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-@keyframes hologram-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.stat-item {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius);
 }
 
-/* Social Fluid */
-.social-fluid {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 1000;
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
 }
 
-.social-bubble {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: transform 0.3s ease;
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.9em;
 }
 
-.social-pulse {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 2px solid currentColor;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
+/* Social Navigation */
+.social-nav {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: 1000;
 }
 
-@keyframes pulse {
-    0% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.5); }
+.social-link {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: grid;
+  place-items: center;
+  transition: transform var(--transition);
 }
 
-/* Responsive Design */
+.social-link:hover {
+  transform: scale(1.1);
+}
+
+/* Mobile Optimization */
 @media (max-width: 768px) {
-    .value-grid {
-        grid-template-columns: 1fr;
-        padding: 2rem;
-    }
+  .hero {
+    padding: 1.5rem;
+  }
 
-    .hero-title {
-        font-size: clamp(2rem, 12vw, 4rem);
-    }
+  .dynamic-heading {
+    font-size: clamp(2rem, 12vw, 3.5rem);
+  }
 
-    .social-fluid {
-        bottom: 1rem;
-        right: 1rem;
-    }
+  .adaptive-grid {
+    padding: 0 1rem;
+    gap: var(--gap-sm);
+  }
+
+  .holographic-card {
+    padding: 1.25rem;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+    padding: var(--gap-md) 1rem;
+  }
+
+  .social-nav {
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .neu-button {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .button-content {
+    font-size: 0.9em;
+  }
 }
 </style>
 
 <script>
-// Magnetic Button Effect
-document.querySelectorAll('.magnetic-btn').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        btn.style.setProperty('--x', `${x}px`);
-        btn.style.setProperty('--y', `${y}px`);
-    });
+// Responsive Interactions
+document.addEventListener('DOMContentLoaded', () => {
+  // Mobile menu logic
+  const checkViewport = () => {
+    if (window.innerWidth < 768) {
+      // Add mobile-specific interactions
+    }
+  };
+  
+  window.addEventListener('resize', checkViewport);
+  checkViewport();
 });
 
-// Intersection Observer for Animations
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting) {
-            entry.target.classList.add('active');
-        }
-    });
-}, { threshold: 0.25 });
+// GSAP Animations
+gsap.registerPlugin(ScrollTrigger);
 
-document.querySelectorAll('.value-card').forEach(card => {
-    observer.observe(card);
+gsap.from(".dynamic-heading", {
+  duration: 1,
+  y: 50,
+  opacity: 0,
+  ease: "power4.out"
+});
+
+gsap.from(".neu-button", {
+  scrollTrigger: {
+    trigger: ".hero",
+    start: "top center"
+  },
+  duration: 0.8,
+  scale: 0.95,
+  opacity: 0,
+  ease: "back.out(1.2)"
+});
+
+// Card animations
+gsap.utils.toArray(".holographic-card").forEach((card, i) => {
+  gsap.from(card, {
+    scrollTrigger: {
+      trigger: card,
+      start: "top center+=100"
+    },
+    duration: 0.6,
+    y: 50,
+    opacity: 0,
+    delay: i * 0.1
+  });
 });
 </script>
 
-<!-- Include GSAP for Advanced Animations -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script>
-gsap.from(".hero-title", {
-    duration: 1.5,
-    y: 100,
-    opacity: 0,
-    ease: "power4.out"
-});
-
-gsap.from(".magnetic-btn", {
-    duration: 1,
-    scale: 0.8,
-    opacity: 0,
-    ease: "back.out(1.7)",
-    delay: 0.5
-});
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 {% endblock %}
