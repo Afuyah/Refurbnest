@@ -1,72 +1,238 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login | RefurbNest{% endblock %}
 
 {% block content %}
-<div class="container login-section mt-5">
-    <h2 class="text-center mb-4">Login</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form method="POST" action="{{ url_for('auth.login') }}">
-                        {{ form.hidden_tag() }}
-                        
-                        <div class="form-group">
-                            {{ form.email.label(class="form-label") }}
-                            {{ form.email(class="form-control", placeholder="Email Address") }}
-                            {% if form.email.errors %}
-                                <div class="text-danger">{{ form.email.errors[0] }}</div>
-                            {% endif %}
-                        </div>
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card glassmorphism">
+            <div class="auth-header">
+                <h2 class="auth-title">Welcome Back</h2>
+                <p class="auth-subtitle">Login to your RefurbNest account</p>
+            </div>
 
-                        <div class="form-group">
-                            {{ form.password.label(class="form-label") }}
-                            {{ form.password(class="form-control", placeholder="Password") }}
-                            {% if form.password.errors %}
-                                <div class="text-danger">{{ form.password.errors[0] }}</div>
-                            {% endif %}
-                        </div>
+            <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form">
+                {{ form.hidden_tag() }}
 
-                        <div class="form-group">
-                            {{ form.submit(class="btn btn-tech btn-block") }}
-                        </div>
-                    </form>
-                    <div class="text-center">
-                        <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+                <div class="form-group">
+                    <div class="input-group">
+                        {{ form.email(class="form-control", placeholder=" ") }}
+                        {{ form.email.label(class="form-label") }}
+                        <i class="fas fa-envelope input-icon"></i>
                     </div>
+                    {% if form.email.errors %}
+                    <div class="form-error">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.email.errors[0] }}
+                    </div>
+                    {% endif %}
                 </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        {{ form.password(class="form-control", placeholder=" ") }}
+                        {{ form.password.label(class="form-label") }}
+                        <i class="fas fa-lock input-icon"></i>
+                        <button type="button" class="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    {% if form.password.errors %}
+                    <div class="form-error">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.password.errors[0] }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-options">
+                    <div class="form-check">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                {{ form.submit(class="btn btn-primary auth-submit") }}
+
+                
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? 
+                <a href="{{ url_for('auth.register') }}">Create account</a>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .login-section {
-        padding: 30px;
-        background-color: #f4f4f4;
-        border-radius: 8px;
-    }
+:root {
+    --primary: #7C3AED;
+    --secondary: #10B981;
+    --surface: rgba(255, 255, 255, 0.1);
+    --text-primary: #F0F0FC;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+}
 
-    .card {
-        border-radius: 8px;
-    }
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    padding: 2rem;
+}
 
-    .btn-tech {
-        background-color: #007bff;
-        color: #fff;
-    }
+.auth-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
 
-    .btn-tech:hover {
-        background-color: #0056b3;
-    }
+.auth-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
 
-    .form-label {
-        font-weight: 500;
-    }
+.auth-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
 
-    .text-danger {
-        font-size: 0.9rem;
+.auth-subtitle {
+    color: var(--text-primary);
+    opacity: 0.8;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 1rem;
+    background: var(--surface);
+    border: 2px solid transparent;
+    border-radius: 0.75rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.form-label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+    opacity: 0.6;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    transform: translateY(-180%);
+    font-size: 0.875rem;
+    opacity: 1;
+}
+
+.input-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-primary);
+    opacity: 0.6;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.form-error {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.auth-submit:hover {
+    transform: translateY(-2px);
+}
+
+
+
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-primary);
+    opacity: 0.8;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.5rem;
     }
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Password toggle
+    document.querySelectorAll('.password-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const input = button.closest('.input-group').querySelector('input');
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            button.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    });
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', (e) => {
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            if (!input.value) {
+                input.classList.add('invalid');
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
