@@ -3,364 +3,91 @@
 {% block title %}Home - RefurbNest{% endblock %}
 
 {% block content %}
-<!-- Neuro-Responsive Hero Section -->
-<section class="hero">
-  <div class="hero-container">
-    <div class="content-wrapper">
-      <h1 class="dynamic-heading">
-        <span class="gradient-stroke">Re</span><span class="neon-gradient">Imagine</span>
-        <span class="gradient-stroke">Tech</span>
-      </h1>
-      
-      <div class="cta-wrapper">
-        <a href="{{ url_for('main.list_products') }}" class="neu-button">
-          <span class="button-content">
-            Explore Collection
-            <svg class="button-icon" viewBox="0 0 24 24">
-              <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-            </svg>
-          </span>
-          <span class="button-backdrop"></span>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+<section class="hero min-vh-100 d-flex align-items-center">
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-12 col-md-10 col-lg-8">
+        <h1 class="display-1 fw-bold mb-4">
+          <span class="text-stroke-primary">Re</span><span class="text-gradient-primary">Imagine</span>
+          <span class="text-stroke-primary">Tech</span>
+        </h1>
+        
+        <a href="{{ url_for('main.list_products') }}" class="btn btn-lg btn-gradient-primary rounded-pill px-5">
+          Explore Collection
+          <i class="fas fa-arrow-right ms-2"></i>
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Responsive Value Grid -->
-<section class="value-section">
-  <div class="adaptive-grid">
-    <!-- Card 1 -->
-    <article class="holographic-card">
-      <div class="card-inner">
-        <div class="card-visual"></div>
-        <h3 class="card-heading">Premium Renewal</h3>
-        <p class="card-text">72-point inspection process ensures like-new quality</p>
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card glass-effect h-100">
+          <div class="card-body">
+            <h3 class="h2 mb-3">Premium Renewal</h3>
+            <p class="text-muted">72-point inspection process ensures like-new quality</p>
+          </div>
+        </div>
       </div>
-    </article>
 
-    <!-- Card 2 -->
-    <article class="holographic-card">
-      <div class="card-inner">
-        <div class="card-visual"></div>
-        <h3 class="card-heading">Eco-Impact</h3>
-        <p class="card-text">Reducing e-waste through sustainable tech cycles</p>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card glass-effect h-100">
+          <div class="card-body">
+            <h3 class="h2 mb-3">Eco-Impact</h3>
+            <p class="text-muted">Reducing e-waste through sustainable tech cycles</p>
+          </div>
+        </div>
       </div>
-    </article>
 
-    <!-- Card 3 -->
-    <article class="holographic-card">
-      <div class="card-inner">
-        <div class="card-visual"></div>
-        <h3 class="card-heading">Smart Savings</h3>
-        <p class="card-text">Premium tech at 40-60% below retail prices</p>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card glass-effect h-100">
+          <div class="card-body">
+            <h3 class="h2 mb-3">Smart Savings</h3>
+            <p class="text-muted">Premium tech at 40-60% below retail prices</p>
+          </div>
+        </div>
       </div>
-    </article>
-  </div>
-</section>
-
-<!-- Mobile-Optimized Social Proof -->
-<section class="social-proof">
-  <div class="stats-container">
-    <div class="stat-item">
-      <div class="stat-value">15K+</div>
-      <div class="stat-label">Devices Renewed</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">98.7%</div>
-      <div class="stat-label">Satisfaction Rate</div>
     </div>
   </div>
 </section>
 
-<!-- Adaptive Social Links -->
-<nav class="social-nav">
-  <a href="#" class="social-link instagram" aria-label="Instagram">
-    <span class="link-icon"></span>
-  </a>
-  <a href="#" class="social-link twitter" aria-label="Twitter">
-    <span class="link-icon"></span>
-  </a>
-  <a href="#" class="social-link tiktok" aria-label="TikTok">
-    <span class="link-icon"></span>
-  </a>
-</nav>
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 justify-content-center text-center">
+      <div class="col-12 col-md-6">
+        <div class="glass-effect p-4 rounded-3">
+          <div class="display-4 fw-bold text-primary">15K+</div>
+          <div class="text-muted">Devices Renewed</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="glass-effect p-4 rounded-3">
+          <div class="display-4 fw-bold text-primary">98.7%</div>
+          <div class="text-muted">Satisfaction Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<style>
-/* Modern Reset */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+<div class="position-fixed end-0 bottom-0 m-3 z-3">
+  <div class="d-flex flex-column gap-2">
+    <a href="#" class="btn btn-dark btn-icon rounded-circle" aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" class="btn btn-dark btn-icon rounded-circle" aria-label="Twitter">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <a href="#" class="btn btn-dark btn-icon rounded-circle" aria-label="TikTok">
+      <i class="fab fa-tiktok"></i>
+    </a>
+  </div>
+</div>
 
-/* Responsive Base Styles */
-:root {
-  --primary: #7C3AED;
-  --secondary: #10B981;
-  --surface: #0F0F15;
-  --text-primary: #F0F0FC;
-  --text-secondary: #A0A0BC;
-  --gap-sm: 1rem;
-  --gap-md: 2rem;
-  --gap-lg: 4rem;
-  --radius: 1rem;
-  --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-body {
-  background: var(--surface);
-  color: var(--text-primary);
-  font-family: 'Inter', system-ui, sans-serif;
-  line-height: 1.5;
-  overflow-x: hidden;
-}
-
-/* Hero Section */
-.hero {
-  min-height: 100vh;
-  padding: 2rem;
-  display: grid;
-  place-items: center;
-}
-
-.dynamic-heading {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  text-align: center;
-  line-height: 1.2;
-  margin-bottom: 2rem;
-}
-
-.gradient-stroke {
-  -webkit-text-stroke: 2px var(--primary);
-  color: transparent;
-}
-
-.neon-gradient {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Adaptive Button */
-.neu-button {
-  position: relative;
-  display: inline-flex;
-  padding: 1rem 2.5rem;
-  border-radius: 100vw;
-  overflow: hidden;
-  text-decoration: none;
-  transition: transform var(--transition);
-}
-
-.button-content {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  z-index: 2;
-}
-
-.button-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  fill: currentColor;
-  transition: transform var(--transition);
-}
-
-.neu-button:hover .button-icon {
-  transform: translateX(0.5rem);
-}
-
-.button-backdrop {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(130deg, var(--primary), var(--secondary));
-  opacity: 0.1;
-  transition: opacity var(--transition);
-}
-
-.neu-button:hover .button-backdrop {
-  opacity: 0.2;
-}
-
-/* Value Grid */
-.adaptive-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  gap: var(--gap-md);
-  padding: 0 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.holographic-card {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.card-heading {
-  font-size: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.card-text {
-  color: var(--text-secondary);
-  font-size: 0.9em;
-}
-
-/* Social Proof */
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--gap-md);
-  padding: var(--gap-lg) 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.stat-item {
-  text-align: center;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: var(--radius);
-}
-
-.stat-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.stat-label {
-  color: var(--text-secondary);
-  font-size: 0.9em;
-}
-
-/* Social Navigation */
-.social-nav {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  z-index: 1000;
-}
-
-.social-link {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  display: grid;
-  place-items: center;
-  transition: transform var(--transition);
-}
-
-.social-link:hover {
-  transform: scale(1.1);
-}
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-  .hero {
-    padding: 1.5rem;
-  }
-
-  .dynamic-heading {
-    font-size: clamp(2rem, 12vw, 3.5rem);
-  }
-
-  .adaptive-grid {
-    padding: 0 1rem;
-    gap: var(--gap-sm);
-  }
-
-  .holographic-card {
-    padding: 1.25rem;
-  }
-
-  .stats-container {
-    grid-template-columns: 1fr;
-    padding: var(--gap-md) 1rem;
-  }
-
-  .social-nav {
-    bottom: 1rem;
-    right: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .neu-button {
-    width: 100%;
-    justify-content: center;
-    padding: 1rem;
-  }
-
-  .button-content {
-    font-size: 0.9em;
-  }
-}
-</style>
-
-<script>
-// Responsive Interactions
-document.addEventListener('DOMContentLoaded', () => {
-  // Mobile menu logic
-  const checkViewport = () => {
-    if (window.innerWidth < 768) {
-      // Add mobile-specific interactions
-    }
-  };
-  
-  window.addEventListener('resize', checkViewport);
-  checkViewport();
-});
-
-// GSAP Animations
-gsap.registerPlugin(ScrollTrigger);
-
-gsap.from(".dynamic-heading", {
-  duration: 1,
-  y: 50,
-  opacity: 0,
-  ease: "power4.out"
-});
-
-gsap.from(".neu-button", {
-  scrollTrigger: {
-    trigger: ".hero",
-    start: "top center"
-  },
-  duration: 0.8,
-  scale: 0.95,
-  opacity: 0,
-  ease: "back.out(1.2)"
-});
-
-// Card animations
-gsap.utils.toArray(".holographic-card").forEach((card, i) => {
-  gsap.from(card, {
-    scrollTrigger: {
-      trigger: card,
-      start: "top center+=100"
-    },
-    duration: 0.6,
-    y: 50,
-    opacity: 0,
-    delay: i * 0.1
-  });
-});
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script defer type="module" src="{{ url_for('static', filename='js/home.js') }}"></script>
 {% endblock %}

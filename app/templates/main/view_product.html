@@ -3,7 +3,7 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- Full-width Hero Section -->
 <section class="hero-section mb-5">
     <div class="parallax-container">
         <img src="{{ url_for('static', filename= product.images[0].image_path if product.images else 'products/default.jpg') }}"
@@ -11,153 +11,213 @@
     </div>
 </section>
 
-<div class="container-fluid product-detail mt-5">
-    <div class="row">
-        <!-- Product Details on Large Screens -->
-        <div class="col-lg-6 col-md-12 product-info-container">
-            <h1 class="display-4 font-weight-bold mb-4 text-glow">{{ product.name }}</h1>
-
-            <div class="price mb-4">
-                <h2 class="text-neon">Ksh{{ product.price }}</h2>
-            </div>
-
-            <ul class="list-group list-group-flush mb-4 glass-panel">
-                <li class="list-group-item border-0 py-2"><strong>Storage:</strong> {{ product.storage }}</li>
-                <li class="list-group-item border-0 py-2"><strong>RAM:</strong> {{ product.ram }}</li>
-                <li class="list-group-item border-0 py-2"><strong>Processor:</strong> {{ product.processor }}</li>
-                <li class="list-group-item border-0 py-2"><strong>Generation:</strong> {{ product.generation }}</li>
-            </ul>
-
-            <!-- WhatsApp Inquiry Button -->
-            <form method="GET" action="https://wa.me/{{ '+254711667718' }}" class="mb-4">
-                <input type="hidden" name="text" 
-                       value="I'm interested in {{ product.name }}. Details: {{ product.description }}. Price: Ksh{{ product.price }}.">
-                <button type="submit" class="btn btn-lg btn-success btn-whatsapp w-100 d-flex align-items-center justify-content-center">
-                    <i class="fab fa-whatsapp mr-2"></i> Inquire on WhatsApp
-                </button>
-            </form>
-        </div>
-
-        <!-- Image Carousel Section -->
-        <div class="col-lg-6 col-md-12">
-            <div class="img-container position-relative">
-                <img id="main-image" src="{{ url_for('static', filename= product.images[0].image_path) }}" 
-                     class="img-fluid rounded shadow-lg zoom-img" alt="{{ product.name }}">
-                <div class="zoom-icon position-absolute d-flex align-items-center justify-content-center">
-                    <i class="fas fa-search-plus"></i>
+<!-- Main Product Container -->
+<div class="container-fluid px-0">
+    <div class="product-detail">
+        <div class="row g-0">
+            <!-- Image Carousel Section -->
+            <div class="col-xl-7 col-lg-6 order-lg-2">
+                <div class="img-container position-relative">
+                    <img id="main-image" src="{{ url_for('static', filename= product.images[0].image_path) }}" 
+                         class="img-fluid zoom-img" alt="{{ product.name }}">
+                    <div class="zoom-indicator">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Thumbnail Image Section -->
-            <div class="thumbnail-container d-flex justify-content-center mt-4">
-                {% for image in product.images %}
-                    <div class="thumbnail-wrapper mx-2">
+                <!-- Thumbnail Gallery -->
+                <div class="thumbnail-gallery px-4 py-3">
+                    {% for image in product.images %}
+                    <div class="thumbnail-item">
                         <img src="{{ url_for('static', filename= image.image_path) }}" 
-                             class="img-thumbnail shadow-sm" 
+                             class="img-thumbnail" 
                              onclick="changeMainImage('{{ url_for('static', filename= image.image_path) }}')" 
                              alt="Thumbnail of {{ product.name }}">
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-xl-5 col-lg-6 order-lg-1">
+                <div class="product-info p-4 p-lg-5">
+                    <h1 class="product-title">{{ product.name }}</h1>
+                    
+                    <div class="price-display mb-4">
+                        <h2 class="current-price">Ksh{{ product.price }}</h2>
+                        {% if product.original_price %}
+                        <div class="original-price">WAS <span>Ksh{{ product.original_price }}</span></div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Specifications -->
+                    <div class="specs-grid mb-4">
+                        <div class="spec-item">
+                            <i class="fas fa-database"></i>
+                            <span>{{ product.storage }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-memory"></i>
+                            <span>{{ product.ram }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-microchip"></i>
+                            <span>{{ product.processor }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-cog"></i>
+                            <span>{{ product.generation }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="https://wa.me/{{ '+254711667718' }}?text={{ 'I\'m interested in ' + product.name|urlencode + ' (Ksh' + product.price|string + '). Details: ' + product.description|urlencode }}"
+                           class="btn btn-whatsapp" 
+                           target="_blank">
+                           <i class="fab fa-whatsapp"></i> Chat Now
+                        </a>
+                        <a href="{{ url_for('main.list_products') }}" class="btn btn-back">
+                            <i class="fas fa-arrow-left"></i> All Products
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="container mt-4 glass-panel"> 
-            <h3>Description</h3>
-            <p class="lead  mb-4">{{ product.description }}</p>
+
+        <!-- Product Description -->
+        <div class="product-description px-4 px-lg-5 py-5">
+            <h3 class="description-title">Detailed Specifications</h3>
+            <div class="description-content">
+                {{ product.description }}
+            </div>
         </div>
     </div>
-    <a href="{{ url_for('main.list_products') }}" class="btn btn-secondary mt-4">Back to Products</a>
 </div>
 
-<!-- Custom Styles -->
 <style>
-    body {
-        background: linear-gradient(135deg, #1a1a2e, #16213e);
-        color: white;
-    }
+/* Custom Styles */
+:root {
+    --neon-accent: #0ef;
+    --dark-bg: #0a0a0f;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+}
 
-    .parallax-container {
-        height: 450px;
-        overflow: hidden;
-        position: relative;
-        margin-bottom: 30px;
-    }
+.hero-section {
+    height: 70vh;
+    min-height: 500px;
+    overflow: hidden;
+}
 
-    .parallax-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        position: absolute;
-        transform: translateZ(0);
-        transition: transform 0.5s ease-out;
-    }
+.parallax-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
 
-    .product-detail {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        padding: 40px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s;
-    }
+.product-detail {
+    background: var(--dark-bg);
+    box-shadow: 0 -20px 50px rgba(0,0,0,0.3);
+}
 
-    .text-glow {
-        color: #0ef;
-        text-shadow: 0 0 15px #0ef;
-    }
+.img-container {
+    height: 70vh;
+    min-height: 500px;
+    overflow: hidden;
+    background: #000;
+}
 
-    .text-neon {
-        font-size: 2.2rem;
-        color: #0ef;
-        text-shadow: 0 0 10px #0ef, 0 0 20px #0ef;
-    }
+.zoom-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    transition: transform 0.4s;
+}
 
-    .zoom-img {
-        transition: transform 0.4s ease-in-out;
-    }
+.thumbnail-gallery {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+}
 
-    .img-container:hover .zoom-img {
-        transform: scale(1.08);
-        box-shadow: 0 0 20px rgba(0, 238, 255, 0.5);
-    }
+.thumbnail-item {
+    flex: 0 0 120px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
 
-    .thumbnail-wrapper {
-        cursor: pointer;
-        width: 75px;
-        height: 75px;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s;
-    }
+.product-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-    .thumbnail-wrapper:hover {
-        box-shadow: 0 8px 20px rgba(0, 238, 255, 0.5);
-        transform: scale(1.1);
-    }
+.product-title {
+    font-size: 2.5rem;
+    color: var(--neon-accent);
+    text-shadow: 0 0 15px var(--neon-accent);
+}
 
-    .btn-whatsapp {
-        background-color: #25d366;
-        color: #fff;
-        border-radius: 30px;
-        box-shadow: 0 6px 10px rgba(0, 238, 255, 0.3);
-        transition: all 0.3s ease-in-out;
-    }
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
 
-    .btn-whatsapp:hover {
-        background-color: #128c7e;
-        transform: translateY(-3px);
+.spec-item {
+    background: var(--glass-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn-whatsapp {
+    background: #25d366;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+.action-buttons {
+    display: grid;
+    gap: 1rem;
+}
+
+@media (max-width: 992px) {
+    .img-container {
+        height: 50vh;
+        min-height: 300px;
     }
+    
+    .product-title {
+        font-size: 2rem;
+    }
+}
 </style>
 
-<!-- JavaScript for Image Switching and Parallax Effect -->
 <script>
-    function changeMainImage(imageUrl) {
-        document.getElementById('main-image').src = imageUrl;
-    }
+function changeMainImage(imageUrl) {
+    const mainImg = document.getElementById('main-image');
+    mainImg.style.opacity = 0;
+    setTimeout(() => {
+        mainImg.src = imageUrl;
+        mainImg.style.opacity = 1;
+    }, 300);
+}
 
-    window.addEventListener('scroll', function() {
-        const parallaxImage = document.querySelector('.parallax-image');
-        let scrollPos = window.pageYOffset;
-        parallaxImage.style.transform = 'translateY(' + scrollPos * 0.5 + 'px)';
-    });
+// Modern CSS-based parallax
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+        document.querySelector('.parallax-container').style.transformStyle = 'preserve-3d';
+        document.querySelector('.parallax-image').style.transform = 'translateZ(-1px) scale(2)';
+    }
+});
 </script>
 {% endblock %}
