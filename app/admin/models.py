@@ -4,7 +4,10 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Enum, func
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import URLSafeTimedSerializer
+from flask import current_app
 
+import uuid
 from enum import Enum
 
 # Enum for RAM size options
@@ -66,10 +69,9 @@ class Category(db.Model):
     # String representation of the model
     def __repr__(self):
         return f'<Category {self.name}>'
-
 class Product(db.Model):
     __tablename__ = 'products'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False, index=True)
     description = db.Column(db.Text, nullable=False)
@@ -79,16 +81,19 @@ class Product(db.Model):
     processor = db.Column(db.Enum(ProcessorType), nullable=False)
     storage_type = db.Column(db.Enum(StorageType), nullable=False)
     generation = db.Column(db.String(50), nullable=False)
+
     brand_id = db.Column(db.Integer, db.ForeignKey('brands.id', ondelete='CASCADE'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False)
+
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
-    
-    # This backref will handle the relationship
+
     images = db.relationship('ProductImage', backref='product', lazy=True, cascade='all, delete-orphan')
-    
+    reviews = db.relationship('Review', backref='product', lazy=True, cascade='all, delete-orphan')
+
     def __repr__(self):
         return f'<Product {self.name}>'
+
 
 # ---------------------------------------
 # Product Image Model
@@ -227,3 +232,33 @@ class Wishlist(db.Model):
         return f'<Wishlist Item ID: {self.id}, Product ID: {self.product_id}>'       
 
 
+class Review(db.Model):
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False)
+    author = db.Column(db.String(100), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    comment = db.Column(db.Text, nullable=False)
+    verified = db.Column(db.Boolean, default=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def generate_verification_token(self, salt='review-confirm-salt'):
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        return serializer.dumps({'review_id': self.id}, salt=salt)
+
+    @staticmethod
+    def verify_token(token, expiration=3600, salt='review-confirm-salt'):
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        try:
+            data = serializer.loads(token, salt=salt, max_age=expiration)
+            review_id = data.get('review_id')
+            if review_id is None:
+                return None
+            return Review.query.get(review_id)
+        except Exception as e:
+            current_app.logger.error(f"Token verification failed: {e}")
+            return None
+
+    def __repr__(self):
+        return f'<Review by {self.author} | Rating: {self.rating}>'

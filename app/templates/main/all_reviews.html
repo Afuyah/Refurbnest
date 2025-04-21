@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Reviews for {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 px-3 px-md-5">
+    <div class="bg-dark text-light p-4 rounded-4 shadow-lg">
+        <h2 class="text-neon mb-4">All Reviews for {{ product.name }}</h2>
+
+        {% if all_reviews %}
+            {% for review in all_reviews %}
+            <div class="review-card animate-slide-up mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <span class="fw-bold">{{ review.author }}</span>
+                        <span class="text-muted ms-2">{{ review.date.strftime('%b %d, %Y') }}</span>
+                        {% if review.verified %}
+                        <span class="badge bg-success ms-2">Verified Buyer</span>
+                        {% endif %}
+                    </div>
+                    <div class="stars text-neon">
+                        {{ '★' * review.rating + '☆' * (5 - review.rating) }}
+                    </div>
+                </div>
+                <p class="mb-0">{{ review.comment }}</p>
+            </div>
+            {% if not loop.last %}<hr class="border-neon">{% endif %}
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">No reviews yet for this product.</p>
+        {% endif %}
+
+        <div class="mt-5 text-center">
+            <a href="{{ url_for('main.view_product', product_id=product.id) }}"
+               class="btn btn-outline-neon">
+                <i class="fas fa-arrow-left me-2"></i>Back to Product
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.review-card {
+    background: var(--glass-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-4px);
+}
+
+.animate-slide-up {
+    animation: slide-up 0.5s ease forwards;
+}
+
+.border-neon {
+    border-color: var(--neon-accent) !important;
+}
+
+.btn-outline-neon {
+    border-color: var(--neon-accent);
+    color: var(--neon-accent);
+    transition: all 0.3s ease;
+}
+
+.btn-outline-neon:hover {
+    background: var(--neon-accent);
+    color: var(--dark-bg);
+}
+</style>
+{% endblock %}

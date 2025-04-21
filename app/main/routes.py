@@ -1,11 +1,15 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
-from app.admin.models import Product, Brand, Category, ContactMessage, Wishlist, ProductImage
-from app.main.forms import InquiryForm, ContactForm, WishlistForm
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session
+from flask import jsonify
+from app.admin.models import Product, Brand, Category, ContactMessage, Wishlist, ProductImage, Review
+from app.main.forms import InquiryForm, ContactForm, WishlistForm, VerifyPurchaseForm,ReviewForm
 from app.admin.forms import ProductForm
 from functools import wraps
-from app import db
+from app import db, mail, csrf
 from flask import current_app
 from flask_login import login_required, login_user, logout_user, current_user
+from app.email.email_templates import get_verification_email
+import re
+
 # Create a blueprint for main routes
 main_bp = Blueprint('main', __name__)
 
@@ -73,15 +77,38 @@ def list_products():
     form = ProductForm()
     return render_template('main/list_products.html', products=product_data, form=form)
 
-
-
 @main_bp.route('/products/<int:product_id>', methods=['GET'])
 def view_product(product_id):
     product = Product.query.get_or_404(product_id)
     image_url = product.images[0].image_path if product.images else 'default.jpg'
 
+    recent_reviews = Review.query.filter_by(product_id=product_id).order_by(Review.date.desc()).limit(5).all()
+    total_reviews = Review.query.filter_by(product_id=product_id).count()
+
     form = InquiryForm()
-    return render_template('main/view_product.html', product=product, form=form,image_url=image_url)
+
+    # Check if there's a verified review session for this product
+    verified_review_id = session.pop('verified_review', None)
+    show_review_modal = False
+    review_to_edit = None
+
+    if verified_review_id:
+        review_to_edit = Review.query.get(verified_review_id)
+        if review_to_edit and review_to_edit.product_id == product.id and not review_to_edit.verified:
+            show_review_modal = True
+
+    return render_template(
+        'main/view_product.html',
+        product=product,
+        form=form,
+        image_url=image_url,
+        reviews=recent_reviews,
+        total_reviews=total_reviews,
+        show_review_modal=show_review_modal,
+        verified_review=verified_review_id,
+        review_to_edit=review_to_edit
+    )
+
 
 from urllib.parse import quote
 
@@ -210,3 +237,108 @@ def contact():
 @main_bp.route('/privacy-policy')
 def privacy_policy():
     return render_template('main/privacy_policies.html')
+
+
+@main_bp.route('/product/<int:product_id>/reviews')
+def all_reviews(product_id):
+    product = Product.query.get_or_404(product_id)
+    all_reviews = Review.query.filter_by(product_id=product_id).order_by(Review.date.desc()).all()
+    
+    return render_template('main/all_reviews.html', product=product, reviews=all_reviews)
+
+
+from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer
+import re
+
+@csrf.exempt
+@main_bp.route('/verify-purchase', methods=['POST'])
+def verify_purchase():
+    try:
+        if not request.is_json:
+            return jsonify({'error': 'Invalid content type', 'message': 'Request must be JSON'}), 415
+
+        data = request.get_json()
+        email = data.get('email')
+        product_id = data.get('product_id')
+
+        if not email or not product_id:
+            return jsonify({'error': 'Missing required fields', 'message': 'Both email and product ID are required'}), 400
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return jsonify({'error': 'Invalid email format', 'message': 'Please provide a valid email address'}), 400
+
+        product = Product.query.get(product_id)
+        if not product:
+            return jsonify({'error': 'Product not found', 'message': 'The specified product does not exist'}), 404
+
+        # Create new unverified review
+        review = Review(
+            product_id=product_id,
+            author=email.split('@')[0],
+            rating=0,  # Temp placeholder
+            comment='',  # Placeholder
+            verified=False
+        )
+        db.session.add(review)
+        db.session.commit()
+
+        token = review.generate_verification_token()
+        verification_url = url_for('main.verify_review_token', token=token, _external=True)
+
+        msg = Message(
+            subject="Verify Your Purchase",
+            recipients=[email],
+            html=get_verification_email(product, token, verification_url),
+            sender=current_app.config['MAIL_DEFAULT_SENDER']
+        )
+        mail.send(msg)
+
+        current_app.logger.info(f"Verification email sent to {email} for product {product_id}")
+
+        return jsonify({'success': True, 'message': 'Verification email sent! Please check your inbox.'}), 200
+
+    except Exception as e:
+        current_app.logger.error(f"Error in verify_purchase: {str(e)}", exc_info=True)
+        return jsonify({'error': 'Internal server error', 'message': 'An unexpected error occurred.'}), 500
+
+
+
+@main_bp.route('/verify-review/<token>', methods=['GET'])
+def verify_review_token(token):
+    review = Review.verify_token(token)
+    
+    if not review:
+        flash('Invalid or expired verification link', 'error')
+        return redirect(url_for('main.home'))
+
+    review.verified = True
+    db.session.commit()
+
+    flash('Purchase verified! You can now submit your review.', 'success')
+    
+    # Redirect to the review form page
+    return redirect(url_for('main.submit_review', review_id=review.id))
+
+
+
+
+@main_bp.route('/submit-review/<int:review_id>', methods=['GET', 'POST'])
+def submit_review(review_id):
+    review = Review.query.get_or_404(review_id)
+    
+    if not review.verified:
+        flash('You must verify your purchase before submitting a review.', 'error')
+        return redirect(url_for('main.home'))
+
+    form = ReviewForm()  # Make sure this form exists with `comment` and `rating` fields
+
+    if form.validate_on_submit():
+        review.rating = form.rating.data
+        review.comment = form.comment.data
+        db.session.commit()
+
+        flash('Thanks for your review!', 'success')
+        return redirect(url_for('main.home'))
+
+    return render_template('partials/submit_review.html', form=form, product=review.product)

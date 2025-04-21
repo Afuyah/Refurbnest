@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="bg-dark text-light p-5 rounded-4 shadow-lg border border-neon">
+        <h2 class="text-neon mb-4">
+            <i class="fas fa-star-half-alt me-2"></i> Submit Your Review for <span class="text-white">{{ product.name }}</span>
+        </h2>
+
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <!-- Rating Field -->
+            <div class="mb-4">
+                {{ form.rating.label(class="form-label fw-semibold") }}
+                {{ form.rating(class="form-control bg-darker text-light border-neon", placeholder="Enter a rating from 1 to 5") }}
+                {% if form.rating.errors %}
+                    <div class="form-text text-danger">
+                        {% for error in form.rating.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Comment Field -->
+            <div class="mb-4">
+                {{ form.comment.label(class="form-label fw-semibold") }}
+                {{ form.comment(class="form-control bg-darker text-light border-neon", placeholder="Write your honest thoughts here...", rows=5) }}
+                {% if form.comment.errors %}
+                    <div class="form-text text-danger">
+                        {% for error in form.comment.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-neon px-4">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Review
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
