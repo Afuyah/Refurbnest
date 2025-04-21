@@ -1,198 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RefurbNest - Your Premium Destination for Refurbished Tech Gadgets">
+    
+    <!-- Title Block -->
     <title>{% block title %}RefurbNest | Your Technology Hub{% endblock %}</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
+        :root {
+            --primary-color: #28a745;
+            --secondary-color: #1a1a1a;
+            --accent-color: #007bff;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-          /* Logo Text Styling */
-    .logo-text {
-        font-family: 'Orbitron', sans-serif;
-        color: #28a745;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        animation: glitch 2s infinite;
-    }
-
-    @keyframes glitch {
-        0% {
-            text-shadow: 2px 2px 1px rgba(255, 0, 0, 0.75), -2px -2px 1px rgba(0, 255, 0, 0.75);
+        /* Logo Styling */
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
         }
-        25% {
-            text-shadow: -2px -2px 1px rgba(255, 0, 0, 0.75), 2px 2px 1px rgba(0, 255, 0, 0.75);
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            animation: glitch 3s infinite;
         }
-        50% {
-            text-shadow: 0 0 1px rgba(255, 0, 0, 0.75), 0 0 1px rgba(0, 255, 0, 0.75);
+
+        @keyframes glitch {
+            0% { left: -100%; }
+            80% { left: -100%; }
+            100% { left: 100%; }
         }
-    }
 
-    /* Ripple Effect for Buttons */
-    .ripple {
-        position: relative;
-        overflow: hidden;
-        transition: background 0.4s;
-    }
-
-    .ripple:after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background: rgba(255, 255, 255, 0.4);
-        border-radius: 100%;
-        transform: translate(-50%, -50%);
-        transition: width 0.6s ease, height 0.6s ease;
-    }
-
-    .ripple:hover:after {
-        width: 200%;
-        height: 200%;
-    }
-
+        /* Navigation */
         .navbar {
-            background-color: #1a1a1a;
-            transition: background-color 0.3s ease-in-out;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .navbar-brand {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: #ffffff !important;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
         }
 
-        .navbar-brand:hover {
-            color: #007bff !important;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
         }
 
-        .navbar .nav-link {
-            color: #ffffff !important;
-            transition: color 0.3s;
+        .nav-link:hover::after {
+            width: 100%;
         }
 
-        .navbar .nav-link:hover {
-            color: #007bff !important;
-            text-decoration: underline;
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding-top: 80px;
+            padding-bottom: 40px;
         }
 
-
-        .container {
-            margin-top: 2rem;
-        }
-
+        /* Cards */
         .card {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border: none;
-            margin-bottom: 1.5rem;
-            transition: transform 0.2s;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        footer {
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 1.5rem 0;
-            text-align: center;
+        /* Footer */
+        .footer {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
         }
 
-        footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .btn-tech {
-            background-color: #007bff;
-            color: #ffffff;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .btn-tech:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
+        /* Animations */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .fade-in {
-            animation: fadeIn 0.8s ease;
+            animation: fadeIn 0.6s ease-out;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .navbar-brand {
-                font-size: 1.5rem;
+            .navbar-collapse {
+                background: rgba(26, 26, 26, 0.95);
+                padding: 1rem;
+                margin-top: 10px;
+                border-radius: 8px;
             }
         }
     </style>
+    
+    <!-- Block for additional head content -->
+    {% block head %}{% endblock %}
 </head>
 
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-         <a class="navbar-brand  display-5 logo-text " href="{{ url_for('main.home') }}">RefurbNest</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated and current_user.has_role('Admin') %}
-                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_brands') }}">Brands</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_categories') }}">Categories</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_products') }}">Products</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.list_product_varieties') }}">Varieties</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('admin.add_product_images') }}">Update Images</a></li>
-                {% endif %}
-            </ul>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand logo-text" href="{{ url_for('main.home') }}">RefurbNest</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated and current_user.has_role('Admin') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-tools me-2"></i>Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.list_brands') }}">Brands</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.list_categories') }}">Categories</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.list_products') }}">Products</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.list_product_varieties') }}">Varieties</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.add_product_images') }}">Update Images</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container fade-in">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </div>
-</body>
-<!-- Bootstrap JS, jQuery, and Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <main class="main-content">
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show mt-4" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
 
+            <!-- Content Block -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container text-center">
+            <div class="d-flex justify-content-center gap-3 mb-3">
+                <a href="#" class="text-light text-decoration-none">About Us</a>
+                <a href="#" class="text-light text-decoration-none">Contact</a>
+                <a href="#" class="text-light text-decoration-none">Privacy Policy</a>
+            </div>
+            <p class="mb-0">&copy; 2023 RefurbNest. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Additional Scripts Block -->
+    {% block scripts %}{% endblock %}
+</body>
 </html>

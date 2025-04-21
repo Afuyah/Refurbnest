@@ -1,33 +1,176 @@
-{% extends "base.html" %}
+{% extends "admin_base.html" %}
+
+{% block title %}Add Product Variant - Admin Dashboard{% endblock %}
 
 {% block content %}
-<h2>Add Product Variety</h2>
-<form method="POST" action="{{ url_for('admin.add_variety') }}">
-    {{ form.hidden_tag() }}
-    <div class="form-group">
-        {{ form.product_id.label(class="form-label") }}
-        {{ form.product_id(class="form-control") }}
+<div class="container-fluid px-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <!-- Header Section -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">
+                    <i class="fas fa-cubes me-2"></i>Add Product Variant
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.list_products') }}">Products</a></li>
+                        <li class="breadcrumb-item active">Add Variant</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- Variant Form Card -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>Variant Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <!-- Product Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-cube me-1"></i>Select Product
+                            </label>
+                            {{ form.product_id(class="form-select form-select-lg") }}
+                            {% for error in form.product_id.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Variant Details -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-palette me-1"></i>Color
+                                    </label>
+                                    {{ form.color(class="form-control form-control-lg", placeholder="Enter color name/code") }}
+                                    <div class="invalid-feedback">Please enter a valid color</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-weight-hanging me-1"></i>Weight (kg)
+                                    </label>
+                                    {{ form.weight(class="form-control form-control-lg", placeholder="0.00", step="0.01") }}
+                                    <div class="invalid-feedback">Please enter valid weight</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inventory Details -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-barcode me-1"></i>SKU
+                                    </label>
+                                    {{ form.sku(class="form-control form-control-lg", placeholder="Unique identifier") }}
+                                    <div class="invalid-feedback">SKU is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-dollar-sign me-1"></i>Price
+                                    </label>
+                                    {{ form.price(class="form-control form-control-lg", placeholder="0.00", min="0", step="0.01") }}
+                                    <div class="invalid-feedback">Valid price required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-boxes me-1"></i>Stock Quantity
+                                    </label>
+                                    {{ form.quantity_in_stock(class="form-control form-control-lg", min="0") }}
+                                    <div class="invalid-feedback">Valid quantity required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between border-top pt-4">
+                            <a href="{{ url_for('admin.list_products') }}" 
+                               class="btn btn-secondary btn-lg px-4">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-save me-2"></i>Add Variant
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        {{ form.weight.label(class="form-label") }}
-        {{ form.weight(class="form-control") }}
-    </div>
-    <div class="form-group">
-        {{ form.color.label(class="form-label") }}
-        {{ form.color(class="form-control") }}
-    </div>
-    <div class="form-group">
-        {{ form.sku.label(class="form-label") }}
-        {{ form.sku(class="form-control") }}
-    </div>
-    <div class="form-group">
-        {{ form.price.label(class="form-label") }}
-        {{ form.price(class="form-control") }}
-    </div>
-    <div class="form-group">
-        {{ form.quantity_in_stock.label(class="form-label") }}
-        {{ form.quantity_in_stock(class="form-control") }}
-    </div>
-    <button type="submit" class="btn btn-primary">Add Variety</button>
-</form>
+</div>
 {% endblock %}
+
+{% block scripts %}
+<!-- Form Validation and Input Formatting -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Bootstrap Validation
+    const forms = document.querySelectorAll('.needs-validation');
+    
+    Array.prototype.slice.call(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+
+    // Numeric Input Validation
+    const numericFields = ['weight', 'price', 'quantity_in_stock'];
+    numericFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+                if (fieldId === 'price') {
+                    this.value = this.value.replace(/(\..*)\./g, '$1');
+                }
+            });
+        }
+    });
+});
+</script>
+{% endblock %}
+
+<style>
+.form-control:focus, .form-select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+.card {
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+}
+
+.invalid-feedback {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+</style>

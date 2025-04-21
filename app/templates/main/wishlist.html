@@ -3,7 +3,7 @@
 {% block title %}Your Wishlist{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
     <h1 class="text-center mb-4 text-neon">Your Collection</h1>
     
     {% if wishlist_items %}
@@ -39,6 +39,11 @@
     body {
         background: radial-gradient(circle at 50% 50%, rgba(10, 10, 20, 0.9), #000);
         color: #fff;
+        
+    }
+    .container{
+        margin-top: 100px;
+        padding-top: 50px;
     }
     
     .glass-card {

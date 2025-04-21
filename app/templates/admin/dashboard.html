@@ -3,127 +3,157 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="text-uppercase font-weight-bold">Admin Dashboard</h1>
-    <button id="theme-toggle" class="btn btn-secondary ripple">Toggle Dark Mode</button>
-  </div>
-
-  <p class="lead">Welcome to the admin panel. Manage your e-commerce platform efficiently.</p>
-
-  <div class="row mb-4">
-    <div class="col-md-3">
-      <div class="card shadow-sm hover-effect">
-        <div class="card-body text-center">
-          <h5 class="card-title text-primary"><i class="fas fa-tags fa-2x"></i> Brands</h5>
-          <p class="card-text">{{ brand_count }} total</p>
-          <a href="{{ url_for('admin.list_brands') }}" class="btn btn-outline-primary btn-sm">Manage Brands</a>
-        </div>
-      </div>
+<div class="container-fluid px-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 py-3 border-bottom">
+    <div>
+      <h1 class="h2 mb-0">Admin Dashboard</h1>
+      <p class="lead mb-0 text-muted">Welcome back, {{ current_user.username }}</p>
     </div>
-    <div class="col-md-3">
-      <div class="card shadow-sm hover-effect">
-        <div class="card-body text-center">
-          <h5 class="card-title text-success"><i class="fas fa-th-list fa-2x"></i> Categories</h5>
-          <p class="card-text">{{ category_count }} total</p>
-          <a href="{{ url_for('admin.list_categories') }}" class="btn btn-outline-success btn-sm">Manage Categories</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card shadow-sm hover-effect">
-        <div class="card-body text-center">
-          <h5 class="card-title text-warning"><i class="fas fa-box fa-2x"></i> Products</h5>
-          <p class="card-text">{{ product_count }} total</p>
-          <a href="{{ url_for('admin.list_products') }}" class="btn btn-outline-warning btn-sm">Manage Products</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card shadow-sm hover-effect">
-        <div class="card-body text-center">
-          <h5 class="card-title text-info"><i class="fas fa-cube fa-2x"></i> Product Varieties</h5>
-          <p class="card-text">{{ variety_count }} total</p>
-          <a href="{{ url_for('admin.list_product_varieties') }}" class="btn btn-outline-info btn-sm">Manage Varieties</a>
-        </div>
-      </div>
+    <div class="d-flex gap-2">
+      <button id="theme-toggle" class="btn btn-outline-secondary">
+        <i class="fas fa-moon"></i>
+      </button>
+      <a href="#" class="btn btn-primary">
+        <i class="fas fa-cog"></i> Settings
+      </a>
     </div>
   </div>
 
-  <h3>Recent Activity</h3>
-  <div class="table-responsive">
-    <table class="table table-hover table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Action</th>
-          <th scope="col">User</th>
-          <th scope="col">Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for activity in recent_activities %}
-        <tr>
-          <td>{{ activity.action }}</td>
-          <td>{{ activity.user }}</td>
-          <td>{{ activity.date.strftime('%Y-%m-%d %H:%M') }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- Stats Overview -->
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0 bg-primary text-white rounded-circle p-3">
+              <i class="fas fa-tags fa-2x"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h5 class="card-title text-primary mb-1">Brands</h5>
+              <p class="h2 mb-0">{{ brand_count }}</p>
+              <a href="{{ url_for('admin.list_brands') }}" class="small text-muted text-decoration-none">
+                View Details <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Repeat similar structure for other stats cards -->
   </div>
 
-  <h3>Quick Actions</h3>
-  <div class="list-group sticky-quick-actions">
-    <a href="{{ url_for('admin.list_brands') }}" class="list-group-item list-group-item-action">Manage Brands</a>
-    <a href="{{ url_for('admin.list_categories') }}" class="list-group-item list-group-item-action">Manage Categories</a>
-    <a href="{{ url_for('admin.list_products') }}" class="list-group-item list-group-item-action">Manage Products</a>
-    <a href="{{ url_for('admin.list_product_varieties') }}" class="list-group-item list-group-item-action">Manage Varieties</a>
-  </div>
+  <!-- Recent Activity & Quick Actions -->
+  <div class="row g-4">
+    <!-- Recent Activity -->
+    <div class="col-12 col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-transparent">
+          <h5 class="mb-0">Recent Activity</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush">
+            {% for activity in recent_activities %}
+            <div class="list-group-item d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="badge bg-info rounded-circle p-2">
+                  <i class="fas fa-{{ activity.icon }} fa-fw"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <div class="d-flex justify-content-between">
+                  <h6 class="mb-1">{{ activity.action }}</h6>
+                  <small class="text-muted">{{ activity.date }}</small>
+                </div>
+                <small class="text-muted">By {{ activity.user }}</small>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <footer class="mt-4 text-center">
-    <p>&copy; {{ current_year }} Your Company. All rights reserved.</p>
-  </footer>
+    <!-- Quick Actions -->
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-transparent">
+          <h5 class="mb-0">Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('admin.add_product') }}" class="btn btn-outline-primary text-start">
+              <i class="fas fa-plus me-2"></i> Add New Product
+            </a>
+            <a href="#" class="btn btn-outline-success text-start">
+              <i class="fas fa-users me-2"></i> Manage Users
+            </a>
+            <a href="#" class="btn btn-outline-info text-start">
+              <i class="fas fa-chart-bar me-2"></i> Generate Reports
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script>
-  document.getElementById('theme-toggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-  });
-</script>
-
 <style>
-  body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
+  :root {
+    --transition-speed: 0.3s;
   }
 
-  body.dark-mode .card {
+  .card {
+    transition: transform var(--transition-speed) ease, 
+                box-shadow var(--transition-speed) ease,
+                background-color var(--transition-speed) ease;
+    border: 1px solid rgba(0,0,0,0.125);
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+  }
+
+  [data-bs-theme="dark"] .card {
     background-color: #1e1e1e;
     border-color: #333;
   }
 
-  .hover-effect {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  [data-bs-theme="dark"] .list-group-item {
+    background-color: #2d2d2d;
+    border-color: #3d3d3d;
+    color: #e0e0e0;
   }
 
-  .hover-effect:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  .sticky-quick-actions {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 20px;
-    z-index: 1000;
-  }
-
-  table {
-    background-color: #fff;
-  }
-
-  table tr:hover {
-    background-color: #f5f5f5;
+  .rounded-circle {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
+
+<script>
+  // Theme Toggle
+  const themeToggle = document.getElementById('theme-toggle');
+  const storedTheme = localStorage.getItem('theme');
+  
+  const setTheme = (theme) => {
+    document.documentElement.setAttribute('data-bs-theme', theme);
+    localStorage.setItem('theme', theme);
+    themeToggle.querySelector('i').className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  };
+
+  if (storedTheme) {
+    setTheme(storedTheme);
+  } else {
+    setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const newTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
+</script>
 {% endblock %}

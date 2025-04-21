@@ -1,18 +1,112 @@
 {% extends 'admin_base.html' %}
 
-{% block title %}Edit Brand{% endblock %}
+{% block title %}Edit Brand - Admin Dashboard{% endblock %}
 
 {% block content %}
-<h1>Edit Brand</h1>
-<form method="post">
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.name.label }}<br>
-        {{ form.name(size=32) }}<br>
-        {% for error in form.name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+<div class="container-fluid px-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8">
+            <!-- Header Section -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">
+                    <i class="fas fa-tag me-2"></i>Edit Brand
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.list_brands') }}">Brands</a></li>
+                        <li class="breadcrumb-item active">Edit</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- Edit Form Card -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-edit me-2"></i>Brand Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <!-- Brand Name Field -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-tag me-1"></i>Brand Name
+                            </label>
+                            {{ form.name(class="form-control form-control-lg", required=True) }}
+                            <div class="invalid-feedback">
+                                Please provide a brand name
+                            </div>
+                            {% for error in form.name.errors %}
+                            <div class="alert alert-danger mt-2 p-2 small">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between border-top pt-4">
+                            <a href="{{ url_for('admin.list_brands') }}" 
+                               class="btn btn-secondary btn-lg px-4">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-save me-2"></i>Update Brand
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <input type="submit" value="Update">
-</form>
+</div>
 {% endblock %}
+
+{% block scripts %}
+<!-- Form Validation -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Bootstrap Validation
+    const forms = document.querySelectorAll('.needs-validation');
+    
+    Array.prototype.slice.call(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+});
+</script>
+{% endblock %}
+
+<style>
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+.card {
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+}
+
+.alert-danger {
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+}
+</style>

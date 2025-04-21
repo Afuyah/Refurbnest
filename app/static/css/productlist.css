@@ -14,27 +14,9 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* Enhanced Filter Bar */
-.filter-bar {
-    padding: 1.5rem;
-    margin: 2rem auto;
-    max-width: 1200px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px);
+.products-container{
+    padding-top: 70px;
 }
-
-.filter-group {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    align-items: flex-end;
-}
-
-.filter-control {
-    flex: 1 1 200px;
-}
-
 .custom-select {
     position: relative;
     border-radius: 8px;

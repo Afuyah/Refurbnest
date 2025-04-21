@@ -1,65 +1,187 @@
 {% extends 'admin_base.html' %}
 
-{% block title %}Add Product{% endblock %}
+{% block title %}Add New Product - Admin Dashboard{% endblock %}
 
 {% block content %}
-<h1>Add New Product</h1>
+<div class="container-fluid px-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12">
+            <!-- Header Section -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">
+                    <i class="fas fa-box-open me-2"></i>Add New Product
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.list_products') }}">Products</a></li>
+                        <li class="breadcrumb-item active">New Product</li>
+                    </ol>
+                </nav>
+            </div>
 
-<form method="POST">
-    {{ form.hidden_tag() }}
-    
-    <div class="form-group">
-        {{ form.name.label(class="form-label") }}
-        {{ form.name(class="form-control") }}
-    </div>
-    
-    <div class="form-group">
-        {{ form.description.label(class="form-label") }}
-        {{ form.description(class="form-control") }}
-    </div>
-    
-    <div class="form-group">
-        {{ form.price.label(class="form-label") }}
-        {{ form.price(class="form-control") }}
-    </div>
-    
-    
+            <!-- Product Form Card -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-edit me-2"></i>Product Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
 
-    <div class="form-group">
-        {{ form.storage.label(class="form-label") }}
-        {{ form.storage(class="form-control") }}
-    </div>
+                        <!-- Basic Information Section -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-tag me-1"></i>Product Name
+                                    </label>
+                                    {{ form.name(class="form-control form-control-lg", placeholder="Enter product name") }}
+                                    <div class="invalid-feedback">Please enter a product name</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-dollar-sign me-1"></i>Price
+                                    </label>
+                                    {{ form.price(class="form-control form-control-lg", placeholder="0.00", min="0", step="0.01") }}
+                                    <div class="invalid-feedback">Please enter a valid price</div>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="form-group">
-        {{ form.ram.label(class="form-label") }}
-        {{ form.ram(class="form-control") }}
-    </div>
+                        <!-- Technical Specifications Section -->
+                        <div class="border-top border-bottom py-4 mb-4">
+                            <h5 class="mb-4">
+                                <i class="fas fa-microchip me-2"></i>Technical Specifications
+                            </h5>
+                            <div class="row g-4">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">Storage</label>
+                                        {{ form.storage(class="form-select form-select-lg") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">RAM</label>
+                                        {{ form.ram(class="form-select form-select-lg") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">Processor</label>
+                                        {{ form.processor(class="form-select form-select-lg") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">Storage Type</label>
+                                        {{ form.storage_type(class="form-select form-select-lg") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">Generation</label>
+                                        {{ form.generation(class="form-control form-control-lg") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="form-group">
-        {{ form.processor.label(class="form-label") }}
-        {{ form.processor(class="form-control") }}
-    </div>
+                        <!-- Category & Brand Selection -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-barcode me-1"></i>Brand
+                                    </label>
+                                    {{ form.brand_id(class="form-select form-select-lg") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-folder-open me-1"></i>Category
+                                    </label>
+                                    {{ form.category_id(class="form-select form-select-lg") }}
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="form-group">
-        {{ form.storage_type.label(class="form-label") }}
-        {{ form.storage_type(class="form-control") }}
-    </div>
+                        <!-- Description Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-align-left me-1"></i>Description
+                            </label>
+                            {{ form.description(class="form-control", rows="5", 
+                                placeholder="Enter detailed product description") }}
+                            <small class="form-text text-muted">Minimum 100 characters</small>
+                        </div>
 
-    <div class="form-group">
-        {{ form.generation.label(class="form-label") }}
-        {{ form.generation(class="form-control") }}
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between border-top pt-2">
+                            <a href="{{ url_for('admin.list_products') }}" 
+                               class="btn btn-secondary btn-lg px-4">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-2 m-1">
+                                <i class="fas fa-save me-2"></i>Save Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        {{ form.brand_id.label(class="form-label") }}
-        {{ form.brand_id(class="form-control") }}
-    </div>
-
-    <div class="form-group">
-        {{ form.category_id.label(class="form-label") }}
-        {{ form.category_id(class="form-control") }}
-    </div>
-
-    <button type="submit" class="btn btn-success">{{ form.submit.label }}</button>
-</form>
+</div>
 {% endblock %}
+
+{% block scripts %}
+<!-- Form Validation and Enhancements -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Bootstrap Validation
+    const forms = document.querySelectorAll('.needs-validation');
+    
+    Array.prototype.slice.call(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+
+    // Price Input Formatting
+    document.getElementById('price').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    });
+});
+</script>
+{% endblock %}
+
+<style>
+.form-control:focus, .form-select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+.card {
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+}
+</style>
