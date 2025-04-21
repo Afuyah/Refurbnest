@@ -244,28 +244,28 @@ def dashboard():
                            variety_count=variety_count)
 
 
-@admin_bp.route('admin/add_product_images', methods=['GET', 'POST'])
+
+@admin_bp.route('/add_product_images', methods=['GET', 'POST'])
 def add_product_images():
     form = ProductImageForm()
 
-    # Populate product options dynamically from the database
+    # Populate product options from the database
     form.product_id.choices = [(product.id, product.name) for product in Product.query.all()]
 
     if form.validate_on_submit():
-        # Create a folder if it doesn't exist
-        product_images_path = os.path.join(app.root_path, 'static/products')
-        if not os.path.exists(product_images_path):
-            os.makedirs(product_images_path)
+        # Use Railway volume path
+        product_images_path = '/data/products'
+        os.makedirs(product_images_path, exist_ok=True)
 
-        # Save the images and associate them with the product
         product_id = form.product_id.data
+
         for image_field in [form.image1, form.image2, form.image3, form.image4]:
             if image_field.data:
                 filename = secure_filename(image_field.data.filename)
                 image_path = os.path.join(product_images_path, filename)
                 image_field.data.save(image_path)
 
-                # Save image path in the database
+                # Store relative path for serving later
                 product_image = ProductImage(
                     image_path=f'products/{filename}',
                     product_id=product_id
@@ -273,7 +273,6 @@ def add_product_images():
                 db.session.add(product_image)
 
         db.session.commit()
-
         flash('Images added successfully!', 'success')
         return redirect(url_for('admin.add_product_images'))
 

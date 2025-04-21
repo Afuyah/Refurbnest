@@ -1,15 +1,16 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 from flask_mail import Mail
 
-db = SQLAlchemy()  # Create single instance
+# Initialize extensions
+db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 csrf = CSRFProtect()
-mail= Mail()
+mail = Mail()
 
 def create_app(config_class=None):
     app = Flask(__name__)
@@ -42,5 +43,10 @@ def create_app(config_class=None):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
+    # Serve images from /data/products
+    @app.route('/products/<filename>')
+    def product_image(filename):
+        return send_from_directory('/data/products', filename)
 
     return app
