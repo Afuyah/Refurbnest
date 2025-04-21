@@ -33,25 +33,29 @@
                 </div>
             </div>
 
+            
             <!-- Images -->
             <div class="col-lg-7">
                 <div class="position-relative bg-black rounded-4 overflow-hidden shadow-lg">
+                    <!-- Main image -->
                     <img id="main-image"
-                         src="{{ url_for('static', filename=product.images[0].image_path) }}"
+                         src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
                          class="img-fluid w-100 animate-fade-in zoom-on-hover"
                          alt="{{ product.name }}">
-
+            
+                    <!-- Thumbnail gallery -->
                     <div class="thumbnail-gallery d-flex gap-3 p-3 overflow-auto mt-3 bg-dark rounded-bottom-4">
                         {% for image in product.images %}
-                        <img src="{{ url_for('static', filename=image.image_path) }}"
+                        <img src="{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}"
                              class="img-thumbnail thumb-hover"
                              style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
-                             onclick="changeMainImage('{{ url_for('static', filename=image.image_path) }}')"
+                             onclick="changeMainImage('{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}')"
                              alt="Thumbnail of {{ product.name }}">
                         {% endfor %}
                     </div>
                 </div>
             </div>
+            
         </div>
 
         <!-- Description -->
