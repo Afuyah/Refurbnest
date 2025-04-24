@@ -20,15 +20,15 @@
     </div>
 
     <!-- Brand Swiper -->
-    <div class="position-relative">
+    <div class="position-relative px-lg-5">
       <div class="swiper brand-swiper">
         <div class="swiper-wrapper align-items-center">
           <!-- All Brands Slide -->
-          <div class="swiper-slide" style="width: auto">
+          <div class="swiper-slide">
             <a href="{{ url_for('main.list_products', category=selected_category.id if selected_category else None) }}" 
                class="brand-card {% if not selected_brand_id %}active{% endif %}">
               <div class="brand-card-inner">
-                
+                <span class="icon-globe"></span>
                 <span>All Brands</span>
               </div>
             </a>
@@ -36,7 +36,7 @@
           
           <!-- Brand Slides -->
           {% for brand in brands %}
-          <div class="swiper-slide" style="width: auto">
+          <div class="swiper-slide">
             <a href="{{ url_for('main.list_products', brand=brand.id, category=selected_category.id if selected_category else None) }}" 
                class="brand-card {% if brand.id|string == selected_brand_id %}active{% endif %}">
               <div class="brand-card-inner">
@@ -53,8 +53,8 @@
         </div>
       </div>
 
-      <!-- Navigation Arrows -->
-      <div class="swiper-nav-arrows">
+      <!-- Navigation Arrows (hidden on mobile) -->
+      <div class="swiper-nav-arrows d-none d-lg-flex">
         <button class="swiper-button-prev btn btn-sm btn-dark btn-icon rounded-circle">
           <i class="fas fa-chevron-left"></i>
         </button>
@@ -67,26 +67,24 @@
 </div>
 
 <style>
+/* Base Styles */
 .filter-bar {
   background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(12px);
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.section-header h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  background: linear-gradient(to right, #fff, #a5b4fc);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.brand-swiper {
+  padding: 0.5rem 1rem !important; /* Added padding */
+  overflow: hidden;
 }
 
-.brand-swiper {
-  padding: 0.5rem 0;
-  overflow: hidden;
+.swiper-slide {
+  width: auto !important;
+  padding: 0 4px !important; /* Added horizontal spacing */
 }
 
 .brand-card {
@@ -98,98 +96,44 @@
   text-decoration: none;
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  min-width: 120px;
+  min-width: 100px; /* Reduced minimum width */
+  margin: 0 2px !important; /* Added margin between cards */
 }
 
-.brand-card-inner {
-  padding: 0.75rem 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.brand-card:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.brand-card.active {
-  background: rgba(59, 130, 246, 0.2);
-  border-color: rgba(59, 130, 246, 0.3);
-  color: #fff;
-}
-
-.brand-logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-
-.brand-card.active .brand-logo {
-  opacity: 1;
-  filter: none;
-}
-
-.icon-globe {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E") no-repeat center;
-  background-size: 60%;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-}
-
-.swiper-nav-arrows {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: calc(100% + 4rem);
-  left: -2rem;
-  display: flex;
-  justify-content: space-between;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.swiper-button-prev,
-.swiper-button-next {
-  pointer-events: all;
-  width: 2.5rem;
-  height: 2.5rem;
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  transition: all 0.3s ease;
-}
-
-.swiper-button-prev:hover,
-.swiper-button-next:hover {
-  background: rgba(59, 130, 246, 0.8);
-  transform: scale(1.1);
-}
-
-@media (max-width: 768px) {
-  .filter-bar {
-    padding: 1.5rem;
+/* Mobile-specific adjustments */
+@media (max-width: 767.98px) {
+  .brand-swiper {
+    padding: 0.5rem 0.75rem !important;
   }
   
-  .swiper-nav-arrows {
-    display: none;
+  .swiper-slide {
+    padding: 0 3px !important; /* Reduced spacing on mobile */
   }
   
   .brand-card {
-    min-width: 100px;
+    min-width: 90px; /* Smaller cards on mobile */
+    padding: 0.5rem !important;
+  }
+  
+  .brand-card-inner span {
+    font-size: 0.8rem; /* Smaller text on mobile */
   }
   
   .brand-logo {
-    width: 30px;
-    height: 30px;
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 575.98px) {
+  .brand-card {
+    min-width: 80px;
+  }
+  
+  .brand-card-inner {
+    padding: 0.5rem !important;
+    gap: 0.25rem !important;
   }
 }
 </style>
@@ -198,7 +142,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   const brandSwiper = new Swiper('.brand-swiper', {
     slidesPerView: 'auto',
-    spaceBetween: 12,
+    spaceBetween: 8, // Reduced space between slides
     freeMode: true,
     grabCursor: true,
     navigation: {
@@ -207,10 +151,16 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     breakpoints: {
       320: {
-        spaceBetween: 8
+        spaceBetween: 4 // Even smaller space on mobile
+      },
+      576: {
+        spaceBetween: 6
       },
       768: {
-        spaceBetween: 12
+        spaceBetween: 8
+      },
+      992: {
+        spaceBetween: 10
       }
     }
   });
