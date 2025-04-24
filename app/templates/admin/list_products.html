@@ -90,12 +90,29 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button class="btn btn-sm btn-outline-danger delete-btn" 
-                                            data-id="{{ product.id }}"
-                                            data-bs-toggle="tooltip" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                    data-id="{{ product.id }}" 
+                                    data-name="{{ product.name }}"
+                                    data-bs-toggle="tooltip" title="Delete">
+                              <i class="fas fa-trash-alt"></i>
+                            </button>
+                            
                                 </div>
                             </td>
+
+
+                            <td class="text-center">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input feature-toggle" type="checkbox" role="switch"
+                                           id="featureSwitch{{ product.id }}"
+                                           {% if product.is_featured %}checked{% endif %}
+                                           data-product-id="{{ product.id }}">
+                                </div>
+                            </td>
+                            
+                              
+                              
+
+
                         </tr>
                         {% else %}
                         <tr>
@@ -205,6 +222,36 @@ document.addEventListener('DOMContentLoaded', function() {
         filterTable();
     });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.feature-toggle').forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            const productId = this.dataset.productId;
+            const action = this.checked ? 'feature' : 'unfeature';
+
+            fetch(`/admin/products/${productId}/${action}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Optionally, display a success message or update the UI accordingly
+                } else {
+                    // Handle errors
+                    alert('An error occurred while updating the featured status.');
+                }
+            });
+        });
+    });
+});
+
+
+
 </script>
 {% endblock %}
 

@@ -150,28 +150,40 @@ def edit_product(product_id):
         return redirect(url_for('admin.list_products'))
 
     return render_template('admin/edit_product.html', form=form)
-
-
 @admin_bp.route('/admin/delete_product/<int:product_id>', methods=['POST'])
 def delete_product(product_id):
-    product = Product.query.get(product_id)
+    product = Product.query.get_or_404(product_id)
     
-    if product:
-        try:
-            print(f'Attempting to delete product: {product.name}')
-            print(f'Associated images before deletion: {[image.id for image in product.images]}')
-
-            db.session.delete(product)  # This should cascade delete associated images
-            db.session.commit()
-            flash('Product deleted successfully.', 'success')
-        except Exception as e:
-            db.session.rollback()
-            flash('Error deleting product: ' + str(e), 'error')
-            print(f'Delete error: {e}')
-    else:
-        flash('Product not found.', 'error')
-
+    try:
+        db.session.delete(product)
+        db.session.commit()
+        flash(f'Product "{product.name}" deleted successfully.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting product: {str(e)}', 'error')
+        current_app.logger.error(f'Delete error for product ID {product_id}: {e}')
+    
     return redirect(url_for('admin.list_products'))
+
+
+
+@admin_bp.route('/products/<int:product_id>/<action>', methods=['POST'])
+def toggle_featured(product_id, action):
+    product = Product.query.get_or_404(product_id)
+    if action == 'feature':
+        product.is_featured = True
+    elif action == 'unfeature':
+        product.is_featured = False
+    else:
+        flash('Invalid action.', 'error')
+        return redirect(url_for('admin.list_products'))
+
+    db.session.commit()
+    flash(f'Product {action}d successfully.', 'success')
+    return redirect(url_for('admin.list_products'))
+
+
+
 
 # ---------------------------------------
 # Product Variety Routes

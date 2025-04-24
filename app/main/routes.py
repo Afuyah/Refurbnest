@@ -29,10 +29,45 @@ def login_required_with_message(view):
 # Home Route
 # ---------------------------------------
 
-
-@main_bp.route('/')
+@main_bp.route('/', methods=['GET'])
 def home():
-    return render_template('main/home.html')
+    # Fetch all categories
+    categories = Category.query.all()
+
+    # Fetch the latest 8 products for the hot products section
+    hot_products = (
+        Product.query
+        .order_by(Product.created_at.desc())
+        .limit(8)
+        .all()
+    )
+
+    # Fetch the 3 most recent verified reviews
+    testimonials = (
+        Review.query
+        .filter(Review.verified == True)
+        .order_by(Review.date.desc())
+        .limit(3)
+        .all()
+    )
+
+    # NEW: Fetch up to 8 featured products
+    featured_products = (
+        Product.query
+        .filter_by(is_featured=True)  # SQLAlchemy boolean filter :contentReference[oaicite:0]{index=0}
+        .order_by(Product.updated_at.desc())
+        .limit(8)
+        .all()
+    )
+
+    # Pass all data into the template
+    return render_template(
+        'main/home.html',
+        categories=categories,
+        hot_products=hot_products,
+        testimonials=testimonials,
+        featured_products=featured_products  # make available in Jinja :contentReference[oaicite:1]{index=1}
+    )
 
 # ---------------------------------------
 # Product Routes
@@ -108,6 +143,25 @@ def view_product(product_id):
         verified_review=verified_review_id,
         review_to_edit=review_to_edit
     )
+
+
+
+@main_bp.route('/products/<int:product_id>/feature', methods=['POST'])
+def mark_product_featured(product_id):
+    product = Product.query.get_or_404(product_id)
+    product.is_featured = True
+    db.session.commit()
+    flash(f'{product.name} has been marked as featured.', 'success')
+    return redirect(url_for('main.list_products'))
+
+
+@main_bp.route('/products/<int:product_id>/unfeature', methods=['POST'])
+def unmark_product_featured(product_id):
+    product = Product.query.get_or_404(product_id)
+    product.is_featured = False
+    db.session.commit()
+    flash(f'{product.name} has been removed from featured.', 'info')
+    return redirect(url_for('main.list_products'))
 
 
 from urllib.parse import quote

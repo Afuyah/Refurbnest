@@ -69,6 +69,8 @@ class Category(db.Model):
     # String representation of the model
     def __repr__(self):
         return f'<Category {self.name}>'
+    
+
 class Product(db.Model):
     __tablename__ = 'products'
 
@@ -84,6 +86,7 @@ class Product(db.Model):
 
     brand_id = db.Column(db.Integer, db.ForeignKey('brands.id', ondelete='CASCADE'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False)
+    is_featured = db.Column(db.Boolean, default=False, nullable=True)
 
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)

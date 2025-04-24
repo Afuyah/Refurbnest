@@ -5,16 +5,38 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
-<section class="hero min-vh-100 d-flex align-items-center">
-  <div class="container">
+
+<!-- Animated Hero Section -->
+<section class="hero min-vh-100 d-flex align-items-center position-relative overflow-hidden">
+  <div class="hero-background">
+    <div class="gradient-overlay"></div>
+    <div class="particle-animation"></div>
+  </div>
+  
+  <div class="container position-relative z-2">
     <div class="row justify-content-center text-center">
       <div class="col-12 col-md-10 col-lg-8">
-        <h1 class="display-1 fw-bold mb-4">
-          <span class="text-stroke-primary">Re</span><span class="text-gradient-primary">Imagine</span>
+        <div class="trust-badges mb-4 animate__animated animate__fadeInDown">
+          <span class="badge glass-effect me-2">
+            <i class="fas fa-shield-alt me-2"></i>Certified Premium
+          </span>
+          <span class="badge glass-effect">
+            <i class="fas fa-clock-rotate-left me-2"></i>24-Month Warranty
+          </span>
+        </div>
+
+        <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInUp">
+          <span class="text-stroke-primary">Re</span>
+          <span class="text-gradient-primary">Imagine</span>
           <span class="text-stroke-primary">Tech</span>
         </h1>
         
-        <a href="{{ url_for('main.list_products') }}" class="btn btn-lg btn-gradient-primary rounded-pill px-5">
+        <p class="lead text-muted mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+          Premium refurbished electronics with expert certification
+        </p>
+
+        <a href="{{ url_for('main.list_products') }}" 
+           class="btn btn-lg btn-gradient-primary rounded-pill px-5 animate__animated animate__fadeInUp animate__delay-1s">
           Explore Collection
           <i class="fas fa-arrow-right ms-2"></i>
         </a>
@@ -23,32 +45,42 @@
   </div>
 </section>
 
+<!-- Value Propositions Grid -->
 <section class="py-5">
   <div class="container">
     <div class="row g-4 justify-content-center">
       <div class="col-12 col-md-6 col-lg-4">
-        <div class="card glass-effect h-100">
-          <div class="card-body">
-            <h3 class="h2 mb-3">Premium Renewal</h3>
-            <p class="text-muted">72-point inspection process ensures like-new quality</p>
+        <div class="card glass-effect h-100 hover-lift">
+          <div class="card-body p-4">
+            <div class="icon-wrapper bg-primary mb-3">
+              <i class="fas fa-microscope fa-2x"></i>
+            </div>
+            <h3 class="h2 mb-3">Expert Certification</h3>
+            <p class="text-muted">112-point inspection process with OEM-grade testing</p>
           </div>
         </div>
       </div>
 
       <div class="col-12 col-md-6 col-lg-4">
-        <div class="card glass-effect h-100">
-          <div class="card-body">
-            <h3 class="h2 mb-3">Eco-Impact</h3>
-            <p class="text-muted">Reducing e-waste through sustainable tech cycles</p>
+        <div class="card glass-effect h-100 hover-lift">
+          <div class="card-body p-4">
+            <div class="icon-wrapper bg-success mb-3">
+              <i class="fas fa-leaf fa-2x"></i>
+            </div>
+            <h3 class="h2 mb-3">Eco-Conscious</h3>
+            <p class="text-muted">Sustainable tech lifecycle management</p>
           </div>
         </div>
       </div>
 
       <div class="col-12 col-md-6 col-lg-4">
-        <div class="card glass-effect h-100">
-          <div class="card-body">
-            <h3 class="h2 mb-3">Smart Savings</h3>
-            <p class="text-muted">Premium tech at 40-60% below retail prices</p>
+        <div class="card glass-effect h-100 hover-lift">
+          <div class="card-body p-4">
+            <div class="icon-wrapper bg-warning mb-3">
+              <i class="fas fa-percent fa-2x"></i>
+            </div>
+            <h3 class="h2 mb-3">Smart Value</h3>
+            <p class="text-muted">Premium quality at 40-60% below retail</p>
           </div>
         </div>
       </div>
@@ -56,38 +88,325 @@
   </div>
 </section>
 
+
+<section class="py-5 bg-dark">
+  <div class="container">
+    <!-- Header -->
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-12">
+        <h2 class="text-white mb-3">Curated Selection</h2>
+        <p class="text-muted">Recently refreshed premium devices</p>
+      </div>
+    </div>
+
+    <!-- Swiper Container -->
+    <div class="swiper featured-swiper">
+      <div class="swiper-wrapper">
+        {% for product in featured_products %}
+  <div class="swiper-slide">
+    <div class="media-container">
+      {% if product.images %}
+        <img
+          src="{{ url_for('product_image',
+                          filename=product.images[0].image_path.split('/')[-1]) }}"
+          alt="{{ product.name }}"
+          loading="lazy"
+          class="lazy-load"
+        >
+      {% else %}
+        <!-- Fallback image -->
+        <img src="{{ url_for('static', filename='images/default.jpg') }}"
+             alt="No image available"
+             loading="lazy"
+             class="lazy-load">
+      {% endif %}
+      <div class="media-overlay">
+        <a href="{{ url_for('main.view_product', product_id=product.id) }}"
+           class="view-button">
+          <span>View Details</span>
+          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+      </div>
+      <!-- Pagination & Navigation -->
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .media-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.media-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.media-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.media-container:hover .media-overlay {
+  opacity: 1;
+}
+.view-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  font-weight: 500;
+}
+.view-button svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+}
+
+</style>
+
+
+<!-- Stats Section -->
 <section class="py-5">
   <div class="container">
     <div class="row g-4 justify-content-center text-center">
-      <div class="col-12 col-md-6">
-        <div class="glass-effect p-4 rounded-3">
-          <div class="display-4 fw-bold text-primary">15K+</div>
-          <div class="text-muted">Devices Renewed</div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card glass-effect">
+          <div class="display-4 fw-bold text-primary" data-count="15">0</div>
+          <div class="text-muted">Thousand Renewed</div>
         </div>
       </div>
-      <div class="col-12 col-md-6">
-        <div class="glass-effect p-4 rounded-3">
-          <div class="display-4 fw-bold text-primary">98.7%</div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card glass-effect">
+          <div class="display-4 fw-bold text-primary" data-count="98.7">0</div>
           <div class="text-muted">Satisfaction Rate</div>
         </div>
       </div>
     </div>
   </div>
 </section>
+<!-- Testimonials Section -->
+<section class="py-5 bg-light" style="background-image: url('/static/products/hero1.png'); background-size: cover; background-position: center; background-attachment: fixed;">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-12">
+        <h2 class="mb-3 text-white">Client Experiences</h2>
+        <p class="text-white-50">What our customers say</p>
+      </div>
+    </div>
 
-<div class="position-fixed end-0 bottom-0 m-3 z-3">
+    <div class="testimonials-grid">
+      {% for testimonial in testimonials %}
+      <div class="testimonial-card glass-effect hover-lift">
+        <div class="rating mb-3">
+          {% for _ in range(testimonial.rating) %}
+          <i class="fas fa-star text-warning"></i>
+          {% endfor %}
+        </div>
+        <p class="testimonial-text">"{{ testimonial.text }}"</p>
+        <div class="client-info">
+          <div class="client-name">{{ testimonial.name }}</div>
+          <div class="client-role">{{ testimonial.role }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Featured Brands Section -->
+<section class="py-5 bg-dark mb-3">
+  <div class="container">
+    <div class="row g-4 align-items-center justify-content-center">
+      <div class="col-12 text-center mb-4">
+        <h3 class="text-white mb-0">Trusted by Leading Brands</h3>
+      </div>
+      <div class="col-6 col-md-3">
+        <img src="/static/images/brand-apple.svg" alt="Apple" class="img-fluid brand-logo">
+      </div>
+      <div class="col-6 col-md-3">
+        <img src="/static/images/brand-samsung.svg" alt="Samsung" class="img-fluid brand-logo">
+      </div>
+      <div class="col-6 col-md-3">
+        <img src="/static/images/brand-dell.svg" alt="Dell" class="img-fluid brand-logo">
+      </div>
+      <div class="col-6 col-md-3">
+        <img src="/static/images/brand-sony.svg" alt="Sony" class="img-fluid brand-logo">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Social Floating Buttons -->
+<div class="social-floating">
   <div class="d-flex flex-column gap-2">
-    <a href="#" class="btn btn-dark btn-icon rounded-circle" aria-label="Instagram">
+    <a href="#" class="btn btn-icon btn-dark rounded-circle hover-lift">
       <i class="fab fa-instagram"></i>
     </a>
-    <a href="#" class="btn btn-dark btn-icon rounded-circle" aria-label="Twitter">
+    <a href="#" class="btn btn-icon btn-dark rounded-circle hover-lift">
       <i class="fab fa-twitter"></i>
     </a>
-    <a href="#" class="btn btn-dark btn-icon rounded-circle" aria-label="TikTok">
+    <a href="#" class="btn btn-icon btn-dark rounded-circle hover-lift">
       <i class="fab fa-tiktok"></i>
     </a>
   </div>
 </div>
 
 <script defer type="module" src="{{ url_for('static', filename='js/home.js') }}"></script>
+
+<style>
+:root {
+  --color-primary: #7C3AED;
+  --color-secondary: #10B981;
+  --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+}
+
+.hero-background {
+  background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.1) 0%, transparent 60%);
+}
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.products-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 2rem;
+}
+
+.product-card {
+  min-width: 280px;
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.social-floating {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1000;
+}
+
+@keyframes gradient-pulse {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero {
+  background-size: 200% 200%;
+  animation: gradient-pulse 15s ease infinite;
+}
+</style>
+<script>
+
+  // Animate number counters
+document.querySelectorAll('[data-count]').forEach(el => {
+  const target = parseFloat(el.dataset.count)
+  const duration = 2000
+  const start = Date.now()
+  
+  const update = () => {
+    const elapsed = Date.now() - start
+    const progress = Math.min(elapsed / duration, 1)
+    el.textContent = (progress * target).toFixed(progress > 0.99 ? 0 : 1)
+    
+    if (progress < 1) requestAnimationFrame(update)
+  }
+  
+  requestAnimationFrame(update)
+})
+
+// Initialize animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible')
+    }
+  })
+}, { threshold: 0.1 })
+
+document.querySelectorAll('.hover-lift').forEach(el => observer.observe(el))
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const totalSlides = {{ featured_products|length }};
+  new Swiper('.featured-swiper', {
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    },
+    // Automatically fill blanks if slide count < group size
+    loopFillGroupWithBlank: true,
+    // Responsive breakpoints with capping
+    breakpoints: {
+      576: {
+        slidesPerView: Math.min(2, totalSlides),
+        slidesPerGroup: Math.min(2, totalSlides)
+      },
+      992: {
+        slidesPerView: Math.min(3, totalSlides),
+        slidesPerGroup: Math.min(3, totalSlides)
+      }
+    },
+    // Mobile default
+    slidesPerView: Math.min(1, totalSlides),
+    slidesPerGroup: Math.min(1, totalSlides)
+  });
+  console.log('Swiper initialized with', totalSlides, 'slides');
+});
+
+
+
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
 {% endblock %}
