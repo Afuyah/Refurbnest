@@ -3,19 +3,219 @@
 {% block title %}Premium Refurbished Tech | {% endblock %}
 
 {% block content %}
-<div class="products-container">
-    <!-- Enhanced Filter Bar -->
-    <div class="filter-bar glassmorphism">
-        <div class="filter-group">
-            <h3 class="text-neon text-center mb-2">
-                {% if selected_category %}
-                    {{ selected_category.name }}
-                {% else %}
-                    All Products
-                {% endif %}
-            </h3>
-        </div>
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+
+<div class="filter-bar glassmorphism mt-5">
+  <div class="container position-relative">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-4">
+      <h2 class="text-gradient mb-2">
+        {% if selected_category %}
+          {{ selected_category.name }}
+        {% else %}
+          All Products
+        {% endif %}
+      </h2>
+      <p class="text-muted mb-0">Browse by brand</p>
     </div>
+
+    <!-- Brand Swiper -->
+    <div class="position-relative">
+      <div class="swiper brand-swiper">
+        <div class="swiper-wrapper align-items-center">
+          <!-- All Brands Slide -->
+          <div class="swiper-slide" style="width: auto">
+            <a href="{{ url_for('main.list_products', category=selected_category.id if selected_category else None) }}" 
+               class="brand-card {% if not selected_brand_id %}active{% endif %}">
+              <div class="brand-card-inner">
+                
+                <span>All Brands</span>
+              </div>
+            </a>
+          </div>
+          
+          <!-- Brand Slides -->
+          {% for brand in brands %}
+          <div class="swiper-slide" style="width: auto">
+            <a href="{{ url_for('main.list_products', brand=brand.id, category=selected_category.id if selected_category else None) }}" 
+               class="brand-card {% if brand.id|string == selected_brand_id %}active{% endif %}">
+              <div class="brand-card-inner">
+                {% if brand.logo %}
+                <img src="{{ url_for('brand_logo', filename=brand.logo) }}" 
+                     alt="{{ brand.name }} logo" 
+                     class="brand-logo">
+                {% endif %}
+                <span>{{ brand.name }}</span>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation Arrows -->
+      <div class="swiper-nav-arrows">
+        <button class="swiper-button-prev btn btn-sm btn-dark btn-icon rounded-circle">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="swiper-button-next btn btn-sm btn-dark btn-icon rounded-circle">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.filter-bar {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-swiper {
+  padding: 0.5rem 0;
+  overflow: hidden;
+}
+
+.brand-card {
+  display: inline-block;
+  padding: 0;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  min-width: 120px;
+}
+
+.brand-card-inner {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.brand-card.active {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #fff;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
+.brand-card.active .brand-logo {
+  opacity: 1;
+  filter: none;
+}
+
+.icon-globe {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 60%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.swiper-nav-arrows {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc(100% + 4rem);
+  left: -2rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  pointer-events: all;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background: rgba(59, 130, 246, 0.8);
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    padding: 1.5rem;
+  }
+  
+  .swiper-nav-arrows {
+    display: none;
+  }
+  
+  .brand-card {
+    min-width: 100px;
+  }
+  
+  .brand-logo {
+    width: 30px;
+    height: 30px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const brandSwiper = new Swiper('.brand-swiper', {
+    slidesPerView: 'auto',
+    spaceBetween: 12,
+    freeMode: true,
+    grabCursor: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      320: {
+        spaceBetween: 8
+      },
+      768: {
+        spaceBetween: 12
+      }
+    }
+  });
+});
+</script>
     
 
     <!-- Modern Product Grid -->
@@ -76,6 +276,7 @@
 </div>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/productlist.css') }}">
 <script defer src="{{ url_for('static', filename='js/productlist.js') }}"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -118,5 +319,31 @@ function resetFilters() {
     document.getElementById('category-filter').value = '';
     filterProducts();
 }
+
+
+
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var swiper = new Swiper('.brand-swiper', {
+      slidesPerView: 'auto',
+      spaceBetween: 10,
+      freeMode: true,
+      grabCursor: true,
+      breakpoints: {
+        640: {
+          slidesPerView: 4,
+        },
+        768: {
+          slidesPerView: 6,
+        },
+        1024: {
+          slidesPerView: 8,
+        },
+      },
+    });
+  });
+
+
 </script>
 {% endblock %}

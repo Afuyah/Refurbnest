@@ -47,32 +47,26 @@ def home():
 # ---------------------------------------
 # Product Routes
 # ---------------------------------------
-
 @main_bp.route('/products', methods=['GET'])
 def list_products():
-    # Get brand and category filters from query parameters
     brand_id = request.args.get('brand')
     category_id = request.args.get('category')
 
     query = Product.query
 
-    # Apply brand filtering if specified
     if brand_id:
         query = query.filter(Product.brand_id == brand_id)
 
-    # Apply category filtering if specified
     if category_id:
         query = query.filter(Product.category_id == category_id)
 
     products = query.all()
     product_data = []
 
-    # If no products are found, consider an empty list or alternative action
     if not products:
-        flash("No products available at this moment.", "info")  # Inform the user
+        flash("No products available at this moment.", "info")
 
     for product in products:
-        # If no image exists, provide the correct fallback image path
         first_image = product.images[0].image_path if product.images else 'default.jpg'
 
         product_data.append({
@@ -81,11 +75,21 @@ def list_products():
             'price': product.price,
             'brand_id': product.brand_id,
             'category_id': product.category_id,
-            'image_url': first_image 
+            'image_url': first_image
         })
 
+    # Retrieve all brands for the filter dropdown
+    brands = Brand.query.all()
+
     form = ProductForm()
-    return render_template('main/list_products.html', products=product_data, form=form)
+    return render_template(
+        'main/list_products.html',
+        products=product_data,
+        form=form,
+        brands=brands,
+        selected_brand_id=brand_id
+    )
+
 
 @main_bp.route('/products/<int:product_id>', methods=['GET'])
 def view_product(product_id):
