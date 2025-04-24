@@ -54,21 +54,24 @@ class Brand(db.Model):
 # ---------------------------------------
 # Category Model
 # ---------------------------------------
+from slugify import slugify  
+
 class Category(db.Model):
     __tablename__ = 'categories'
-    
-    # Primary key
+
     id = db.Column(db.Integer, primary_key=True)
-    
-    # Name of the category, unique and indexed
     name = db.Column(db.String(100), nullable=False, unique=True, index=True)
-    
-    # Relationship with products: if a category is deleted, all its products will be deleted (cascade)
-    products = relationship('Product', backref='category', cascade='all, delete-orphan')
-    
-    # String representation of the model
+    slug = db.Column(db.String(100), nullable=False, unique=True, index=True)
+
+    products = db.relationship('Product', backref='category', cascade='all, delete-orphan')
+
+    def __init__(self, name):
+        self.name = name
+        self.slug = slugify(name)
+
     def __repr__(self):
         return f'<Category {self.name}>'
+
     
 
 class Product(db.Model):

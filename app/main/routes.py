@@ -31,42 +31,17 @@ def login_required_with_message(view):
 
 @main_bp.route('/', methods=['GET'])
 def home():
-    # Fetch all categories
-    categories = Category.query.all()
+    categories        = Category.query.all()
+    hot_products      = Product.query.order_by(Product.created_at.desc()).limit(8).all()
+    testimonials      = Review.query.filter_by(verified=True).order_by(Review.date.desc()).limit(3).all()
+    featured_products = Product.query.filter_by(is_featured=True).order_by(Product.updated_at.desc()).limit(8).all()
 
-    # Fetch the latest 8 products for the hot products section
-    hot_products = (
-        Product.query
-        .order_by(Product.created_at.desc())
-        .limit(8)
-        .all()
-    )
-
-    # Fetch the 3 most recent verified reviews
-    testimonials = (
-        Review.query
-        .filter(Review.verified == True)
-        .order_by(Review.date.desc())
-        .limit(3)
-        .all()
-    )
-
-    # NEW: Fetch up to 8 featured products
-    featured_products = (
-        Product.query
-        .filter_by(is_featured=True)  # SQLAlchemy boolean filter :contentReference[oaicite:0]{index=0}
-        .order_by(Product.updated_at.desc())
-        .limit(8)
-        .all()
-    )
-
-    # Pass all data into the template
     return render_template(
         'main/home.html',
         categories=categories,
         hot_products=hot_products,
         testimonials=testimonials,
-        featured_products=featured_products  # make available in Jinja :contentReference[oaicite:1]{index=1}
+        featured_products=featured_products
     )
 
 # ---------------------------------------
@@ -143,6 +118,45 @@ def view_product(product_id):
         verified_review=verified_review_id,
         review_to_edit=review_to_edit
     )
+
+
+
+@main_bp.route('/category/', defaults={'category_slug': None}, strict_slashes=False)
+@main_bp.route('/category/<string:category_slug>')
+def products_by_category(category_slug):
+    if not category_slug:
+        # No slug provided → fallback to all products
+        return redirect(url_for('main.list_products'))
+
+    # Slug provided → fetch and display filtered products
+    category = Category.query.filter_by(slug=category_slug).first_or_404()
+    products = (
+        Product.query
+               .filter_by(category_id=category.id)
+               .order_by(Product.created_at.desc())
+               .all()
+    )
+
+    product_data = []
+    for p in products:
+        first_image = p.images[0].image_path if p.images else 'default.jpg'
+        product_data.append({
+            'id': p.id,
+            'name': p.name,
+            'price': p.price,
+            'brand_id': p.brand_id,
+            'category_id': p.category_id,
+            'image_url': first_image
+        })
+
+    form = ProductForm()
+    return render_template(
+        'main/list_products.html',
+        products=product_data,
+        form=form,
+        selected_category=category
+    )
+
 
 
 

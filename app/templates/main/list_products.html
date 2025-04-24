@@ -7,11 +7,16 @@
     <!-- Enhanced Filter Bar -->
     <div class="filter-bar glassmorphism">
         <div class="filter-group">
-           <h3 class="text-neon text-center mb-2">All Products</h3>      
-
-            
+            <h3 class="text-neon text-center mb-2">
+                {% if selected_category %}
+                    {{ selected_category.name }}
+                {% else %}
+                    All Products
+                {% endif %}
+            </h3>
         </div>
     </div>
+    
 
     <!-- Modern Product Grid -->
     <div class="product-grid" id="product-list">

@@ -8,7 +8,7 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'you-will-never-guess')
-    SQLALCHEMY_DATABASE_URI ="postgresql://postgres:bWCvYKwNhCIflpUXrMGLfMFvffiGJmvL@autorack.proxy.rlwy.net:35246/railway"
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SESSION_COOKIE_SECURE = True  

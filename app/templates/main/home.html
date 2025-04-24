@@ -45,6 +45,55 @@
   </div>
 </section>
 
+<section id="categories" class="py-5 ">
+  <div class="container">
+    <h3 class="text-center mb-4">Shop by Category</h3>
+    <div class="row g-3 justify-content-center">
+      {% for cat in categories %}
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="card category-card h-100 position-relative">
+          <img src="{{ url_for('static', filename='images/categories/' ~ cat.image) }}"
+               class="card-img-top"
+               alt="{{ cat.name }}">
+          <div class="card-body p-2 text-center">
+            <h6 class="card-title mb-1">{{ cat.name }}</h6>
+            <p class="text-muted small mb-0">{{ cat.product_count }} items</p>
+          </div>
+          <a href="{{ url_for('main.products_by_category', category_slug=cat.slug) }}"
+             class="stretched-link"></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<style>
+
+.category-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.category-card .card-img-top {
+  object-fit: cover;
+  height: 100px;
+}
+.category-card .card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+</style>
+
+
+
+
+
 <!-- Value Propositions Grid -->
 <section class="py-5">
   <div class="container">
@@ -333,10 +382,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <h3 class="text-white mb-0">Trusted by Leading Brands</h3>
       </div>
       <div class="col-6 col-md-3">
-        <img src="/static/images/brand-apple.svg" alt="Apple" class="img-fluid brand-logo">
+        <img src="https://www.pngegg.com/en/png-ztywq" alt="Apple" class="img-fluid brand-logo">
       </div>
       <div class="col-6 col-md-3">
-        <img src="/static/images/brand-samsung.svg" alt="Samsung" class="img-fluid brand-logo">
+        <img src="https://blog.boon.so/samsung-logo/" alt="Samsung" class="img-fluid brand-logo">
       </div>
       <div class="col-6 col-md-3">
         <img src="/static/images/brand-dell.svg" alt="Dell" class="img-fluid brand-logo">
@@ -344,6 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="col-6 col-md-3">
         <img src="/static/images/brand-sony.svg" alt="Sony" class="img-fluid brand-logo">
       </div>
+      
     </div>
   </div>
 </section>
