@@ -1,0 +1,187 @@
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+
+<div class="filter-bar glassmorphism mt-5">
+  <div class="container position-relative">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-4">
+      <h2 class="text-gradient mb-2">
+        {% if selected_category %}
+          {{ selected_category.name }}
+        {% else %}
+          All Products
+        {% endif %}
+      </h2>
+      <p class="text-muted mb-0">Browse by brand</p>
+    </div>
+
+    <!-- Brand Swiper -->
+    <div class="position-relative px-lg-5">
+      <div class="swiper brand-swiper">
+        <div class="swiper-wrapper align-items-center">
+          <!-- All Brands Slide -->
+          <div class="swiper-slide">
+            <a href="{{ url_for('main.list_products', category=selected_category.id if selected_category else None) }}" 
+               class="brand-card {% if not selected_brand_id %}active{% endif %}">
+              <div class="brand-card-inner">
+                <span class="icon-globe"></span>
+                <span>All Brands</span>
+              </div>
+            </a>
+          </div>
+          
+          <!-- Brand Slides -->
+          {% for brand in brands %}
+          <div class="swiper-slide">
+            <a href="{{ url_for('main.list_products', brand=brand.id, category=selected_category.id if selected_category else None) }}" 
+               class="brand-card {% if brand.id|string == selected_brand_id %}active{% endif %}">
+              <div class="brand-card-inner">
+                {% if brand.logo %}
+                <img src="{{ url_for('brand_logo', filename=brand.logo) }}" 
+                     alt="{{ brand.name }} logo" 
+                     class="brand-logo">
+                {% endif %}
+                <span>{{ brand.name }}</span>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Navigation Arrows (hidden on mobile) -->
+      <div class="swiper-nav-arrows d-none d-lg-flex">
+        <button class="swiper-button-prev btn btn-sm btn-dark btn-icon rounded-circle">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="swiper-button-next btn btn-sm btn-dark btn-icon rounded-circle">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Base Styles */
+.filter-bar {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.brand-swiper {
+  padding: 0.5rem 1rem !important; /* Added padding */
+  overflow: hidden;
+}
+
+.swiper-slide {
+  width: auto !important;
+  padding: 0 4px !important; /* Added horizontal spacing */
+}
+
+.brand-card {
+  display: inline-block;
+  padding: 0;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  min-width: 100px; /* Reduced minimum width */
+  margin: 0 2px !important; /* Added margin between cards */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767.98px) {
+  .brand-swiper {
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  .swiper-slide {
+    padding: 0 3px !important; /* Reduced spacing on mobile */
+  }
+  
+  .brand-card {
+    min-width: 90px; /* Smaller cards on mobile */
+    padding: 0.5rem !important;
+  }
+  
+  .brand-card-inner span {
+    font-size: 0.8rem; /* Smaller text on mobile */
+  }
+  
+  .brand-logo {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 575.98px) {
+  .brand-card {
+    min-width: 80px;
+  }
+  
+  .brand-card-inner {
+    padding: 0.5rem !important;
+    gap: 0.25rem !important;
+  }
+}
+</style>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const brandSwiper = new Swiper('.brand-swiper', {
+    slidesPerView: 'auto',
+    spaceBetween: 8, // Reduced space between slides
+    freeMode: true,
+    grabCursor: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      320: {
+        spaceBetween: 4 // Even smaller space on mobile
+      },
+      576: {
+        spaceBetween: 6
+      },
+      768: {
+        spaceBetween: 8
+      },
+      992: {
+        spaceBetween: 10
+      }
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var swiper = new Swiper('.brand-swiper', {
+      slidesPerView: 'auto',
+      spaceBetween: 10,
+      freeMode: true,
+      grabCursor: true,
+      breakpoints: {
+        640: {
+          slidesPerView: 4,
+        },
+        768: {
+          slidesPerView: 6,
+        },
+        1024: {
+          slidesPerView: 8,
+        },
+      },
+    });
+  });
+
+
+
+</script>

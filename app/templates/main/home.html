@@ -45,39 +45,48 @@
   </div>
 </section>
 
-<section id="categories" class="py-5 ">
+<section id="categories" class="py-5">
   <div class="container">
     <h3 class="text-center mb-4">Shop by Category</h3>
-    <div class="row g-3 justify-content-center">
-      {% for cat in categories %}
-      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-        <div class="card category-card h-100 position-relative">
-          <img src="{{ url_for('static', filename='images/categories/' ~ cat.image) }}"
-               class="card-img-top"
-               alt="{{ cat.name }}">
-          <div class="card-body p-2 text-center">
-            <h6 class="card-title mb-1">{{ cat.name }}</h6>
-            <p class="text-muted small mb-0">{{ cat.product_count }} items</p>
+    <div class="swiper category-swiper">
+      <div class="swiper-wrapper">
+        {% for cat in categories %}
+        <div class="swiper-slide">
+          <div class="card category-card h-100 position-relative">
+            <img
+              src="{{ url_for('static', filename='images/categories/' ~ cat.image) }}"
+              class="card-img-top"
+              alt="{{ cat.name }}"
+            />
+            <div class="card-body p-2 text-center">
+              <h6 class="card-title mb-1">{{ cat.name }}</h6>
+              <p class="text-muted small mb-0">{{ cat.product_count }} items</p>
+            </div>
+            <a
+              href="{{ url_for('main.products_by_category', category_slug=cat.slug) }}"
+              class="stretched-link"
+            ></a>
           </div>
-          <a href="{{ url_for('main.products_by_category', category_slug=cat.slug) }}"
-             class="stretched-link"></a>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+      <!-- Add Navigation -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
     </div>
   </div>
-</section>
-<style>
-
-.category-card {
+  <style>
+    .category-card {
   border-radius: 0.75rem;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 .category-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 .category-card .card-img-top {
   object-fit: cover;
@@ -88,7 +97,61 @@
   font-weight: 600;
 }
 
-</style>
+/* Swiper customizations */
+.category-swiper {
+  padding: 1rem 0;
+}
+.swiper-slide {
+  width: auto;
+  max-width: 200px;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: #333;
+}
+.swiper-pagination-bullet {
+  background: #333;
+}
+
+  </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var swiper = new Swiper('.category-swiper', {
+      slidesPerView: 2,
+      spaceBetween: 16,
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 3,
+        },
+        768: {
+          slidesPerView: 4,
+        },
+        992: {
+          slidesPerView: 5,
+        },
+        1200: {
+          slidesPerView: 6,
+        },
+      },
+    });
+  });
+</script>
+
+</section>
 
 
 
