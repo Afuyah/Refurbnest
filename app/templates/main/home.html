@@ -53,11 +53,7 @@
         {% for cat in categories %}
         <div class="swiper-slide">
           <div class="card category-card h-100 position-relative">
-            <img
-              src="{{ url_for('static', filename='images/categories/' ~ cat.image) }}"
-              class="card-img-top"
-              alt="{{ cat.name }}"
-            />
+            
             <div class="card-body p-2 text-center">
               <h6 class="card-title mb-1">{{ cat.name }}</h6>
               <p class="text-muted small mb-0">{{ cat.product_count }} items</p>
