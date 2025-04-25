@@ -173,7 +173,7 @@ body {
     }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 360px) {
     .product-grid {
         grid-template-columns: 1fr;
     }
