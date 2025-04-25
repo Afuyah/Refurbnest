@@ -43,17 +43,6 @@ body {
     border-top: 6px solid var(--text-primary);
 }
 
-.filter-reset {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: rgba(255,255,255,0.1);
-    border: none;
-    border-radius: 8px;
-    color: var(--text-primary);
-    transition: background 0.3s ease;
-}
 
 /* Modern Product Grid */
 .product-grid {
@@ -184,7 +173,7 @@ body {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 320px) {
     .product-grid {
         grid-template-columns: 1fr;
     }

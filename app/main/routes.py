@@ -28,21 +28,36 @@ def login_required_with_message(view):
 # ---------------------------------------
 # Home Route
 # ---------------------------------------
-
 @main_bp.route('/', methods=['GET'])
 def home():
-    categories        = Category.query.all()
-    hot_products      = Product.query.order_by(Product.created_at.desc()).limit(8).all()
-    testimonials      = Review.query.filter_by(verified=True).order_by(Review.date.desc()).limit(3).all()
-    featured_products = Product.query.filter_by(is_featured=True).order_by(Product.updated_at.desc()).limit(8).all()
+    categories   = Category.query.all()
+    hot_products = Product.query.order_by(Product.created_at.desc()).limit(8).all()
+    testimonials = Review.query.filter_by(verified=True).order_by(Review.date.desc()).limit(3).all()
 
     return render_template(
         'main/home.html',
         categories=categories,
         hot_products=hot_products,
-        testimonials=testimonials,
-        featured_products=featured_products
+        testimonials=testimonials
+        # Remove featured_products – now fetched via API
     )
+
+
+@main_bp.route('/api/featured-products')
+def get_featured_products():
+    featured = Product.query.filter_by(is_featured=True)\
+                .order_by(Product.updated_at.desc()).limit(8).all()
+    
+    return jsonify([
+        {
+            "id": p.id,
+            "name": p.name,
+            "price": p.price,
+           
+            "image": url_for('product_image', filename=p.images[0].image_path.split('/')[-1]) if p.images else url_for('static', filename='images/default.jpg')
+        } for p in featured
+    ])
+
 
 # ---------------------------------------
 # Product Routes
