@@ -182,7 +182,14 @@ html {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* used to be 280px */
+  gap: 1 rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
 
 .testimonials-grid {
   display: grid;
