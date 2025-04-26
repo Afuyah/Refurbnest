@@ -20,7 +20,7 @@
                         <a href="{{ url_for('main.view_product', product_id=product.id) }}" 
                            class="view-button">
                            <span>View Details</span>
-                           <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                           
                         </a>
                     </div>
                 </div>
@@ -33,18 +33,15 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="card-content">
-                <div class="product-meta">
-                    <span class="product-brand">{{ product.brand }}</span>
-                    <h3 class="product-title">{{ product.name }}</h3>
-                    <div class="price-container">
-                        <span class="current-price">${{ product.price }}</span>
-                        {% if product.original_price %}
-                        <span class="original-price">Ksh{{ product.original_price }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-                
+            <p class="text-muted small mb-3 product-description"></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="price">
+                <span class="h5 text-primary product-price"></span>
+                <del class="small text-muted ms-2 original-price d-none"></del>
+              </div>
+              <button class="btn btn-sm btn-primary rounded-pill px-3 add-to-cart-btn">
+                <i class="fas fa-cart-plus me-2"></i>Add
+              </button>
             </div>
         </article>
         {% else %}
