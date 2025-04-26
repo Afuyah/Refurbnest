@@ -130,7 +130,7 @@ html {
 
 /* ===== Product Components ===== */
 .product-card {
-  min-width: 280px;
+  min-width: 200px;
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
 }

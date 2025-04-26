@@ -46,16 +46,14 @@
     border-top: 6px solid var(--text-primary);
   }
   
+  /* Product Grid */
   .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* 🔥 */
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
     margin: 0 auto;
-    max-width: 100%;
-    box-sizing: border-box; /* Important */
-    padding: 1rem; /* Add a little breathing space */
+    max-width: 100%; 
   }
-  
   
   .product-card {
     background: var(--surface);
