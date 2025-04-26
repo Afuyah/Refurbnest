@@ -5,12 +5,12 @@
 {% block content %}
 
 <!-- Modern Product Grid -->
-<div class="product-grid p-2" id="product-list">
+<div class="product-grid " id="product-list">
     {% for product in products %}
     <article class="product-card" data-brand="{{ product.brand_id }}" data-category="{{ product.category_id }}">
         <div class="card-media">
             <div class="media-container">
-                <div class="skeleton"></div> <!-- ⭐ Shimmer Skeleton here -->
+                <div class="skeleton"></div> 
                 <img data-src="{{ url_for('product_image', filename=product.image_url.split('/')[-1]) }}"
                     alt="{{ product.name }}" class="lazy-load blur-up" loading="lazy">
 
