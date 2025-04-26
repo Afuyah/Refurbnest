@@ -3,6 +3,9 @@ from flask import jsonify
 from app.admin.models import Product, Brand, Category, ContactMessage, Wishlist, ProductImage, Review
 from app.main.forms import InquiryForm, ContactForm, WishlistForm, VerifyPurchaseForm,ReviewForm
 from app.admin.forms import ProductForm
+from sqlalchemy.orm import joinedload
+from sqlalchemy.exc import SQLAlchemyError  
+from werkzeug.exceptions import abort
 from functools import wraps
 from app import db, mail, csrf
 from flask import current_app
@@ -28,35 +31,64 @@ def login_required_with_message(view):
 # ---------------------------------------
 # Home Route
 # ---------------------------------------
+
+
+
 @main_bp.route('/', methods=['GET'])
 def home():
-    categories   = Category.query.all()
-    hot_products = Product.query.order_by(Product.created_at.desc()).limit(8).all()
-    testimonials = Review.query.filter_by(verified=True).order_by(Review.date.desc()).limit(3).all()
+    try:
+        categories = Category.query.all()
+        hot_products = Product.query.order_by(Product.created_at.desc()).limit(8).all()
+        testimonials = Review.query.filter_by(verified=True).order_by(Review.date.desc()).limit(3).all()
 
-    return render_template(
-        'main/home.html',
-        categories=categories,
-        hot_products=hot_products,
-        testimonials=testimonials
-        # Remove featured_products – now fetched via API
-    )
-
+        return render_template(
+            'main/home.html',
+            categories=categories,
+            hot_products=hot_products,
+            testimonials=testimonials
+        )
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error in home route: {str(e)}")
+        abort(500)
 
 @main_bp.route('/api/featured-products')
 def get_featured_products():
-    featured = Product.query.filter_by(is_featured=True)\
-                .order_by(Product.updated_at.desc()).limit(8).all()
-    
-    return jsonify([
-        {
+    try:
+        # Eager load images to prevent N+1 query problem
+        featured = Product.query.options(joinedload(Product.images))\
+                     .filter_by(is_featured=True)\
+                     .order_by(Product.updated_at.desc())\
+                     .limit(6)\
+                     .all()
+
+        return jsonify(serialize_featured_products(featured))
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error in featured products: {str(e)}")
+        return jsonify({"error": "Could not retrieve products"}), 500
+
+def serialize_featured_products(products):
+    serialized = []
+    for p in products:
+        serialized.append({
             "id": p.id,
             "name": p.name,
-            "price": p.price,
+            "price": float(p.price) if p.price else None,
            
-            "image": url_for('product_image', filename=p.images[0].image_path.split('/')[-1]) if p.images else url_for('static', filename='images/default.jpg')
-        } for p in featured
-    ])
+            "image": get_primary_image_url(p),
+            
+        })
+    return serialized
+
+def get_primary_image_url(product):
+    if not product.images:
+        return url_for('static', filename='/placeholder.svg')
+    
+    try:
+        filename = product.images[0].image_path.split('/')[-1]
+        return url_for('product_image', filename=filename)
+    except (AttributeError, IndexError):
+        current_app.logger.warning(f"Invalid image path for product {product.id}")
+        return url_for('static', filename='images/placeholder.svg')
 
 
 # ---------------------------------------

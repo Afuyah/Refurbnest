@@ -45,110 +45,230 @@
   </div>
 </section>
 
-<section id="categories" >
+
+<section id="categories" class="py-5">
   <div class="container">
-    <h3 class="text-center mb-4">Shop by Category</h3>
-    <div class="swiper category-swiper">
+    <header class="mb-5">
+      <h2 class="text-center mb-3">Shop by Category</h2>
+      <p class="text-muted text-center">Explore our wide range of product categories</p>
+    </header>
+
+    <div class="swiper category-swiper position-relative">
       <div class="swiper-wrapper">
         {% for cat in categories %}
         <div class="swiper-slide">
-          <div class="card category-card h-100 position-relative">
-            
-            <div class="card-body p-2 text-center">
-              <h6 class="card-title mb-1">{{ cat.name }}</h6>
-              
+          <article class="card category-card h-100 position-relative">
+            <div class="card-body p-3 text-center d-flex flex-column">
+              <div class="mb-3">
+             
+                
+                <h3 class="card-title h6 mb-0">{{ cat.name }}</h3>
+              </div>
+              <p class="small text-muted mt-auto mb-0">{{ cat.product_count }} products</p>
             </div>
-            <a
-              href="{{ url_for('main.products_by_category', category_slug=cat.slug) }}"
-              class="stretched-link"
-            ></a>
-          </div>
+            <a href="{{ url_for('main.products_by_category', category_slug=cat.slug) }}" 
+               class="stretched-link" aria-label="Browse {{ cat.name }} category">
+            </a>
+          </article>
         </div>
         {% endfor %}
       </div>
-      <!-- Add Pagination -->
-      <div class="swiper-pagination"></div>
+
+      <!-- Navigation -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
       
+      <!-- Pagination -->
+      <div class="swiper-pagination position-static mt-3"></div>
     </div>
   </div>
+
   <style>
-    .category-card {
-  border-radius: 0.75rem;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-.category-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-.category-card .card-img-top {
-  object-fit: cover;
-  height: 100px;
-}
-.category-card .card-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-/* Swiper customizations */
-.category-swiper {
-  padding: 1rem 0;
-}
-.swiper-slide {
-  width: auto;
-  max-width: 200px;
-}
-.swiper-button-next,
-.swiper-button-prev {
-  color: #333;
-}
-.swiper-pagination-bullet {
-  background: #333;
-}
-
+   
   </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var swiper = new Swiper('.category-swiper', {
-      slidesPerView: 2,
-      spaceBetween: 16,
-      loop: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
-      breakpoints: {
-        576: {
-          slidesPerView: 3,
-        },
-        768: {
-          slidesPerView: 4,
-        },
-        992: {
-          slidesPerView: 5,
-        },
-        1200: {
-          slidesPerView: 6,
-        },
-      },
-    });
-  });
-</script>
-
 </section>
 
 
 
+<section class="featured-products py-5 ">
+  <div class="container">
+    <h2 class="text-center mb-5">Featured Products</h2>
+    
+    <!-- Products Container -->
+    <div id="featured-products-container" class="row g-4">
+      <!-- Product cards will be inserted here dynamically -->
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="#" class="btn btn-outline-primary px-5">View All Products</a>
+    </div>
+  </div>
+</section>
+
+<!-- Product Card Template (Hidden) -->
+<template id="product-card-template">
+  <div class="col-md-6 col-lg-4">
+    <article class="product-card card h-100 border-0 shadow-hover">
+      <div class="position-relative">
+        <img class="card-img-top" loading="lazy" alt="Product image">
+        <div class="card-actions position-absolute top-0 end-0 p-2">
+          <button class="btn btn-sm btn-light rounded-circle shadow-sm wishlist-btn">
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body pb-0">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h3 class="h6 mb-0 product-title"></h3>
+          <span class="badge bg-danger sale-badge d-none">Sale</span>
+        </div>
+        <p class="text-muted small mb-3 product-description"></p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="price">
+            <span class="h5 text-primary product-price"></span>
+            <del class="small text-muted ms-2 original-price d-none"></del>
+          </div>
+          <button class="btn btn-sm btn-primary rounded-pill px-3 add-to-cart-btn">
+            <i class="fas fa-cart-plus me-2"></i>Add
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+</template>
+
+<style>
+  .featured-products {
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 0.8rem;
+      overflow: hidden;
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      }
+      
+      .card-img-top {
+        height: 250px;
+        object-fit: cover;
+        border-radius: 0.8rem 0.8rem 0 0;
+      }
+      
+      .badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: transform 0.2s ease;
+        
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+    
+    .shadow-hover {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    
+    .card-actions .btn {
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .featured-products .product-card .card-img-top {
+      height: 200px;
+    }
+  }
+  </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('featured-products-container');
+  const template = document.getElementById('product-card-template');
+
+  async function loadFeaturedProducts() {
+    try {
+      const response = await fetch('/api/featured-products');
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const products = await response.json();
+      
+      // Clear loading state
+      container.innerHTML = '';
+      
+      if (products.length === 0) {
+        container.innerHTML = '<p class="text-center">No featured products available</p>';
+        return;
+      }
+
+      products.forEach(product => {
+        const clone = template.content.cloneNode(true);
+        
+        // Populate data
+        const card = clone.querySelector('.product-card');
+        card.dataset.productId = product.id;
+        
+        // Image
+        const img = clone.querySelector('img');
+        img.src = product.image;
+        img.alt = product.name;
+        
+        // Title
+        clone.querySelector('.product-title').textContent = product.name;
+        
+        // Price
+        const priceElement = clone.querySelector('.product-price');
+        priceElement.textContent = `$${product.price.toFixed(2)}`;
+        
+        // Add to Cart button
+        clone.querySelector('.add-to-cart-btn').addEventListener('click', () => {
+          addToCart(product.id);
+        });
+        
+        // Wishlist button
+        clone.querySelector('.wishlist-btn').addEventListener('click', (e) => {
+          e.preventDefault();
+          toggleWishlist(product.id);
+        });
+
+        container.appendChild(clone);
+      });
+
+    } catch (error) {
+      console.error('Error loading featured products:', error);
+      container.innerHTML = `
+        <div class="col-12 text-center text-danger">
+          <p>Failed to load featured products. Please try again later.</p>
+        </div>
+      `;
+    }
+  }
+
+  // Example cart/wishlist functions (implement these according to your needs)
+  function addToCart(productId) {
+    console.log('Adding to cart:', productId);
+    // Implement cart logic here
+  }
+
+  function toggleWishlist(productId) {
+    console.log('Toggling wishlist:', productId);
+    // Implement wishlist logic here
+  }
+
+  // Initial load
+  loadFeaturedProducts();
+});
+</script>
 
 
 <!-- Value Propositions Grid -->
@@ -193,7 +313,6 @@
     </div>
   </div>
 </section>
-
 
 <!-- Stats Section -->
 <section class="py-5">
@@ -287,137 +406,118 @@
   </div>
 </div>
 
-<script defer type="module" src="{{ url_for('static', filename='js/home.js') }}"></script>
 
-<style>
-:root {
-  --color-primary: #7C3AED;
-  --color-secondary: #10B981;
-  --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-}
 
-.hero-background {
-  background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.1) 0%, transparent 60%);
-}
-
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.products-carousel {
-  display: grid;
-  grid-auto-flow: column;
-  gap: 1.5rem;
-  overflow-x: auto;
-  padding-bottom: 2rem;
-}
-
-.product-card {
-  min-width: 280px;
-  padding: 1.5rem;
-  border-radius: 1rem;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.social-floating {
-  position: fixed;
-  right: 1.5rem;
-  bottom: 1.5rem;
-  z-index: 1000;
-}
-
-@keyframes gradient-pulse {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.hero {
-  background-size: 200% 200%;
-  animation: gradient-pulse 15s ease infinite;
-}
-</style>
 <script>
 
-  // Animate number counters
-document.querySelectorAll('[data-count]').forEach(el => {
-  const target = parseFloat(el.dataset.count)
-  const duration = 2000
-  const start = Date.now()
-  
-  const update = () => {
-    const elapsed = Date.now() - start
-    const progress = Math.min(elapsed / duration, 1)
-    el.textContent = (progress * target).toFixed(progress > 0.99 ? 0 : 1)
-    
-    if (progress < 1) requestAnimationFrame(update)
-  }
-  
-  requestAnimationFrame(update)
-})
 
-// Initialize animations
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible')
-    }
-  })
-}, { threshold: 0.1 })
-
-document.querySelectorAll('.hover-lift').forEach(el => observer.observe(el))
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const totalSlides = {{ featured_products|length }};
-  new Swiper('.featured-swiper', {
-    loop: true,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev'
-    },
-    // Automatically fill blanks if slide count < group size
-    loopFillGroupWithBlank: true,
-    // Responsive breakpoints with capping
-    breakpoints: {
-      576: {
-        slidesPerView: Math.min(2, totalSlides),
-        slidesPerGroup: Math.min(2, totalSlides)
+//swipper for categories
+document.addEventListener('DOMContentLoaded', function () {
+    var swiper = new Swiper('.category-swiper', {
+      slidesPerView: 2,
+      spaceBetween: 16,
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
       },
-      992: {
-        slidesPerView: Math.min(3, totalSlides),
-        slidesPerGroup: Math.min(3, totalSlides)
-      }
-    },
-    // Mobile default
-    slidesPerView: Math.min(1, totalSlides),
-    slidesPerGroup: Math.min(1, totalSlides)
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 3,
+        },
+        768: {
+          slidesPerView: 4,
+        },
+        992: {
+          slidesPerView: 5,
+        },
+        1200: {
+          slidesPerView: 6,
+        },
+      },
+    });
   });
-  console.log('Swiper initialized with', totalSlides, 'slides');
-});
 
 
 
-
-
+  // Animate number counters
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseFloat(el.dataset.count)
+    const duration = 2000
+    const start = Date.now()
+    
+    const update = () => {
+      const elapsed = Date.now() - start
+      const progress = Math.min(elapsed / duration, 1)
+      el.textContent = (progress * target).toFixed(progress > 0.99 ? 0 : 1)
+      
+      if (progress < 1) requestAnimationFrame(update)
+    }
+    
+    requestAnimationFrame(update)
+  })
+  
+  // Initialize animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible')
+      }
+    })
+  }, { threshold: 0.1 })
+  
+  document.querySelectorAll('.hover-lift').forEach(el => observer.observe(el))
+  
+  
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const totalSlides = {{ featured_products|length }};
+    new Swiper('.featured-swiper', {
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      // Automatically fill blanks if slide count < group size
+      loopFillGroupWithBlank: true,
+      // Responsive breakpoints with capping
+      breakpoints: {
+        576: {
+          slidesPerView: Math.min(2, totalSlides),
+          slidesPerGroup: Math.min(2, totalSlides)
+        },
+        992: {
+          slidesPerView: Math.min(3, totalSlides),
+          slidesPerGroup: Math.min(3, totalSlides)
+        }
+      },
+      // Mobile default
+      slidesPerView: Math.min(1, totalSlides),
+      slidesPerGroup: Math.min(1, totalSlides)
+    });
+    console.log('Swiper initialized with', totalSlides, 'slides');
+  });
+  
+  
+  
+  
+  
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

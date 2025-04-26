@@ -172,3 +172,131 @@
   }
 
 
+  :root {
+    --color-primary: #7C3AED;
+    --color-secondary: #10B981;
+    --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  }
+  
+  .hero-background {
+    background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.1) 0%, transparent 60%);
+  }
+  
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .products-carousel {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 2rem;
+  }
+  
+  .product-card {
+    min-width: 280px;
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+  
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .social-floating {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 1000;
+  }
+  
+  @keyframes gradient-pulse {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .hero {
+    background-size: 200% 200%;
+    animation: gradient-pulse 15s ease infinite;
+  }
+
+   /* Category Cards */
+   .category-card {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: `#696868;
+  }
+
+  .category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .category-icon {
+    width: 80px;
+    height: 80px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .category-card:hover .category-icon {
+    transform: scale(1.05);
+  }
+
+  /* Swiper Customization */
+  .category-swiper {
+    padding: 1rem 0 2.5rem;
+  }
+
+  .swiper-slide {
+    width: auto;
+    height: auto;
+    max-width: 240px;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    background: rgba(255, 255, 255, 0.9);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .swiper-pagination-bullet {
+    background: #dee2e6;
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #333;
+  }
+
+  @media (max-width: 576px) {
+    .swiper-slide {
+      max-width: 180px;
+    }
+  }
