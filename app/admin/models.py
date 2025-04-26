@@ -102,20 +102,29 @@ class Product(db.Model):
 
 
 # ---------------------------------------
-# Product Image Model
+# Enhanced Product Image Model
 # ---------------------------------------
 class ProductImage(db.Model):
     __tablename__ = 'product_images'
     
     id = db.Column(db.Integer, primary_key=True)
-    image_path = db.Column(db.String(500), nullable=False)  # URL instead of file path
+    image_path = db.Column(db.String(500), nullable=False)  # Stores either URL or path
+    is_primary = db.Column(db.Boolean, default=False, nullable=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False, index=True)
-
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
+    alt_text = db.Column(db.String(255), nullable=True)  # For SEO accessibility
+
+    
 
     def __repr__(self):
-        return f'<ProductImage {self.image_url}>'
+        return f'<ProductImage {self.id} for Product {self.product_id}>'
+
+    @property
+    def image_url(self):
+        if self.image_path.startswith(('http://', 'https://')):
+            return self.image_path
+        return url_for('static', filename=f'uploads/{self.image_path}', _external=True)
 
 
 # ---------------------------------------

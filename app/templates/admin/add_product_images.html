@@ -6,74 +6,110 @@
 <div class="container-fluid px-4">
     <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10">
-            <!-- Header Section -->
+            <!-- Header Section with Progress Indicator -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">
-                    <i class="fas fa-images me-2"></i>Upload Product Images
-                </h1>
+                <div>
+                    <h1 class="h3 mb-0 text-gray-800">
+                        <i class="fas fa-images me-2"></i>Upload Product Images
+                    </h1>
+                    <p class="mb-0 text-muted">Step 3 of 3: Add product visuals</p>
+                </div>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="{{ url_for('admin.list_products') }}">Products</a></li>
-                        <li class="breadcrumb-item active">Upload Images</li>
+                        <li class="breadcrumb-item active" aria-current="page">Upload Images</li>
                     </ol>
                 </nav>
             </div>
 
             <!-- Upload Card -->
             <div class="card shadow-lg border-0">
-                <div class="card-header bg-primary text-white py-3">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-cloud-upload-alt me-2"></i>Image Upload Form
                     </h5>
+                    <span class="badge bg-light text-primary">Max 4 images</span>
                 </div>
                 <div class="card-body">
-                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate id="uploadForm">
                         {{ form.hidden_tag() }}
 
-                        <!-- Product Selection -->
+                        <!-- Product Selection with Search -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">
-                                <i class="fas fa-cube me-1"></i>Select Product
+                            <label class="form-label fw-bold d-flex justify-content-between">
+                                <span><i class="fas fa-cube me-1"></i>Select Product</span>
+                                <small class="text-muted fw-normal">Can't find your product? <a href="{{ url_for('admin.add_product') }}">Add new</a></small>
                             </label>
-                            {{ form.product_id(class="form-select form-select-lg") }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                {{ form.product_id(class="form-select form-select-lg select2") }}
+                            </div>
                             {% for error in form.product_id.errors %}
                             <div class="invalid-feedback d-block">{{ error }}</div>
                             {% endfor %}
                         </div>
 
                         <!-- Image Upload Sections -->
-                        <div class="row g-4 mb-4">
+                        <div class="row g-4 mb-4" id="imageUploadContainer">
                             {% for field in [form.image1, form.image2, form.image3, form.image4] %}
                             <div class="col-md-6">
-                                <div class="image-upload-card">
+                                <div class="image-upload-card {% if loop.first %}required-field{% endif %}">
                                     <label class="form-label fw-bold">
                                         <i class="fas fa-image me-1"></i>{{ field.label.text }}
+                                        {% if loop.first %}<span class="text-danger">*</span>{% endif %}
                                     </label>
-                                    <div class="file-upload-wrapper">
-                                        {{ field(class="form-control", accept="image/*") }}
-                                        <div class="upload-preview mt-2"></div>
+                                    <div class="file-upload-wrapper position-relative">
+                                        <div class="file-upload-input">
+                                            {{ field(class="form-control", accept="image/*", data_preview="preview-" + loop.index|string) }}
+                                            <div class="file-upload-label">
+                                                <div class="file-upload-icon">
+                                                    <i class="fas fa-cloud-upload-alt fa-2x text-muted"></i>
+                                                </div>
+                                                <div class="file-upload-text">
+                                                    <span class="d-block fw-bold">Click to upload</span>
+                                                    <small class="text-muted">or drag and drop</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="upload-preview mt-2" id="preview-{{ loop.index }}"></div>
                                         {% for error in field.errors %}
                                         <div class="invalid-feedback d-block">{{ error }}</div>
                                         {% endfor %}
                                     </div>
-                                    <small class="form-text text-muted">
-                                        Recommended: JPEG/PNG, Max 2MB, 1200x800px
-                                    </small>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <small class="form-text text-muted">
+                                            JPEG/PNG, Max 5MB
+                                        </small>
+                                        <small class="form-text text-muted">
+                                            {% if loop.first %}Main image{% else %}Optional{% endif %}
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                             {% endfor %}
                         </div>
 
+                        <!-- Image Order Note -->
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            The first image will be used as the primary product image. Drag and drop to reorder after upload.
+                        </div>
+
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-between border-top pt-4">
                             <a href="{{ url_for('admin.list_products') }}" 
-                               class="btn btn-secondary btn-lg px-4">
-                                <i class="fas fa-times me-2"></i>Cancel
+                               class="btn btn-outline-secondary btn-lg px-4">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Products
                             </a>
-                            <button type="submit" class="btn btn-primary btn-lg px-5">
-                                <i class="fas fa-upload me-2"></i>Upload Images
-                            </button>
+                            <div>
+                                <button type="reset" class="btn btn-light btn-lg px-4 me-2">
+                                    <i class="fas fa-undo me-2"></i>Reset
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn">
+                                    <i class="fas fa-upload me-2"></i>Upload Images
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -85,70 +121,231 @@
 
 {% block scripts %}
 <!-- Image Upload Previews and Validation -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize file upload previews
-    document.querySelectorAll('input[type="file"]').forEach(input => {
+    // Initialize Select2 for product search
+    $('.select2').select2({
+        placeholder: "Search for a product...",
+        width: '100%'
+    });
+
+    // Initialize file upload previews with drag and drop
+    document.querySelectorAll('.file-upload-input').forEach(wrapper => {
+        const input = wrapper.querySelector('input[type="file"]');
+        const label = wrapper.querySelector('.file-upload-label');
+        const previewId = input.getAttribute('data-preview');
+        const preview = document.getElementById(previewId);
+
+        // Handle file selection
         input.addEventListener('change', function(e) {
-            const preview = this.closest('.file-upload-wrapper').querySelector('.upload-preview');
-            preview.innerHTML = '';
-            
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                const img = document.createElement('img');
-                img.classList.add('preview-image');
-                
-                reader.onload = function(e) {
-                    img.src = e.target.result;
-                    preview.appendChild(img);
-                }
-                
-                reader.readAsDataURL(this.files[0]);
+            updatePreview(this, preview);
+        });
+
+        // Drag and drop functionality
+        wrapper.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            wrapper.classList.add('dragover');
+        });
+
+        wrapper.addEventListener('dragleave', () => {
+            wrapper.classList.remove('dragover');
+        });
+
+        wrapper.addEventListener('drop', (e) => {
+            e.preventDefault();
+            wrapper.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                input.files = e.dataTransfer.files;
+                updatePreview(input, preview);
             }
         });
     });
 
-    // Form validation
-    const forms = document.querySelectorAll('.needs-validation');
-    Array.prototype.slice.call(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
+    function updatePreview(input, previewElement) {
+        previewElement.innerHTML = '';
+        
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            
+            // Validate file type and size
+            if (!file.type.match('image.*')) {
+                previewElement.innerHTML = `
+                    <div class="alert alert-danger py-2">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Only image files are allowed
+                    </div>`;
+                input.value = '';
+                return;
             }
-            form.classList.add('was-validated');
-        }, false);
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB
+                previewElement.innerHTML = `
+                    <div class="alert alert-danger py-2">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        File exceeds 5MB limit
+                    </div>`;
+                input.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            const imgContainer = document.createElement('div');
+            imgContainer.classList.add('preview-container', 'position-relative');
+            
+            const img = document.createElement('img');
+            img.classList.add('preview-image');
+            
+            const imgInfo = document.createElement('div');
+            imgInfo.classList.add('preview-info', 'bg-dark', 'text-white', 'p-2', 'small');
+            imgInfo.innerHTML = `
+                <div>${file.name}</div>
+                <div>${(file.size / 1024).toFixed(1)} KB</div>
+            `;
+            
+            reader.onload = function(e) {
+                img.src = e.target.result;
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(imgInfo);
+                previewElement.appendChild(imgContainer);
+            }
+            
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Initialize Sortable for image reordering
+    new Sortable(document.getElementById('imageUploadContainer'), {
+        animation: 150,
+        handle: '.image-upload-card',
+        onEnd: function() {
+            // Update the file input order to match visual order
+            const container = document.getElementById('imageUploadContainer');
+            const inputs = container.querySelectorAll('input[type="file"]');
+            const files = Array.from(inputs).map(input => input.files[0]);
+            
+            inputs.forEach((input, index) => {
+                if (files[index]) {
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(files[index]);
+                    input.files = dataTransfer.files;
+                }
+            });
+        }
+    });
+
+    // Form validation
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Scroll to first invalid field
+            const invalid = form.querySelector('.is-invalid');
+            if (invalid) {
+                invalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        form.classList.add('was-validated');
+    }, false);
+
+    // Loading state for submit button
+    const submitBtn = document.getElementById('submitBtn');
+    form.addEventListener('submit', function() {
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Uploading...';
+        submitBtn.disabled = true;
     });
 });
 </script>
 {% endblock %}
 
+{% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
 .image-upload-card {
     border: 2px dashed #dee2e6;
     border-radius: 0.5rem;
     padding: 1.5rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
 }
 
 .image-upload-card:hover {
     border-color: #0d6efd;
+    background-color: #f0f7ff;
+}
+
+.image-upload-card.required-field {
+    border-left: 4px solid #0d6efd;
+}
+
+.image-upload-card.dragover {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+}
+
+.file-upload-wrapper {
+    position: relative;
+}
+
+.file-upload-input {
+    position: relative;
+    overflow: hidden;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    text-align: center;
+    padding: 1rem;
+}
+
+.file-upload-icon {
+    margin-bottom: 0.5rem;
+}
+
+.file-upload-text span {
+    color: #495057;
+}
+
+.preview-container {
+    border-radius: 0.25rem;
+    overflow: hidden;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 .preview-image {
-    max-width: 100%;
-    height: 150px;
-    object-fit: contain;
-    border-radius: 0.25rem;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
 }
 
-.file-upload-wrapper input[type="file"] {
-    opacity: 0;
+.preview-info {
     position: absolute;
-    z-index: -1;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.9;
+    display: flex;
+    justify-content: space-between;
 }
 
-.form-select {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+.select2-container--default .select2-selection--single {
+    height: calc(3.5rem + 2px);
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    border-radius: 0.5rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: calc(3.5rem + 2px);
 }
 </style>
+{% endblock %}

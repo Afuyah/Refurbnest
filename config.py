@@ -24,3 +24,5 @@ class Config:
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', MAIL_USERNAME)
 
     SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
+    
+    UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', '/data/products')

@@ -256,36 +256,60 @@ def dashboard():
                            variety_count=variety_count)
 
 
+import uuid
+from datetime import datetime
+from werkzeug.utils import secure_filename
+
+# ---------------------------------------
+# Enhanced Upload Route with Cloud Storage Option
+# ---------------------------------------
+def generate_image_filename(product, original_filename):
+    """Generate SEO-friendly unique filename"""
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    unique_id = uuid.uuid4().hex[:6]
+    name_slug = slugify(product.name)[:30]
+    ext = os.path.splitext(original_filename)[1].lower()
+    return f"{name_slug}-{timestamp}-{unique_id}{ext}"
 
 @admin_bp.route('/add_product_images', methods=['GET', 'POST'])
 def add_product_images():
     form = ProductImageForm()
-
-    # Populate product options from the database
-    form.product_id.choices = [(product.id, product.name) for product in Product.query.all()]
+    form.product_id.choices = [(p.id, p.name) for p in Product.query.order_by(Product.name).all()]
 
     if form.validate_on_submit():
-        # Use Railway volume path
-        product_images_path = '/data/products'
-        os.makedirs(product_images_path, exist_ok=True)
-
-        product_id = form.product_id.data
-
-        for image_field in [form.image1, form.image2, form.image3, form.image4]:
-            if image_field.data:
-                filename = secure_filename(image_field.data.filename)
-                image_path = os.path.join(product_images_path, filename)
-                image_field.data.save(image_path)
-
-                # Store relative path for serving later
-                product_image = ProductImage(
-                    image_path=f'products/{filename}',
-                    product_id=product_id
-                )
-                db.session.add(product_image)
-
-        db.session.commit()
-        flash('Images added successfully!', 'success')
-        return redirect(url_for('admin.add_product_images'))
+        product = Product.query.get_or_404(form.product_id.data)
+        
+        try:
+            for idx, field in enumerate([form.image1, form.image2, form.image3, form.image4]):
+                if field.data:
+                    filename = generate_image_filename(product, field.data.filename)
+                    secure_name = secure_filename(filename)
+                    
+                    # Local storage option
+                    upload_dir = app.config['UPLOAD_FOLDER']
+                    os.makedirs(upload_dir, exist_ok=True)
+                    filepath = os.path.join(upload_dir, secure_name)
+                    field.data.save(filepath)
+                    
+                    # For cloud storage (example using AWS S3):
+                    # s3.upload_fileobj(field.data, 'your-bucket', f"products/{secure_name}")
+                    
+                    # Create image record
+                    img = ProductImage(
+                        image_path=secure_name,  # or f"https://your-bucket.s3.amazonaws.com/products/{secure_name}"
+                        product_id=product.id,
+                        is_primary=(idx == 0),  # First image is primary
+                        alt_text=f"{product.name} product image {idx + 1}"
+                    )
+                    db.session.add(img)
+            
+            db.session.commit()
+            flash('Product images uploaded successfully!', 'success')
+            return redirect(url_for('admin.product_list'))
+            
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Image upload failed: {str(e)}")
+            flash('Error uploading images. Please try again.', 'danger')
 
     return render_template('admin/add_product_images.html', form=form)
