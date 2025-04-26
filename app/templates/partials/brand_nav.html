@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
 
-<div class="filter-bar glassmorphism mt-5">
+<div class="filter-bar glassmorphism mt-3 mb-2">
   <div class="container position-relative">
     <!-- Section Header -->
     <div class="section-header text-center mb-4">
@@ -67,7 +67,7 @@
   background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(12px);
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
@@ -98,7 +98,7 @@
 /* Mobile-specific adjustments */
 @media (max-width: 767.98px) {
   .brand-swiper {
-    padding: 0.5rem 0.75rem !important;
+    padding: 4px 4px !important;
   }
   
   .swiper-slide {
@@ -161,27 +161,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-    var swiper = new Swiper('.brand-swiper', {
-      slidesPerView: 'auto',
-      spaceBetween: 10,
-      freeMode: true,
-      grabCursor: true,
-      breakpoints: {
-        640: {
-          slidesPerView: 4,
-        },
-        768: {
-          slidesPerView: 6,
-        },
-        1024: {
-          slidesPerView: 8,
-        },
-      },
-    });
-  });
-
 
 
 </script>
