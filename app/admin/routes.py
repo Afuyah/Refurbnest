@@ -5,6 +5,7 @@ from app.admin.forms import BrandForm, CategoryForm, ProductForm, ProductVariety
 from app.admin.models import Brand, Category, Product, ProductImage, ProductVariety
 from flask_login import login_required
 import os
+from slugify import slugify
 
 from werkzeug.utils import secure_filename
 
