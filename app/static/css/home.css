@@ -131,7 +131,7 @@ html {
 /* ===== Product Components ===== */
 .product-card {
   min-width: 200px;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   border-radius: var(--radius-md);
 }
 
@@ -182,13 +182,7 @@ html {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.products-grid {
-  display: grid;
-  gap: var(--spacing-lg);
-  grid-auto-flow: column;
-  overflow-x: auto;
-  padding-bottom: var(--spacing-xl);
-}
+
 
 .testimonials-grid {
   display: grid;
