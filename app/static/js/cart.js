@@ -150,3 +150,45 @@ document.addEventListener('DOMContentLoaded', () => {
   // ——————— Init ———————
   fetchCart();
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('checkoutBtn');
+  console.log('checkoutBtn element is', btn);
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    console.log('checkoutBtn clicked!!');
+
+    try {
+      console.log('Fetching /cart/summary…');
+      const response = await fetch('/cart/summary', {
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      console.log('Fetch completed:', response.status);
+
+      if (!response.ok) {
+        console.error('Non-OK status:', response.status);
+        showToast('Could not fetch cart summary', 'error');
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Cart summary data:', data);
+
+      if (data.count === 0) {
+        showToast('Your cart is empty.', 'warning');
+        return;
+      }
+
+      console.log('Redirecting to /cart/checkout');
+      // 🔑 Use the blueprint’s prefix
+      window.location.href = '/cart/checkout';
+
+    } catch (err) {
+      console.error('Error during checkout:', err);
+      showToast('There was a problem starting checkout.', 'error');
+    }
+  });
+});

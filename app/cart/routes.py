@@ -94,18 +94,23 @@ def remove_from_cart(product_id: int):
     }
     return jsonify(payload), 200
 
+@cart_bp.route('/checkout', methods=['GET'])
+def checkout_page():
+    cart = Cart()
+    if cart.item_count == 0:
+        return redirect(url_for('cart.cart_summary'))
+    return render_template('cart/checkout.html')
+
 
 @cart_bp.route('/checkout', methods=['POST'])
 def checkout():
     cart = Cart()
     if cart.item_count == 0:
         abort(400, description="Cart is empty")
-
-    data = request.get_json()
-    name = data.get('name', '').strip()
+    data = request.get_json() or {}
+    name    = data.get('name', '').strip()
     address = data.get('address', '').strip()
-    phone = data.get('phone', '').strip()
-
+    phone   = data.get('phone', '').strip()
     if not all([name, address, phone]):
         abort(400, description="Missing required fields")
 
@@ -117,19 +122,19 @@ def checkout():
         payment_status='Pending'
     )
     db.session.add(order)
-    db.session.flush()  # get order.id before committing
+    db.session.flush()  # get order.id
 
     for pid, item in cart.get_items().items():
-        order_item = OrderItem(
+        db.session.add(OrderItem(
             order_id=order.id,
             product_id=pid,
             name=item['name'],
             price=item['price'],
             quantity=item['quantity']
-        )
-        db.session.add(order_item)
+        ))
 
     db.session.commit()
+    cart.clear()  # clear the cart now that the order exists
 
     return jsonify({
         'order_id': order.id,
@@ -137,15 +142,12 @@ def checkout():
     }), 200
 
 
-
-@cart_bp.route('/summary')
+@cart_bp.route('/summary', methods=['GET'])
 def cart_summary():
     cart = Cart()
-    payload = {
-        'items': cart.get_items(),     # {'product_id': {name, price, quantity}}
-        'count': cart.item_count,       # total quantity of all products
-        'unique_items': cart.unique_items,  # how many different products
-        'total': float(cart.total),     # grand total
-    }
-    return jsonify(payload), 200
-
+    return jsonify({
+        'items': cart.get_items(),
+        'count': cart.item_count,
+        'unique_items': cart.unique_items,
+        'total': float(cart.total)
+    }), 200
