@@ -1,112 +1,131 @@
 from flask import session
-from decimal import Decimal
-from typing import Dict, Any
+from decimal import Decimal, InvalidOperation
+from typing import Dict, Any, Optional
 
-class Cart:
-    @staticmethod
-    def add(product_id: int, name: str, price: float, quantity: int = 1) -> None:
-        """Add or update a product in the cart with validation."""
-        try:
-            product_id = str(product_id)
-            if quantity < 1:
-                raise ValueError("Quantity must be at least 1")
-            
-            price_decimal = Decimal(str(price)).quantize(Decimal('0.00'))
-            if price_decimal <= Decimal('0'):
-                raise ValueError("Price must be positive")
-
-            cart = session.get('cart', {})
-            existing_item = cart.get(product_id)
-
-            if existing_item:
-                new_quantity = existing_item['quantity'] + quantity
-                if new_quantity > 100:  # Prevent unreasonable quantities
-                    raise ValueError("Maximum quantity exceeded")
-                existing_item['quantity'] = new_quantity
-            else:
-                cart[product_id] = {
-                    'name': name.strip(),
-                    'price': float(price_decimal),
-                    'quantity': quantity
-                }
-
-            session['cart'] = cart
-            session.modified = True
-
-        except (ValueError, TypeError) as e:
-            raise CartError(f"Invalid cart operation: {str(e)}") from e
-
-    @staticmethod
-    def remove(product_id: int) -> None:
-        """Remove a product from the cart completely."""
-        product_id = str(product_id)
-        cart = session.get('cart', {})
-        if product_id in cart:
-            del cart[product_id]
-            session['cart'] = cart
-            session.modified = True
-
-    @staticmethod
-    def update_quantity(product_id: int, quantity: int) -> None:
-        """Update quantity of a specific cart item."""
-        product_id = str(product_id)
-        if quantity < 0:
-            raise ValueError("Quantity cannot be negative")
-            
-        cart = session.get('cart', {})
-        if product_id in cart:
-            if quantity == 0:
-                del cart[product_id]
-            else:
-                cart[product_id]['quantity'] = quantity
-            session['cart'] = cart
-            session.modified = True
-
-    @staticmethod
-    def clear() -> None:
-        """Completely empty the cart."""
-        if 'cart' in session:
-            session.pop('cart')
-            session.modified = True
-
-    @staticmethod
-    def get_cart() -> Dict[str, Dict[str, Any]]:
-        """Get validated cart contents with consistent structure."""
-        cart = session.get('cart', {})
-        validated = {}
-        
-        for pid, item in cart.items():
-            try:
-                validated[pid] = {
-                    'name': str(item['name']),
-                    'price': float(item['price']),
-                    'quantity': int(item['quantity'])
-                }
-            except (KeyError, TypeError, ValueError):
-                continue  # Skip invalid items
-                
-        return validated
-
-    @staticmethod
-    def item_count() -> int:
-        """Get total number of items in cart (sum of quantities)."""
-        return sum(item['quantity'] for item in Cart.get_cart().values())
-
-    @staticmethod
-    def unique_items() -> int:
-        """Get count of distinct products in cart."""
-        return len(Cart.get_cart())
-
-    @staticmethod
-    def get_total() -> Decimal:
-        """Calculate total with precise decimal arithmetic."""
-        total = Decimal('0')
-        for item in Cart.get_cart().values():
-            price = Decimal(str(item['price']))
-            quantity = Decimal(str(item['quantity']))
-            total += price * quantity
-        return total.quantize(Decimal('0.00'))
 
 class CartError(Exception):
-    """Custom exception for cart operations"""
+    """Custom exception for cart operations."""
     pass
+
+
+class CartItem:
+    __slots__ = ('product_id', 'name', 'price', 'quantity')
+
+    def __init__(self, product_id: str, name: str, price: Decimal, quantity: int) -> None:
+        self.product_id = product_id
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'name': self.name,
+            'price': float(self.price),
+            'quantity': self.quantity
+        }
+
+
+class Cart:
+    SESSION_KEY = 'cart'
+    MAX_QUANTITY = 100
+
+    def __init__(self) -> None:
+        # Load or initialize the cart once per request
+        raw: Dict[str, Any] = session.get(self.SESSION_KEY, {})
+        self._items: Dict[str, CartItem] = {}
+        for pid, data in raw.items():
+            try:
+                price = Decimal(str(data['price'])).quantize(Decimal('0.00'))
+                qty   = int(data['quantity'])
+                if price <= 0 or qty < 0:
+                    raise ValueError
+                self._items[pid] = CartItem(pid, str(data['name']), price, qty)
+            except (KeyError, TypeError, ValueError, InvalidOperation):
+                # skip invalid entries
+                continue
+
+    def _save(self) -> None:
+        """Persist current cart back into the session in one shot."""
+        session[self.SESSION_KEY] = {
+            pid: item.to_dict() for pid, item in self._items.items()
+        }
+        session.modified = True
+
+    def add(self, product_id: int, name: str, price: float, quantity: int = 1) -> None:
+        """Add or increment an item in the cart, with full validation."""
+        pid = str(product_id)
+        name = name.strip()
+        if not name:
+            raise CartError("Product name cannot be empty")
+        if quantity < 1:
+            raise CartError("Quantity must be at least 1")
+        try:
+            price_dec = Decimal(str(price)).quantize(Decimal('0.00'))
+        except InvalidOperation:
+            raise CartError("Invalid price format")
+        if price_dec <= 0:
+            raise CartError("Price must be positive")
+
+        item = self._items.get(pid)
+        if item:
+            new_qty = item.quantity + quantity
+            if new_qty > self.MAX_QUANTITY:
+                raise CartError(f"Cannot have more than {self.MAX_QUANTITY} of a single item")
+            item.quantity = new_qty
+        else:
+            if quantity > self.MAX_QUANTITY:
+                raise CartError(f"Cannot add more than {self.MAX_QUANTITY} at once")
+            self._items[pid] = CartItem(pid, name, price_dec, quantity)
+
+        self._save()
+
+    def remove(self, product_id: int) -> None:
+        """Remove an item entirely from the cart."""
+        pid = str(product_id)
+        if pid in self._items:
+            del self._items[pid]
+            self._save()
+
+    def update_quantity(self, product_id: int, quantity: int) -> None:
+        """Set a specific quantity; zero means remove."""
+        pid = str(product_id)
+        if quantity < 0:
+            raise CartError("Quantity cannot be negative")
+        if pid not in self._items:
+            return  # nothing to do
+
+        if quantity == 0:
+            del self._items[pid]
+        else:
+            if quantity > self.MAX_QUANTITY:
+                raise CartError(f"Cannot exceed {self.MAX_QUANTITY} units")
+            self._items[pid].quantity = quantity
+
+        self._save()
+
+    def clear(self) -> None:
+        """Empty the cart."""
+        if self._items:
+            session.pop(self.SESSION_KEY, None)
+            session.modified = True
+            self._items.clear()
+
+    def get_items(self) -> Dict[str, Dict[str, Any]]:
+        """Return raw dict for JSON serialization."""
+        return {pid: item.to_dict() for pid, item in self._items.items()}
+
+    @property
+    def unique_items(self) -> int:
+        """Count of distinct products."""
+        return len(self._items)
+
+    @property
+    def item_count(self) -> int:
+        """Sum of all quantities."""
+        return sum(item.quantity for item in self._items.values())
+
+    @property
+    def total(self) -> Decimal:
+        """Total price, with two-decimal precision."""
+        total = sum((item.price * item.quantity for item in self._items.values()), Decimal('0'))
+        return total.quantize(Decimal('0.00'))
