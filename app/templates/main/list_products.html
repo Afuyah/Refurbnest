@@ -10,7 +10,7 @@
     <article class="product-card" data-brand="{{ product.brand_id }}" data-category="{{ product.category_id }}">
         <div class="card-media">
             <div class="media-container">
-                <div class="skeleton"></div> 
+                <div class="skeleton"></div>
                 <img data-src="{{ url_for('product_image', filename=product.image_url.split('/')[-1]) }}"
                     alt="{{ product.name }}" class="lazy-load blur-up" loading="lazy">
 
@@ -35,9 +35,19 @@
                 <span class="original-price">${{ product.original_price }}</span>
                 {% endif %}
             </div>
-            <button class="btn btn-sm btn-primary rounded-pill px-3 add-to-cart-btn">
-                <i class="fas fa-cart-plus me-2"></i>Add
-            </button>
+
+            <!-- In your product template -->
+<button class="add-to-cart-btn" 
+data-product-id="{{ product.id }}"
+data-product-name="{{ product.name }}"
+data-product-price="{{ product.price }}"
+<span class="btn-content">
+<i class="fas fa-cart-plus mr-1"></i>
+Add to Cart
+</span>
+
+</button>
+
         </div>
     </article>
     {% else %}
@@ -112,22 +122,22 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-    const lazyImages = document.querySelectorAll('.lazy-load');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if(entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.addEventListener('load', () => {
-                    img.classList.add('loaded');
-                });
-                observer.unobserve(img);
-            }
-        });
-    }, { rootMargin: '100px' });
+        const lazyImages = document.querySelectorAll('.lazy-load');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                    });
+                    observer.unobserve(img);
+                }
+            });
+        }, { rootMargin: '100px' });
 
-    lazyImages.forEach(img => observer.observe(img));
-});
+        lazyImages.forEach(img => observer.observe(img));
+    });
 
 
 </script>

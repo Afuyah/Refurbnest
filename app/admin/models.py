@@ -90,7 +90,7 @@ class Product(db.Model):
     brand_id = db.Column(db.Integer, db.ForeignKey('brands.id', ondelete='CASCADE'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False)
     is_featured = db.Column(db.Boolean, default=False, nullable=True)
-
+    is_active = db.Column(db.Boolean, default=True, nullable=True)
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
 
@@ -277,3 +277,24 @@ class Review(db.Model):
 
     def __repr__(self):
         return f'<Review by {self.author} | Rating: {self.rating}>'
+    
+
+
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), nullable=False)
+    total_amount = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    items = db.relationship('OrderItem', backref='order', lazy=True)
+
+class OrderItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_name = db.Column(db.String(120), nullable=False)
+    product_price = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+
+
+    
+

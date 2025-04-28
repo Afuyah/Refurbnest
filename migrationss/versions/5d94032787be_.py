@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9a630e66fba1
+Revision ID: 5d94032787be
 Revises: 
-Create Date: 2025-04-24 15:56:34.532835
+Create Date: 2025-04-27 11:22:30.663186
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9a630e66fba1'
+revision = '5d94032787be'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -48,6 +48,13 @@ def upgrade():
     with op.batch_alter_table('contact_messages', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_contact_messages_email'), ['email'], unique=False)
 
+    op.create_table('order',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('email', sa.String(length=120), nullable=False),
+    sa.Column('total_amount', sa.Float(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('roles',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
@@ -57,6 +64,15 @@ def upgrade():
     with op.batch_alter_table('roles', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_roles_name'), ['name'], unique=True)
 
+    op.create_table('order_item',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('product_name', sa.String(length=120), nullable=False),
+    sa.Column('product_price', sa.Float(), nullable=False),
+    sa.Column('quantity', sa.Integer(), nullable=False),
+    sa.Column('order_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['order_id'], ['order.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('products',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=200), nullable=False),
@@ -97,9 +113,11 @@ def upgrade():
     op.create_table('product_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('image_path', sa.String(length=500), nullable=False),
+    sa.Column('is_primary', sa.Boolean(), nullable=True),
     sa.Column('product_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('alt_text', sa.String(length=255), nullable=True),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -163,10 +181,12 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_products_name'))
 
     op.drop_table('products')
+    op.drop_table('order_item')
     with op.batch_alter_table('roles', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_roles_name'))
 
     op.drop_table('roles')
+    op.drop_table('order')
     with op.batch_alter_table('contact_messages', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_contact_messages_email'))
 

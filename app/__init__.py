@@ -29,12 +29,14 @@ def create_app(config_class=None):
     login_manager.login_message_category = 'warning'
 
     # Blueprints
-    from app.auth.routes import auth_bp
+    from app.auth.routes import auth_bp 
+    from app.cart.routes import cart_bp
     from app.main.routes import main_bp
     from app.admin.routes import admin_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(cart_bp, url_prefix='/cart')
     app.register_blueprint(admin_bp, url_prefix='/admin')
 
     # User loader for login management

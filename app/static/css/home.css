@@ -34,6 +34,8 @@ html {
   scroll-behavior: smooth;
 }
 
+
+
 /* ===== Text Effects ===== */
 .text-stroke-primary {
   color: transparent;
@@ -272,4 +274,51 @@ html {
 
 .swiper-pagination-bullet-active {
   background: #333;
+}
+
+
+.social-floating {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1000;
+}
+
+.add-to-cart-btn {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.add-to-cart-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.out-of-stock-label {
+  display: none;
+  position: absolute;
+  top: -1.5rem;
+  font-size: 0.8rem;
+  color: #dc3545;
+}
+
+.add-to-cart-btn[disabled] .out-of-stock-label {
+  display: block;
+}
+
+.add-to-cart-btn.loading .btn-content {
+  opacity: 0.5;
+}
+
+.add-to-cart-btn.loading::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }

@@ -29,6 +29,13 @@
                         <div class="spec-box"><i class="fas fa-cog me-2"></i>{{ product.generation }}</div>
                     </div>
 
+                    <div>
+                        <button class="btn btn-lg btn-primary  add-to-cart-btn"
+                        data-product='{"id":123,"name":"iPhone 15","price":999}'>
+                        <i class="fas fa-cart-plus me-2"></i>Add To Cart
+                    </button>
+                    </div>
+
                     <div class="d-grid gap-3 mt-4">
                         <a href="https://wa.me/{{ '+254711667718' }}?text={{ 'I\'m interested in ' + product.name|urlencode + ' (Ksh' + product.price|string + '). Details: ' + product.description|urlencode }}"
                            class="btn btn-success btn-lg shadow"><i class="fab fa-whatsapp me-2"></i>Chat on WhatsApp</a>
@@ -59,6 +66,8 @@
                     </div>
                 </div>
             </div>
+
+            
             
         </div>
 
