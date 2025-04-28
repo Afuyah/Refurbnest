@@ -78,13 +78,11 @@ def add_to_cart(product_id: int):
     }
     return jsonify(payload), 201  # 201 Created :contentReference[oaicite:12]{index=12}
 
-
-# ——————— DELETE Remove from Cart ———————
 @cart_bp.route('/remove/<int:product_id>', methods=['DELETE'])
 def remove_from_cart(product_id: int):
     cart = Cart()
     if str(product_id) not in cart.get_items():
-        abort(404, description='Item not in cart')  # clear 404 path :contentReference[oaicite:13]{index=13}
+        abort(404, description='Item not in cart')
 
     cart.remove(product_id)
     payload = {
@@ -97,44 +95,57 @@ def remove_from_cart(product_id: int):
     return jsonify(payload), 200
 
 
-@cart_bp.route('/checkout', methods=['GET', 'POST'])
+@cart_bp.route('/checkout', methods=['POST'])
 def checkout():
-    cart = Cart.get_cart()
-    total = Cart.get_total()
+    cart = Cart()
+    if cart.item_count == 0:
+        abort(400, description="Cart is empty")
 
-    if request.method == 'POST':
-        email = request.form.get('email')
-        if not email or not cart:
-            flash("Invalid checkout attempt.", "danger")
-            return redirect(url_for('cart.checkout'))
+    data = request.get_json()
+    name = data.get('name', '').strip()
+    address = data.get('address', '').strip()
+    phone = data.get('phone', '').strip()
 
-        # Create Order
-        new_order = Order(email=email, total_amount=total)
-        db.session.add(new_order)
-        db.session.flush()  # Get new_order.id without committing yet
+    if not all([name, address, phone]):
+        abort(400, description="Missing required fields")
 
-        for product_id, item in cart.items():
-            order_item = OrderItem(
-                product_name=item['name'],
-                product_price=item['price'],
-                quantity=item['quantity'],
-                order=new_order
-            )
-            db.session.add(order_item)
+    order = Order(
+        name=name,
+        address=address,
+        phone=phone,
+        total=cart.total,
+        payment_status='Pending'
+    )
+    db.session.add(order)
+    db.session.flush()  # get order.id before committing
 
-        db.session.commit()
+    for pid, item in cart.get_items().items():
+        order_item = OrderItem(
+            order_id=order.id,
+            product_id=pid,
+            name=item['name'],
+            price=item['price'],
+            quantity=item['quantity']
+        )
+        db.session.add(order_item)
 
-        # Clear Cart
-        Cart.clear()
+    db.session.commit()
 
-        # Send Email
-        send_order_confirmation(email, new_order)
-
-        flash("Order placed successfully! Check your email.", "success")
-        return redirect(url_for('home'))
-
-    return render_template('checkout.html', cart=cart, total=total)
+    return jsonify({
+        'order_id': order.id,
+        'message': 'Order created, ready for payment'
+    }), 200
 
 
 
+@cart_bp.route('/summary')
+def cart_summary():
+    cart = Cart()
+    payload = {
+        'items': cart.get_items(),     # {'product_id': {name, price, quantity}}
+        'count': cart.item_count,       # total quantity of all products
+        'unique_items': cart.unique_items,  # how many different products
+        'total': float(cart.total),     # grand total
+    }
+    return jsonify(payload), 200
 

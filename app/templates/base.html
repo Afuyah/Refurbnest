@@ -269,7 +269,8 @@ footer .container-lg {
         </div>
         <button class="btn btn-primary w-100 mb-2 py-2" id="checkoutBtn">
             <i class="fas fa-lock me-2"></i> Secure Checkout
-        </button>
+          </button>
+          
         <div class="payment-options text-center mt-2">
             <img src="/static/images/payment-methods.png" alt="Accepted payment methods" class="img-fluid" style="max-height: 30px;">
         </div>
@@ -284,7 +285,10 @@ footer .container-lg {
 <!-- Cart Sidebar Overlay -->
 <div id="cartOverlay" class="cart-overlay"></div>
 
-
+<!-- Add this toast container in your main layout/base template -->
+<div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <!-- Toast notifications will be inserted here -->
+  </div>
 
   <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 

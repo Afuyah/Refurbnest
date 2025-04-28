@@ -280,21 +280,24 @@ class Review(db.Model):
     
 
 
-
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), nullable=False)
-    total_amount = db.Column(db.Float, nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    address = db.Column(db.String(256), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    total = db.Column(db.Numeric(10,2), nullable=False)
+    payment_status = db.Column(db.String(20), default='Pending')  # Pending / Paid / Failed
+    payment_method = db.Column(db.String(20), nullable=True)  # e.g., 'paypal', 'mpesa'
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
     items = db.relationship('OrderItem', backref='order', lazy=True)
 
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    product_name = db.Column(db.String(120), nullable=False)
-    product_price = db.Column(db.Float, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-
-
+    product_id = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    price = db.Column(db.Numeric(10,2), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
     
 
