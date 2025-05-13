@@ -150,32 +150,34 @@ def list_products():
 
 @main_bp.route('/products/<int:product_id>', methods=['GET'])
 def view_product(product_id):
-    # Get product with all necessary relationships
-    product = Product.query.options(
-        joinedload(Product.brand),
-        joinedload(Product.category),
-        joinedload(Product.images),
-        joinedload(Product.reviews).joinedload(Review.user)
-    ).get_or_404(product_id)
+    product = Product.query.get_or_404(product_id)
+    image_url = product.images[0].image_path if product.images else 'default.jpg'
 
-    # Process reviews
-    reviews_query = Review.query.filter_by(product_id=product_id)
-    total_reviews = reviews_query.count()
-    recent_reviews = reviews_query.order_by(Review.created_at.desc()).limit(5).all()
+    recent_reviews = Review.query.filter_by(product_id=product_id).order_by(Review.date.desc()).limit(5).all()
+    total_reviews = Review.query.filter_by(product_id=product_id).count()
 
-    # Check for pending review
+    form = InquiryForm()
+
+    # Check if there's a verified review session for this product
     verified_review_id = session.pop('verified_review', None)
+    show_review_modal = False
     review_to_edit = None
+
     if verified_review_id:
         review_to_edit = Review.query.get(verified_review_id)
+        if review_to_edit and review_to_edit.product_id == product.id and not review_to_edit.verified:
+            show_review_modal = True
 
     return render_template(
         'main/view_product.html',
         product=product,
-        recent_reviews=recent_reviews,
+        form=form,
+        image_url=image_url,
+        reviews=recent_reviews,
         total_reviews=total_reviews,
-        review_to_edit=review_to_edit,
-        show_review_modal=bool(review_to_edit)
+        show_review_modal=show_review_modal,
+        verified_review=verified_review_id,
+        review_to_edit=review_to_edit
     )
 
 
