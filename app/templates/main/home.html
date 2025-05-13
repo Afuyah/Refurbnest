@@ -6,104 +6,195 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
 
-<!-- Animated Hero Section -->
-<section class="hero min-vh-100 d-flex align-items-center position-relative overflow-hidden">
-  <div class="hero-background">
-    <div class="gradient-overlay"></div>
-    <div class="particle-animation"></div>
+<!-- Hero with Categories Section -->
+<section class="hero-section position-relative overflow-hidden pb-5 mt-4">
+  <!-- Background Layer -->
+  <div class="hero-background position-absolute top-0 start-0 w-100 h-100 z-0">
+    <!-- Techy Particle SVG Layer -->
+    <svg class="hero-svg-particles" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+      <circle cx="200" cy="150" r="4" class="glow-circle" />
+      <circle cx="400" cy="300" r="2.5" class="glow-circle" />
+      <circle cx="600" cy="180" r="3.5" class="glow-circle" />
+      <circle cx="750" cy="400" r="2" class="glow-circle" />
+      <circle cx="900" cy="100" r="5" class="glow-circle" />
+    </svg>
+
+    <!-- Gradient Overlay -->
+    <div class="gradient-overlay w-100 h-100 position-absolute top-0 start-0"></div>
   </div>
-  
-  <div class="container position-relative z-2">
-    <div class="row justify-content-center text-center">
-      <div class="col-12 col-md-10 col-lg-8">
-        <div class="trust-badges mb-4 animate__animated animate__fadeInDown">
-          <span class="badge glass-effect me-2">
-            <i class="fas fa-shield-alt me-2"></i>Certified Premium
-          </span>
-          <span class="badge glass-effect">
-            <i class="fas fa-clock-rotate-left me-2"></i>24-Month Warranty
-          </span>
-        </div>
 
-        <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInUp">
-          <span class="text-stroke-primary">Re</span>
-          <span class="text-gradient-primary">Imagine</span>
-          <span class="text-stroke-primary">Tech</span>
-        </h1>
-        
-        <p class="lead text-muted mb-4 animate__animated animate__fadeInUp animate__delay-1s">
-          Premium refurbished electronics with expert certification
-        </p>
-
-        <a href="{{ url_for('main.list_products') }}" 
-           class="btn btn-lg btn-gradient-primary rounded-pill px-5 animate__animated animate__fadeInUp animate__delay-1s">
-          Explore Collection
-          <i class="fas fa-arrow-right ms-2"></i>
-        </a>
-      </div>
+  <!-- Foreground Content -->
+  <div class="container position-relative z-2 min-vh-100 d-flex flex-column justify-content-center align-items-center text-center">
+    <div class="trust-badges mb-4 animate__animated animate__fadeInDown">
+      <span class="badge glass-effect me-2">
+        <i class="fas fa-shield-alt me-2"></i>Certified Premium
+      </span>
+      <span class="badge glass-effect">
+        <i class="fas fa-clock-rotate-left me-2"></i>24-Month Warranty
+      </span>
     </div>
+
+    <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInUp">
+      <span class="text-stroke-primary">Re</span>
+      <span class="text-gradient-primary">Imagine</span>
+      <span class="text-stroke-primary">Tech</span>
+    </h1>
+
+    <p class="lead text-muted mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+      Premium refurbished electronics with expert certification
+    </p>
+
+    <a href="{{ url_for('main.list_products') }}" 
+       class="btn btn-lg btn-gradient-primary rounded-pill px-5 animate__animated animate__fadeInUp animate__delay-1s">
+      Explore Collection
+      <i class="fas fa-arrow-right ms-2"></i>
+    </a>
   </div>
 </section>
 
+<style>
+  .hero-background {
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  z-index: 0;
+}
+.gradient-overlay {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+}
+.particle-animation {
+  background-image: url('/static/img/particles.svg');  */
+  opacity: 0.1;
+}
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  color: #fff;
+}
+.text-stroke-primary {
+  -webkit-text-stroke: 1px #fff;
+  color: transparent;
+}
+.text-gradient-primary {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-<section id="categories" class="py-5">
-  <div class="container">
-    <header class="mb-5">
-      <h2 class="text-center mb-3">Shop by Category</h2>
-      <p class="text-muted text-center">Explore our wide range of product categories</p>
-    </header>
+.hero-svg-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
 
-    <div class="swiper category-swiper position-relative">
-      <div class="swiper-wrapper">
-        {% for cat in categories %}
-        <div class="swiper-slide">
-          <article class="card category-card h-100 position-relative">
-            <div class="card-body p-3 text-center d-flex flex-column">
-              <div class="mb-3">
-             
-                
-                <h3 class="card-title h6 mb-0">{{ cat.name }}</h3>
-              </div>
-              <p class="small text-muted mt-auto mb-0">{{ cat.product_count }} products</p>
-            </div>
-            <a href="{{ url_for('main.products_by_category', category_slug=cat.slug) }}" 
-               class="stretched-link" aria-label="Browse {{ cat.name }} category">
-            </a>
-          </article>
-        </div>
-        {% endfor %}
-      </div>
+.glow-circle {
+  fill: #00c6ff;
+  opacity: 0.4;
+  filter: blur(4px);
+  animation: float 10s infinite ease-in-out alternate;
+}
 
-      <!-- Navigation -->
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-      
-      <!-- Pagination -->
-      <div class="swiper-pagination position-static mt-3"></div>
-    </div>
-  </div>
+.gradient-overlay {
+  background: linear-gradient(to bottom right, rgba(0, 0, 50, 0.6), rgba(0, 0, 0, 0.7));
+  z-index: 1;
+}
 
-  <style>
-   
-  </style>
-</section>
+@keyframes float {
+  0% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-10px) translateX(5px) scale(1.05); }
+  100% { transform: translateY(-20px) translateX(-5px) scale(0.95); }
+}
+
+</style>
 
 
 
-<section class="featured-products py-5 ">
-  <div class="container">
-    <h2 class="text-center mb-5">Featured Products</h2>
-    
-    <!-- Products Container -->
+<section class="featured-products-section py-5 position-relative">
+  <div class="section-background position-absolute top-0 start-0 w-100 h-100 z-0"></div>
+
+  <div class="container position-relative z-1">
+    <h2 class="text-center mb-5 display-5 fw-bold text-dark">✨ Featured Products</h2>
+
     <div id="featured-products-container" class="row g-4">
-      <!-- Product cards will be inserted here dynamically -->
+      <!-- Product cards inserted dynamically -->
     </div>
 
     <div class="text-center mt-5">
-      <a href="#" class="btn btn-outline-primary px-5">View All Products</a>
+      <a href="/products" class="btn btn-gradient-light border border-primary px-5 fw-medium rounded-pill shadow-sm">
+        View All Products <i class="fas fa-arrow-right ms-2"></i>
+      </a>
     </div>
   </div>
 </section>
+<style>
+/* Section Background */
+.featured-products-section {
+  background: linear-gradient(135deg, #f5f9ff 0%, #e4f0ff 100%);
+  overflow: hidden;
+}
+
+.section-background {
+  background: radial-gradient(circle at top left, rgba(0, 183, 255, 0.05), transparent 70%),
+              radial-gradient(circle at bottom right, rgba(255, 94, 247, 0.07), transparent 70%);
+  pointer-events: none;
+}
+
+/* Glassmorphic Card Styling */
+.product-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Buttons */
+.btn-gradient-light {
+  background: linear-gradient(135deg, #ffffff, #f0f7ff);
+  color: #0d6efd;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient-light:hover {
+  background: linear-gradient(135deg, #e0e8ff, #ffffff);
+  color: #0a58ca;
+}
+.product-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #000000;
+}
+/* Price */
+.product-price {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+/* Sale badge */
+.sale-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: #ff4c60;
+}
+
+/* Wishlist Icon */
+.wishlist-btn {
+  background: white;
+  transition: color 0.2s ease;
+}
+
+.wishlist-btn:hover {
+  color: #ff4c60;
+}
+</style>
+
 
 <!-- Product Card Template (Hidden) -->
 <template id="product-card-template">
@@ -371,45 +462,21 @@ document.addEventListener('DOMContentLoaded', () => {
 .social-floating:hover .btn-icon {
     animation-play-state: paused;
 }
+
+
+
+.particle-animation {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%2300c6ff' stop-opacity='0.8' /%3E%3Cstop offset='100%25' stop-color='%230072ff' stop-opacity='0' /%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23g)'%3E%3Ccircle cx='20%25' cy='30%25' r='2' /%3E%3Ccircle cx='40%25' cy='70%25' r='1.5' /%3E%3Ccircle cx='60%25' cy='20%25' r='2.5' /%3E%3Ccircle cx='80%25' cy='60%25' r='1.8' /%3E%3Ccircle cx='25%25' cy='80%25' r='1.2' /%3E%3Ccircle cx='70%25' cy='40%25' r='1.6' /%3E%3Ccircle cx='10%25' cy='50%25' r='1' /%3E%3Ccircle cx='90%25' cy='20%25' r='2' /%3E%3Ccircle cx='50%25' cy='50%25' r='3' fill='white' opacity='0.6' /%3E%3Ccircle cx='33%25' cy='10%25' r='1.4' /%3E%3Ccircle cx='66%25' cy='85%25' r='1.7' /%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
 </style>
 
 <script>
 
-
-//swipper for categories
-document.addEventListener('DOMContentLoaded', function () {
-    var swiper = new Swiper('.category-swiper', {
-      slidesPerView: 2,
-      spaceBetween: 16,
-      loop: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
-      breakpoints: {
-        576: {
-          slidesPerView: 3,
-        },
-        768: {
-          slidesPerView: 4,
-        },
-        992: {
-          slidesPerView: 5,
-        },
-        1200: {
-          slidesPerView: 6,
-        },
-      },
-    });
-  });
 
 
 
