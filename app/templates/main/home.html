@@ -372,6 +372,247 @@ document.addEventListener('DOMContentLoaded', () => {
 </section>
 
 
+
+
+
+<!-- Best Offers Section -->
+<section class="best-offers py-5">
+  <div class="container">
+    <h2 class="section-title text-gradient text-center mb-5">
+      Today's Best Offers 🔥
+    </h2>
+
+    <!-- Products Container -->
+    <div id="offers-grid" class="offers-grid">
+      <!-- Cards inserted here by JavaScript -->
+    </div>
+  </div>
+</section>
+
+<!-- Offer Card Template (hidden) -->
+<template id="offer-card-template">
+  <div class="offer-card">
+    <div class="offer-media">
+      <div class="offer-badge">Featured Offer</div>
+      <img class="offer-image" loading="lazy" alt="Product image">
+      <div class="offer-overlay">
+        <a class="offer-view-btn">View Deal</a>
+      </div>
+    </div>
+    <div class="offer-body">
+      <h3 class="offer-title"></h3>
+      <div class="offer-pricing">
+        <span class="offer-price"></span>
+        <span class="offer-original-price d-none"></span>
+      </div>
+      <div class="offer-meta">
+        <span class="discount-percent"></span>
+        <span class="rating"><i class="fas fa-star"></i> <span class="rating-value"></span></span>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('offers-grid');
+  const tpl  = document.getElementById('offer-card-template').content;
+
+  async function loadOffers() {
+    try {
+      const res = await fetch('/api/featured-products');
+      if (!res.ok) throw new Error('Network error');
+      const products = await res.json();
+
+      if (!products.length) {
+        grid.innerHTML = '<p class="text-center">No offers available</p>';
+        return;
+      }
+
+      // Only show up to 8
+      products.slice(0, 8).forEach(p => {
+        const clone = document.importNode(tpl, true);
+
+        // Media
+        const img = clone.querySelector('.offer-image');
+        img.src = p.image;
+        img.alt = p.name;
+        const viewLink = clone.querySelector('.offer-view-btn');
+        viewLink.href = `/product/${p.id}`;   // adjust to your route
+        viewLink.textContent = 'View Deal';
+
+        // Body
+        clone.querySelector('.offer-title').textContent = p.name;
+        clone.querySelector('.offer-price').textContent = `$${p.price.toFixed(2)}`;
+
+        // Original price & discount
+        if (p.original_price) {
+          const op = clone.querySelector('.offer-original-price');
+          op.textContent = `$${p.original_price.toFixed(2)}`;
+          op.classList.remove('d-none');
+
+          const discount = Math.round((1 - (p.price / p.original_price)) * 100);
+          clone.querySelector('.discount-percent').textContent = `Save ${discount}%`;
+        } else {
+          clone.querySelector('.discount-percent').textContent = '';
+        }
+
+        // Static rating or from API
+        clone.querySelector('.rating-value').textContent = p.rating || '4.8';
+
+        grid.appendChild(clone);
+      });
+
+    } catch (err) {
+      console.error('Could not load offers', err);
+      grid.innerHTML = '<p class="text-center text-danger">Failed to load offers.</p>';
+    }
+  }
+
+  loadOffers();
+});
+</script>
+
+
+<!-- Styles for Best Offers Section -->
+<style>
+.best-offers {
+    background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(11,16,35,0.95) 100%);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 4rem;
+}
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.offer-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(124,58,237,0.3);
+}
+
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(124,58,237,0.2);
+}
+
+.offer-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    z-index: 2;
+}
+
+.offer-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.offer-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.offer-card:hover .offer-image {
+    transform: scale(1.05);
+}
+
+.offer-overlay {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.8);
+    padding: 1rem;
+    transition: bottom 0.3s ease;
+}
+
+.offer-card:hover .offer-overlay {
+    bottom: 0;
+}
+
+.offer-view-btn {
+    display: block;
+    text-align: center;
+    background: #7C3AED;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.offer-view-btn:hover {
+    background: #10B981;
+    color: white;
+}
+
+.offer-pricing {
+    margin: 1rem 0;
+}
+
+.offer-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #10B981;
+}
+
+.offer-original-price {
+    text-decoration: line-through;
+    color: #94a3b8;
+    margin-left: 0.5rem;
+}
+
+.offer-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.discount-percent {
+    color: #10B981;
+    font-weight: 500;
+}
+
+.rating {
+    color: #fbbf24;
+}
+
+@media (max-width: 768px) {
+    .offers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .offer-image {
+        height: 150px;
+    }
+}
+</style>
+
+
+
+
+
+
+
+
+
 <!-- Featured Brands Section -->
 <section class="py-5 bg-dark mb-3">
   <div class="container">
