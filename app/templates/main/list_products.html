@@ -3,8 +3,26 @@
 {% block title %}Premium Refurbished Tech | {% endblock %}
 
 {% block content %}
+
+
+<div class="layout-wrapper mt-5">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/home.css')}}">    
 {% include 'partials/brand_nav.html' %}
-<!-- Modern Product Grid -->
+<div class="filter-bar glassmorphism mt-3 mb-2">
+  <div class="container position-relative">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-4">
+      <h2 class="text-gradient mb-2">
+        {% if selected_category %}
+          {{ selected_category.name }}
+        {% else %}
+          All Products
+        {% endif %}
+      </h2>
+    
+    </div>
+
+
 <div class="product-grid " id="product-list">
     {% for product in products %}
     <article class="product-card" data-brand="{{ product.brand_id }}" data-category="{{ product.category_id }}">
@@ -62,6 +80,107 @@ data-product-price="{{ product.price }}"
     </div>
     {% endfor %}
 </div>
+
+
+<!-- Pagination Controls -->
+    {% if pagination.pages > 1 %}
+    <nav aria-label="Product pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link" 
+                   href="{{ url_for('main.list_products', 
+                            page=pagination.prev_num, 
+                            brand=selected_brand_id, 
+                            category=selected_category.id if selected_category) }}">
+                    Previous
+                </a>
+            </li>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+                {% if page_num %}
+                    <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                        <a class="page-link" 
+                           href="{{ url_for('main.list_products', 
+                                    page=page_num, 
+                                    brand=selected_brand_id, 
+                                    category=selected_category.id if selected_category) }}">
+                            {{ page_num }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link" 
+                   href="{{ url_for('main.list_products', 
+                            page=pagination.next_num, 
+                            brand=selected_brand_id, 
+                            category=selected_category.id if selected_category) }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div></div></div>
+
+<!-- Optimized Lazy Loading Script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const lazyLoad = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.onload = () => {
+                    img.classList.add('loaded');
+                    const skeleton = img.previousElementSibling;
+                    if (skeleton) skeleton.style.display = 'none';
+                };
+                observer.unobserve(img);
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(lazyLoad, {
+        rootMargin: '200px 0px',
+        threshold: 0.01
+    });
+
+    document.querySelectorAll('.lazy-load').forEach(img => observer.observe(img));
+});
+</script>
+
+<style>
+    /* Add these styles to your CSS */
+    .pagination {
+        margin: 2rem 0;
+    }
+
+    .page-item.active .page-link {
+        background-color: #7C3AED;
+        border-color: #7C3AED;
+    }
+
+    .page-link {
+        color: #7C3AED;
+        margin: 0 0.25rem;
+        border-radius: 0.5rem;
+    }
+
+    .page-link:hover {
+        color: #10B981;
+    }
+</style>
+
+
+
 <style>
     .skeleton {
         position: absolute;
@@ -93,6 +212,9 @@ data-product-price="{{ product.price }}"
             background-position: 600px 0;
         }
     }
+
+
+
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/productlist.css') }}">
 <script defer src="{{ url_for('static', filename='js/productlist.js') }}"></script>

@@ -282,35 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 </section>
-<!-- Testimonials Section -->
-<section class="py-5 bg-light" style="background-image: url('/static/products/hero1.png'); background-size: cover; background-position: center; background-attachment: fixed;">
-  <div class="container">
-    <div class="row justify-content-center text-center mb-5">
-      <div class="col-12">
-        <h2 class="mb-3 text-white">Client Experiences</h2>
-        <p class="text-white-50">What our customers say</p>
-      </div>
-    </div>
-
-    <div class="testimonials-grid">
-      {% for testimonial in testimonials %}
-      <div class="testimonial-card glass-effect hover-lift">
-        <div class="rating mb-3">
-          {% for _ in range(testimonial.rating) %}
-          <i class="fas fa-star text-warning"></i>
-          {% endfor %}
-        </div>
-        <p class="testimonial-text">"{{ testimonial.text }}"</p>
-        <div class="client-info">
-          <div class="client-name">{{ testimonial.name }}</div>
-          <div class="client-role">{{ testimonial.role }}</div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
 
 
 <!-- Featured Brands Section -->
@@ -355,7 +326,55 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+<style>
+  
+  /* Social Floating Buttons CSS */
+.social-floating {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 1000;
+}
 
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    animation: float 3s ease-in-out infinite;
+}
+
+.btn-icon i {
+    font-size: 1.2rem;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Individual animation delays */
+.btn-icon:nth-child(1) { animation-delay: 0.2s; }
+.btn-icon:nth-child(2) { animation-delay: 0.4s; }
+.btn-icon:nth-child(3) { animation-delay: 0.6s; }
+
+/* Optional: Pause animation on hover */
+.social-floating:hover .btn-icon {
+    animation-play-state: paused;
+}
+</style>
 
 <script>
 

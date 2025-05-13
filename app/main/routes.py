@@ -92,84 +92,91 @@ def get_primary_image_url(product):
 
 
 # ---------------------------------------
-# Product Routes
+# Product Routes (Improved)
 # ---------------------------------------
+from sqlalchemy.orm import joinedload
+
 @main_bp.route('/products', methods=['GET'])
 def list_products():
+    # Get pagination and filter parameters
+    page = request.args.get('page', 1, type=int)
     brand_id = request.args.get('brand')
     category_id = request.args.get('category')
 
-    query = Product.query
+    # Base query with eager loading of related data
+    query = Product.query.options(
+        joinedload(Product.brand),
+        joinedload(Product.category),
+        joinedload(Product.images)
+    )
 
+    # Apply filters
     if brand_id:
         query = query.filter(Product.brand_id == brand_id)
-
     if category_id:
         query = query.filter(Product.category_id == category_id)
 
-    products = query.all()
-    product_data = []
+    # Paginate results
+    pagination = query.paginate(page=page, per_page=8, error_out=False)
+    products = pagination.items
 
-    if not products:
-        flash("No products available at this moment.", "info")
+    # Prepare product data with first image
+    product_data = [{
+        'id': product.id,
+        'name': product.name,
+        'price': product.price,
+        #'original_price': product.original_price,
+        'brand': product.brand.name,
+        'category': product.category.name,
+        'image_url': product.images[0].image_path if product.images else url_for('static', filename='images/default.jpg')
+    } for product in products]
 
-    for product in products:
-        first_image = product.images[0].image_path if product.images else 'default.jpg'
+    # Get filter-related data
+    brands = Brand.query.all()  # Cache for 1 hour
+    selected_category = Category.query.get(category_id) if category_id else None
 
-        product_data.append({
-            'id': product.id,
-            'name': product.name,
-            'price': product.price,
-            'brand_id': product.brand_id,
-            'category_id': product.category_id,
-            'image_url': first_image
-        })
+    # User feedback
+    if not pagination.total:
+        flash("No products found matching your criteria.", "info")
 
-    # Retrieve all brands for the filter dropdown
-    brands = Brand.query.all()
-
-    form = ProductForm()
     return render_template(
         'main/list_products.html',
         products=product_data,
-        form=form,
+        pagination=pagination,
         brands=brands,
-        selected_brand_id=brand_id
+        selected_brand_id=brand_id,
+        selected_category=selected_category
     )
-
 
 @main_bp.route('/products/<int:product_id>', methods=['GET'])
 def view_product(product_id):
-    product = Product.query.get_or_404(product_id)
-    image_url = product.images[0].image_path if product.images else 'default.jpg'
+    # Get product with all necessary relationships
+    product = Product.query.options(
+        joinedload(Product.brand),
+        joinedload(Product.category),
+        joinedload(Product.images),
+        joinedload(Product.reviews).joinedload(Review.user)
+    ).get_or_404(product_id)
 
-    recent_reviews = Review.query.filter_by(product_id=product_id).order_by(Review.date.desc()).limit(5).all()
-    total_reviews = Review.query.filter_by(product_id=product_id).count()
+    # Process reviews
+    reviews_query = Review.query.filter_by(product_id=product_id)
+    total_reviews = reviews_query.count()
+    recent_reviews = reviews_query.order_by(Review.created_at.desc()).limit(5).all()
 
-    form = InquiryForm()
-
-    # Check if there's a verified review session for this product
+    # Check for pending review
     verified_review_id = session.pop('verified_review', None)
-    show_review_modal = False
     review_to_edit = None
-
     if verified_review_id:
         review_to_edit = Review.query.get(verified_review_id)
-        if review_to_edit and review_to_edit.product_id == product.id and not review_to_edit.verified:
-            show_review_modal = True
 
     return render_template(
         'main/view_product.html',
         product=product,
-        form=form,
-        image_url=image_url,
-        reviews=recent_reviews,
+        recent_reviews=recent_reviews,
         total_reviews=total_reviews,
-        show_review_modal=show_review_modal,
-        verified_review=verified_review_id,
-        review_to_edit=review_to_edit
+        review_to_edit=review_to_edit,
+        show_review_modal=bool(review_to_edit)
     )
-
 
 
 @main_bp.route('/category/', defaults={'category_slug': None}, strict_slashes=False)

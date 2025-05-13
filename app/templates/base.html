@@ -1,49 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="dark" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- In base.html template -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{% block title %}RefurbNest | Your Technology Hub{% endblock %}</title>
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-  />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-    <!-- Font Awesome -->
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" as="style">
+
+    <!-- External CSS with fallbacks -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
+
+    <!-- Inline Critical CSS -->
     <style>
+        /* CSS Reset */
         :root {
             --gradient-primary: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
             --glass-bg: rgba(255, 255, 255, 0.05);
+            --transition-base: 300ms ease-in-out;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Base Styles */
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
             background: #0a0a0f;
             color: #f8f9fa;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            line-height: 1.6;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .glass-effect {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
+        /* Typography */
         .logo-text {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
@@ -51,14 +57,18 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
+        /* Navigation */
         .nav-link {
             position: relative;
-            transition: all 0.3s ease;
+            transition: color var(--transition-base);
+            padding: 0.5rem 1rem !important;
         }
 
-        .nav-link:not(.btn):hover::after {
+        .nav-link:not(.btn):hover::after,
+        .nav-link:not(.btn):focus-visible::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -66,41 +76,43 @@
             right: 0;
             height: 2px;
             background: var(--gradient-primary);
+            transform-origin: center;
+            transition: transform var(--transition-base);
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        /* Glass Effect */
+        .glass-effect {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
 
-/* Add this to your existing CSS */
-.container-fluid {
-    max-width: none;
-    padding-right: 0;
-    padding-left: 0;
-}
-
-main > .row {
-    margin-right: 0;
-    margin-left: 0;
-}
-
-
-
-/* Optional: If you want full-width navbar and footer */
-.navbar .container-lg,
-footer .container-lg {
-    max-width: none;
-}
-
-
-
-
+        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(1rem); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Enhanced mobile menu styling */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in both;
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Mobile First Styles */
         @media (max-width: 768px) {
             .navbar-collapse {
                 background: var(--glass-bg);
@@ -114,10 +126,22 @@ footer .container-lg {
                 width: 100%;
                 margin-top: 0.5rem;
             }
-            
-            /* Better spacing for fixed navbar */
+
             main {
-                margin-top: 80px;
+                margin-top: 5rem;
+                padding-inline: 1rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+
+            .navbar, footer {
+                display: none;
             }
         }
     </style>

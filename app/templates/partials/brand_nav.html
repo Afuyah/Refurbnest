@@ -1,166 +1,154 @@
-<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
+/>
 
-<div class="filter-bar glassmorphism mt-3 mb-2">
-  <div class="container position-relative">
-    <!-- Section Header -->
-    <div class="section-header text-center mb-4">
-      <h2 class="text-gradient mb-2">
-        {% if selected_category %}
-          {{ selected_category.name }}
-        {% else %}
-          All Products
-        {% endif %}
-      </h2>
-      <p class="text-muted mb-0">Browse by brand</p>
-    </div>
-
-    <!-- Brand Swiper -->
-    <div class="position-relative px-lg-5">
-      <div class="swiper brand-swiper">
-        <div class="swiper-wrapper align-items-center">
-          <!-- All Brands Slide -->
-          <div class="swiper-slide">
-            <a href="{{ url_for('main.list_products', category=selected_category.id if selected_category else None) }}" 
-               class="brand-card {% if not selected_brand_id %}active{% endif %}">
-              <div class="brand-card-inner">
-                <span class="icon-globe"></span>
-                <span>All Brands</span>
-              </div>
-            </a>
-          </div>
-          
-          <!-- Brand Slides -->
-          {% for brand in brands %}
-          <div class="swiper-slide">
-            <a href="{{ url_for('main.list_products', brand=brand.id, category=selected_category.id if selected_category else None) }}" 
-               class="brand-card {% if brand.id|string == selected_brand_id %}active{% endif %}">
-              <div class="brand-card-inner">
-                {% if brand.logo %}
-                <img src="{{ url_for('brand_logo', filename=brand.logo) }}" 
-                     alt="{{ brand.name }} logo" 
-                     class="brand-logo">
-                {% endif %}
-                <span>{{ brand.name }}</span>
-              </div>
-            </a>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-
-      <!-- Navigation Arrows (hidden on mobile) -->
-      <div class="swiper-nav-arrows d-none d-lg-flex">
-        <button class="swiper-button-prev btn btn-sm btn-dark btn-icon rounded-circle">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="swiper-button-next btn btn-sm btn-dark btn-icon rounded-circle">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
+<div >
+  <!-- Toggle button (mobile) -->
+  <div class="d-lg-none text-end mb-2">
+    <button id="toggleBrandSidebar" class="btn btn-outline-light btn-sm">
+      <i class="fas fa-filter me-1"></i> Filter Brands
+    </button>
   </div>
+
+  <!-- Brand Sidebar -->
+  <aside id="brandSidebar" class="brand-sidebar glassmorphism">
+    <div class="sidebar-header">
+      <h3 class="text-gradient">Browse Brands</h3>
+      <p class="text-muted mb-3">Filter by manufacturer</p>
+    </div>
+
+    <div class="brand-list">
+      <!-- All Brands -->
+      <a
+        href="{{ url_for('main.list_products',
+                         category=selected_category.id if selected_category else None) }}"
+        class="brand-card {% if not selected_brand_id %}active{% endif %}">
+        <div class="brand-card-inner">
+          <i class="fas fa-globe me-2"></i>
+          All Brands
+        </div>
+      </a>
+
+      <!-- Dynamic Brand Items -->
+      {% for brand in brands %}
+      <a
+        href="{{ url_for('main.list_products',
+                         brand=brand.id,
+                         category=selected_category.id if selected_category else None) }}"
+        class="brand-card {% if brand.id|string == selected_brand_id %}active{% endif %}">
+        <div class="brand-card-inner">
+          {% if brand.logo %}
+          <img
+            src="{{ url_for('brand_logo', filename=brand.logo) }}"
+            alt="{{ brand.name }} logo"
+            class="brand-logo me-2"
+          />
+          {% endif %}
+          <span>{{ brand.name }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Your existing product grid goes here -->
+  </main>
 </div>
 
 <style>
-/* Base Styles */
-.filter-bar {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px);
-  border-radius: 1rem;
-  padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
+/* Overall Layout via CSS Grid */  
+.layout-wrapper {
+  display: grid;  
+  grid-template-columns: 240px 1fr;  
+  gap: 1rem;  
+  min-height: 100vh;  
+  padding-bottom: 2rem;  
+}  
+.main-content { overflow-x: hidden; }  
 
-.brand-swiper {
-  padding: 0.5rem 1rem !important; /* Added padding */
-  overflow: hidden;
-}
+/* Mid-size Screens */  
+@media (max-width: 1200px) {  
+  .layout-wrapper { grid-template-columns: 220px 1fr; }  
+}  
 
-.swiper-slide {
-  width: auto !important;
-  padding: 0 4px !important; /* Added horizontal spacing */
-}
+/* Mobile: one-column + toggle */  
+@media (max-width: 992px) {  
+  .layout-wrapper { grid-template-columns: 1fr; padding: 0; }  
+  #toggleBrandSidebar { display: inline-block; }  
+  .brand-sidebar { display: none; margin-bottom: 1rem; }  
+  .brand-sidebar.show { display: block; }  
+}  
 
-.brand-card {
-  display: inline-block;
-  padding: 0;
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  min-width: 100px; /* Reduced minimum width */
-  margin: 0 2px !important; /* Added margin between cards */
-}
+/* Sidebar Styling */  
+.brand-sidebar {  
+  position: sticky; top: 1rem;  
+  height: calc(100vh - 2rem); overflow-y: auto;  
+  background: rgba(15,23,42,0.7); backdrop-filter: blur(12px);  
+  border-radius: 1rem; padding: 1.5rem;  
+  border: 1px solid rgba(255,255,255,0.1);  
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);  
+}  
 
-/* Mobile-specific adjustments */
-@media (max-width: 767.98px) {
-  .brand-swiper {
-    padding: 4px 4px !important;
-  }
-  
-  .swiper-slide {
-    padding: 0 3px !important; /* Reduced spacing on mobile */
-  }
-  
-  .brand-card {
-    min-width: 90px; /* Smaller cards on mobile */
-    padding: 0.5rem !important;
-  }
-  
-  .brand-card-inner span {
-    font-size: 0.8rem; /* Smaller text on mobile */
-  }
-  
-  .brand-logo {
-    width: 28px !important;
-    height: 28px !important;
-  }
-}
+/* Brand Cards */  
+.brand-list { display: flex; flex-direction: column; gap: 0.75rem; }  
+.brand-card {  
+  display: flex; align-items: center;  
+  padding: 0.75rem 1rem; border-radius: 0.75rem;  
+  background: rgba(255,255,255,0.05); color: #e2e8f0;  
+  text-decoration: none; transition: all 0.3s;  
+  border: 1px solid transparent;  
+}  
+.brand-card:hover {  
+  background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.1);  
+  transform: translateX(5px);  
+}  
+.brand-card.active {  
+  background: linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(16,185,129,0.2) 100%);  
+  border-color: rgba(124,58,237,0.3);  
+}  
+.brand-logo { width: 32px; height: 32px; object-fit: contain; }  
 
-/* Extra small devices */
-@media (max-width: 575.98px) {
-  .brand-card {
-    min-width: 80px;
-  }
-  
-  .brand-card-inner {
-    padding: 0.5rem !important;
-    gap: 0.25rem !important;
-  }
-}
+/* Brand Grid on Mobile */  
+@media (max-width: 992px) {  
+  .brand-list {  
+    display: grid;  
+    grid-template-columns: repeat(auto-fill, minmax(120px,1fr));  
+    gap: 0.5rem;  
+  }  
+  .brand-card { flex-direction: column; text-align: center; padding: 1rem; }  
+  .brand-card:hover { transform: translateY(-3px); }  
+}  
+@media (max-width: 576px) { .brand-list { grid-template-columns: repeat(2,1fr); } }  
+
+/* Product Grid */  
+.product-grid { margin-left: 0.25rem; width: calc(100% + 0.25rem); }  
+.product-card {  
+  flex: 1 1 calc(33.333% - 0.5rem); margin: 0.25rem;  
+  background: #fff; border-radius: 0.75rem; overflow: hidden;  
+  transition: transform 0.3s;  
+}  
+.product-card:hover { transform: translateY(-5px); }  
+@media (max-width: 768px) { .product-card { flex: 1 1 calc(50% - 0.5rem); } }  
+@media (max-width: 576px) { .product-card { flex: 1 1 100%; margin: 0.25rem 0; } }  
+
+/* Skeleton Loader */  
+.skeleton {  
+  position: absolute; top:0; left:0; width:100%; height:100%;  
+  background: linear-gradient(90deg, var(--surface) 0, rgba(255,255,255,0.1) 40px, var(--surface) 80px);  
+  background-size:600px; animation: shimmer 1.6s infinite linear;  
+  border-radius:8px; z-index:1;  
+}  
+img.loaded + .skeleton { display:none; }  
+@keyframes shimmer { 0% { background-position: -600px 0; } 100% { background-position: 600px 0; } }
 </style>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const brandSwiper = new Swiper('.brand-swiper', {
-    slidesPerView: 'auto',
-    spaceBetween: 8, // Reduced space between slides
-    freeMode: true,
-    grabCursor: true,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-      320: {
-        spaceBetween: 4 // Even smaller space on mobile
-      },
-      576: {
-        spaceBetween: 6
-      },
-      768: {
-        spaceBetween: 8
-      },
-      992: {
-        spaceBetween: 10
-      }
-    }
-  });
+document.addEventListener("DOMContentLoaded", function () {
+  const toggleBtn = document.getElementById("toggleBrandSidebar");
+  const sidebar = document.getElementById("brandSidebar");
+  toggleBtn.addEventListener("click", () => sidebar.classList.toggle("show"));
 });
-
-
 </script>
