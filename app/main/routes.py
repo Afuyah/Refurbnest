@@ -38,6 +38,7 @@ def login_required_with_message(view):
 def home():
     try:
         categories = Category.query.all()
+        products = Product.query.all()
         hot_products = Product.query.order_by(Product.created_at.desc()).limit(8).all()
         testimonials = Review.query.filter_by(verified=True).order_by(Review.date.desc()).limit(3).all()
 
@@ -45,7 +46,8 @@ def home():
             'main/home.html',
             categories=categories,
             hot_products=hot_products,
-            testimonials=testimonials
+            testimonials=testimonials,
+            products=products 
         )
     except SQLAlchemyError as e:
         current_app.logger.error(f"Database error in home route: {str(e)}")

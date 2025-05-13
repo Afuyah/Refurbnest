@@ -110,7 +110,7 @@
   <div class="col-md-6 col-lg-4">
     <article class="product-card card h-100 border-0 shadow-hover">
       <div class="position-relative">
-        <img class="card-img-top" loading="lazy" alt="Product image">
+        <img class="card-img-top product-image" loading="lazy" alt="Product image">
         <div class="card-actions position-absolute top-0 end-0 p-2">
           <button class="btn btn-sm btn-light rounded-circle shadow-sm wishlist-btn">
             <i class="far fa-heart"></i>
@@ -128,15 +128,15 @@
             <span class="h5 text-primary product-price"></span>
             <del class="small text-muted ms-2 original-price d-none"></del>
           </div>
-          <button class="btn btn-sm btn-primary rounded-pill px-3 add-to-cart-btn"
-          data-product='{"id":123,"name":"iPhone 15","price":999}'>
-          <i class="fas fa-cart-plus me-2"></i>Add
-      </button>
+          <button class="btn btn-sm btn-primary add-to-cart-btn">
+            <i class="fas fa-cart-plus me-1"></i>Add To Cart
+          </button>
         </div>
       </div>
     </article>
   </div>
 </template>
+
 
 
 
@@ -151,10 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok) throw new Error('Network response was not ok');
       
       const products = await response.json();
-      
-      // Clear loading state
       container.innerHTML = '';
-      
+
       if (products.length === 0) {
         container.innerHTML = '<p class="text-center">No featured products available</p>';
         return;
@@ -162,61 +160,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
       products.forEach(product => {
         const clone = template.content.cloneNode(true);
-        
-        // Populate data
-        const card = clone.querySelector('.product-card');
-        card.dataset.productId = product.id;
-        
-        // Image
-        const img = clone.querySelector('img');
-        img.src = product.image;
+
+        // Set image
+        const img = clone.querySelector('.product-image');
+        img.src = product.image || '/static/img/placeholder.png';
         img.alt = product.name;
-        
-        // Title
+
+        // Set text content
         clone.querySelector('.product-title').textContent = product.name;
-        
-        // Price
-        const priceElement = clone.querySelector('.product-price');
-        priceElement.textContent = `$${product.price.toFixed(2)}`;
-        
-        // Add to Cart button
-        clone.querySelector('.add-to-cart-btn').addEventListener('click', () => {
+        clone.querySelector('.product-description').textContent = product.short_description || '';
+
+        // Set price
+        clone.querySelector('.product-price').textContent = `$${product.price.toFixed(2)}`;
+        if (product.original_price && product.original_price > product.price) {
+          const originalPrice = clone.querySelector('.original-price');
+          originalPrice.textContent = `$${product.original_price.toFixed(2)}`;
+          originalPrice.classList.remove('d-none');
+
+          const saleBadge = clone.querySelector('.sale-badge');
+          saleBadge.classList.remove('d-none');
+        }
+
+        // Set button actions
+        const addToCartBtn = clone.querySelector('.add-to-cart-btn');
+        addToCartBtn.dataset.productId = product.id;
+        addToCartBtn.addEventListener('click', () => {
           addToCart(product.id);
         });
-        
-        // Wishlist button
-        clone.querySelector('.wishlist-btn').addEventListener('click', (e) => {
-          e.preventDefault();
+
+        const wishlistBtn = clone.querySelector('.wishlist-btn');
+        wishlistBtn.addEventListener('click', () => {
           toggleWishlist(product.id);
         });
 
         container.appendChild(clone);
       });
-
     } catch (error) {
       console.error('Error loading featured products:', error);
-      container.innerHTML = `
-        <div class="col-12 text-center text-danger">
-          <p>Failed to load featured products. Please try again later.</p>
-        </div>
-      `;
+      container.innerHTML = '<p class="text-center text-danger">Failed to load products.</p>';
     }
   }
 
-  // Example cart/wishlist functions (implement these according to your needs)
   function addToCart(productId) {
-    console.log('Adding to cart:', productId);
-    // Implement cart logic here
+    console.log("Adding to cart:", productId);
+    // Cart logic here
   }
 
   function toggleWishlist(productId) {
-    console.log('Toggling wishlist:', productId);
-    // Implement wishlist logic here
+    console.log("Toggling wishlist:", productId);
+    // Wishlist logic here
   }
 
-  // Initial load
   loadFeaturedProducts();
 });
+
 </script>
 
 

@@ -45,9 +45,9 @@
             </div>
             {% endif %}
         </div>
-        <h5 class="product-title">{{ product.name }}</h5>
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="price-container">
+        <h6 class="product-title">{{ product.name }}</h6>
+        <div class="d-flex justify-content-between align-items-center " style="min-height: 4;">
+            <div class="price-container" style="margin-right: 4px;">
                 <span class="current-price">${{ product.price }}</span>
                 {% if product.original_price %}
                 <span class="original-price">${{ product.original_price }}</span>
@@ -61,7 +61,7 @@ data-product-name="{{ product.name }}"
 data-product-price="{{ product.price }}"
 <span class="btn-content">
 <i class="fas fa-cart-plus mr-1"></i>
- Cart
+ Add To Cart
 </span>
 
 </button>
@@ -128,7 +128,7 @@ data-product-price="{{ product.price }}"
         </ul>
     </nav>
     {% endif %}
-</div></div></div>
+</div></div>
 
 <!-- Optimized Lazy Loading Script -->
 <script>

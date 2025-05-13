@@ -30,10 +30,16 @@
                     </div>
 
                     <div>
-                        <button class="btn btn-lg btn-primary  add-to-cart-btn"
-                        data-product='{"id":123,"name":"iPhone 15","price":999}'>
-                        <i class="fas fa-cart-plus me-2"></i>Add To Cart
-                    </button>
+                       <button class="add-to-cart-btn" 
+data-product-id="{{ product.id }}"
+data-product-name="{{ product.name }}"
+data-product-price="{{ product.price }}"
+<span class="btn-content">
+<i class="fas fa-cart-plus mr-1"></i>
+ Cart
+</span>
+
+</button>
                     </div>
 
                     <div class="d-grid gap-3 mt-4">
@@ -44,28 +50,37 @@
                 </div>
             </div>
 
+<!-- Images -->
+<div class="col-lg-7">
+    <div class="position-relative bg-black rounded-4 overflow-hidden shadow-lg">
+        <!-- Main image -->
+        {% if product.images %}
+            <img id="main-image"
+                 src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
+                 class="img-fluid w-100 animate-fade-in zoom-on-hover"
+                 alt="{{ product.name }}">
+        {% else %}
+            <img id="main-image"
+                 src="{{ url_for('static', filename='images/default.jpg') }}"
+                 class="img-fluid w-100 animate-fade-in zoom-on-hover"
+                 alt="Default Image">
+        {% endif %}
 
-            <!-- Images -->
-            <div class="col-lg-7">
-                <div class="position-relative bg-black rounded-4 overflow-hidden shadow-lg">
-                    <!-- Main image -->
-                    <img id="main-image"
-                         src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
-                         class="img-fluid w-100 animate-fade-in zoom-on-hover"
-                         alt="{{ product.name }}">
-            
-                    <!-- Thumbnail gallery -->
-                    <div class="thumbnail-gallery d-flex gap-3 p-3 overflow-auto mt-3 bg-dark rounded-bottom-4">
-                        {% for image in product.images %}
-                        <img src="{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}"
-                             class="img-thumbnail thumb-hover"
-                             style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
-                             onclick="changeMainImage('{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}')"
-                             alt="Thumbnail of {{ product.name }}">
-                        {% endfor %}
-                    </div>
-                </div>
+        <!-- Thumbnail gallery -->
+        {% if product.images %}
+            <div class="thumbnail-gallery d-flex gap-3 p-3 overflow-auto mt-3 bg-dark rounded-bottom-4">
+                {% for image in product.images %}
+                    <img src="{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}"
+                         class="img-thumbnail thumb-hover"
+                         style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
+                         onclick="changeMainImage('{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}')"
+                         alt="Thumbnail of {{ product.name }}">
+                {% endfor %}
             </div>
+        {% endif %}
+    </div>
+</div>
+
 
             
             
