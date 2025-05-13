@@ -183,21 +183,26 @@ def view_product(product_id):
     )
 
 
+from flask import request
+
 @main_bp.route('/category/', defaults={'category_slug': None}, strict_slashes=False)
 @main_bp.route('/category/<string:category_slug>')
 def products_by_category(category_slug):
     if not category_slug:
-        # No slug provided → fallback to all products
         return redirect(url_for('main.list_products'))
 
-    # Slug provided → fetch and display filtered products
     category = Category.query.filter_by(slug=category_slug).first_or_404()
-    products = (
+
+    page = request.args.get('page', 1, type=int)
+    per_page = 12  
+
+    pagination = (
         Product.query
                .filter_by(category_id=category.id)
                .order_by(Product.created_at.desc())
-               .all()
+               .paginate(page=page, per_page=per_page)
     )
+    products = pagination.items
 
     product_data = []
     for p in products:
@@ -215,12 +220,10 @@ def products_by_category(category_slug):
     return render_template(
         'main/list_products.html',
         products=product_data,
+        pagination=pagination,
         form=form,
         selected_category=category
     )
-
-
-
 
 @main_bp.route('/products/<int:product_id>/feature', methods=['POST'])
 def mark_product_featured(product_id):
