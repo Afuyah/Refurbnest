@@ -129,7 +129,71 @@
     </div>
   </div>
 </section>
+<style>
+/* Section Background */
+.featured-products-section {
+  background: linear-gradient(135deg, #f5f9ff 0%, #e4f0ff 100%);
+  overflow: hidden;
+}
 
+.section-background {
+  background: radial-gradient(circle at top left, rgba(0, 183, 255, 0.05), transparent 70%),
+              radial-gradient(circle at bottom right, rgba(255, 94, 247, 0.07), transparent 70%);
+  pointer-events: none;
+}
+
+/* Glassmorphic Card Styling */
+.product-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Buttons */
+.btn-gradient-light {
+  background: linear-gradient(135deg, #ffffff, #f0f7ff);
+  color: #0d6efd;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient-light:hover {
+  background: linear-gradient(135deg, #e0e8ff, #ffffff);
+  color: #0a58ca;
+}
+.product-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #000000;
+}
+/* Price */
+.product-price {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+/* Sale badge */
+.sale-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: #ff4c60;
+}
+
+/* Wishlist Icon */
+.wishlist-btn {
+  background: white;
+  transition: color 0.2s ease;
+}
+
+.wishlist-btn:hover {
+  color: #ff4c60;
+}
+</style>
 
 
 <!-- Product Card Template (Hidden) -->
@@ -287,16 +351,34 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </section>
 
-
+<!-- Stats Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 justify-content-center text-center">
+      <div class="col-6 col-md-3">
+        <div class="stat-card glass-effect">
+          <div class="display-4 fw-bold text-primary" data-count="15">0</div>
+          <div class="text-muted">Thousand Renewed</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card glass-effect">
+          <div class="display-4 fw-bold text-primary" data-count="98.7">0</div>
+          <div class="text-muted">Satisfaction Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 
 
 
 <!-- Best Offers Section -->
-<section class="best-offers py-2">
+<section class="best-offers py-5">
   <div class="container">
-    <h2 class="section-title text-gradient-primary text-center mb-2">
+    <h2 class="section-title text-gradient text-center mb-5">
       Today's Best Offers 🔥
     </h2>
 
@@ -307,9 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </section>
 
-
-
-<!-- Offer Card Template -->
+<!-- Offer Card Template (hidden) -->
 <template id="offer-card-template">
   <div class="offer-card">
     <div class="offer-media">
@@ -320,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
     <div class="offer-body">
-      <h4 class="offer-title"></h4>
+      <h3 class="offer-title"></h3>
       <div class="offer-pricing">
         <span class="offer-price"></span>
         <span class="offer-original-price d-none"></span>
@@ -357,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = p.image;
         img.alt = p.name;
         const viewLink = clone.querySelector('.offer-view-btn');
-        viewLink.href = `/products/${p.id}`;   
+        viewLink.href = `/product/${p.id}`;   // adjust to your route
         viewLink.textContent = 'View Deal';
 
         // Body
@@ -393,34 +473,169 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+<!-- Styles for Best Offers Section -->
+<style>
+.best-offers {
+    background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(11,16,35,0.95) 100%);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 4rem;
+}
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.offer-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(124,58,237,0.3);
+}
+
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(124,58,237,0.2);
+}
+
+.offer-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    z-index: 2;
+}
+
+.offer-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.offer-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.offer-card:hover .offer-image {
+    transform: scale(1.05);
+}
+
+.offer-overlay {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.8);
+    padding: 1rem;
+    transition: bottom 0.3s ease;
+}
+
+.offer-card:hover .offer-overlay {
+    bottom: 0;
+}
+
+.offer-view-btn {
+    display: block;
+    text-align: center;
+    background: #7C3AED;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.offer-view-btn:hover {
+    background: #10B981;
+    color: white;
+}
+
+.offer-pricing {
+    margin: 1rem 0;
+}
+
+.offer-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #10B981;
+}
+
+.offer-original-price {
+    text-decoration: line-through;
+    color: #94a3b8;
+    margin-left: 0.5rem;
+}
+
+.offer-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.discount-percent {
+    color: #10B981;
+    font-weight: 500;
+}
+
+.rating {
+    color: #fbbf24;
+}
+
+@media (max-width: 768px) {
+    .offers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .offer-image {
+        height: 150px;
+    }
+}
+</style>
 
 
 
-<!-- Stats Section -->
-<section class="py-5 position-relative text-dark" style="background: url('{{ url_for('static', filename='products/stats.jpg') }}') center/cover no-repeat; backdrop-filter: blur(3px);">
-  <div class="position-absolute top-0 start-0 w-100 h-100" ></div>
 
-  <div class="container position-relative z-1">
-    <div class="row g-4 justify-content-center text-center">
-      <div class="col-6 col-md-3">
-        <div class="stat-card shadow-lg rounded-4 p-4 bg-white">
-          <div class="display-4 fw-bold text-primary counter" data-count="15">0</div>
-          <div class="text-muted fs-6">Thousand Delivered</div>
-        </div>
+
+
+
+
+
+<!-- Featured Brands Section -->
+<section class="py-5 bg-dark mb-3">
+  <div class="container">
+    <div class="row g-4 align-items-center justify-content-center">
+      <div class="col-12 text-center mb-4">
+        <h3 class="text-white mb-0">Trusted by Leading Brands</h3>
       </div>
       <div class="col-6 col-md-3">
-        <div class="stat-card shadow-lg rounded-4 p-4 bg-white">
-          <div class="display-4 fw-bold text-primary counter" data-count="98.7">0</div>
-          <div class="text-muted fs-6">Satisfaction Rate</div>
-        </div>
+        <img src="https://www.pngegg.com/en/png-ztywq" alt="Apple" class="img-fluid brand-logo">
       </div>
+      <div class="col-6 col-md-3">
+        <img src="https://blog.boon.so/samsung-logo/" alt="Samsung" class="img-fluid brand-logo">
+      </div>
+      <div class="col-6 col-md-3">
+        Dell
+      </div>
+      <div class="col-6 col-md-3">
+        Sony
+      </div>
+      
     </div>
   </div>
 </section>
-
-
-
-
 
 
 
@@ -490,6 +705,14 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 
+
+.particle-animation {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%2300c6ff' stop-opacity='0.8' /%3E%3Cstop offset='100%25' stop-color='%230072ff' stop-opacity='0' /%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23g)'%3E%3Ccircle cx='20%25' cy='30%25' r='2' /%3E%3Ccircle cx='40%25' cy='70%25' r='1.5' /%3E%3Ccircle cx='60%25' cy='20%25' r='2.5' /%3E%3Ccircle cx='80%25' cy='60%25' r='1.8' /%3E%3Ccircle cx='25%25' cy='80%25' r='1.2' /%3E%3Ccircle cx='70%25' cy='40%25' r='1.6' /%3E%3Ccircle cx='10%25' cy='50%25' r='1' /%3E%3Ccircle cx='90%25' cy='20%25' r='2' /%3E%3Ccircle cx='50%25' cy='50%25' r='3' fill='white' opacity='0.6' /%3E%3Ccircle cx='33%25' cy='10%25' r='1.4' /%3E%3Ccircle cx='66%25' cy='85%25' r='1.7' /%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.15;
+  pointer-events: none;
+}
 
 </style>
 
