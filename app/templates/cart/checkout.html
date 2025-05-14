@@ -2,51 +2,168 @@
 
 {% block head %}
   {{ super() }}
-  <!-- CSRF token for AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    
+    <!-- Left: Shipping Information -->
+    <div class="glass-card p-6 rounded-xl shadow-2xl">
+      <h2 class="text-3xl font-bold mb-6 text-gradient-primary">Shipping Details</h2>
+      <form id="checkout-form" class="space-y-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-  <!-- Left: Shipping Information -->
-  <div class="bg-white p-6 rounded shadow">
-    <h2 class="text-2xl font-bold mb-4">Shipping Information</h2>
-    <form id="checkout-form" class="space-y-4">
-      <div>
-        <label for="name" class="block mb-1 font-semibold">Full Name</label>
-        <input id="name" name="name" required class="w-full p-2 border rounded" placeholder="John Doe" />
-      </div>
-      <div>
-        <label for="address" class="block mb-1 font-semibold">Address</label>
-        <textarea id="address" name="address" required class="w-full p-2 border rounded" placeholder="123 Main St, City, Country"></textarea>
-      </div>
-      <div>
-        <label for="phone" class="block mb-1 font-semibold">Phone Number</label>
-        <input id="phone" name="phone" required class="w-full p-2 border rounded" placeholder="+2547XXXXXXXX" />
-      </div>
-      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
-        Proceed to Payment
-      </button>
-    </form>
-  </div>
+        <!-- Form Group -->
+        <div class="form-group">
+          <label for="name" class="form-label">Full Name</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input id="name" name="name" required 
+                   class="form-input"
+                   placeholder="John Doe"
+                   pattern="[A-Za-z ]{3,50}">
+          </div>
+          <div class="validation-message"></div>
+        </div>
 
-  <!-- Right: Order Summary -->
-  <div class="bg-gray-50 p-6 rounded shadow">
-    <h2 class="text-2xl font-bold mb-4">Your Order</h2>
-    <div id="order-summary" class="space-y-4">
-      <!-- JavaScript will populate items here -->
-      <p>Loading your cart...</p>
+        <!-- Address Input -->
+        <div class="form-group">
+          <label for="address" class="form-label">Shipping Address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-map-marker-alt input-icon"></i>
+            <textarea id="address" name="address" required
+                      class="form-input h-24"
+                      placeholder="123 Main Street, Nairobi"></textarea>
+          </div>
+          <div class="validation-message"></div>
+        </div>
+
+        <!-- Phone Input -->
+        <div class="form-group">
+          <label for="phone" class="form-label">Phone Number</label>
+          <div class="input-wrapper">
+            <i class="fas fa-phone input-icon"></i>
+            <input id="phone" name="phone" required
+                   class="form-input"
+                   placeholder="+2547XX XXX XXX"
+                   pattern="^\+254\d{9}$">
+          </div>
+          <div class="validation-message"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" 
+                class="btn-gradient-primary w-full py-3 rounded-lg hover-lift transition-all">
+          <span class="button-content">
+            Proceed to Payment
+            <i class="fas fa-arrow-right ml-2"></i>
+          </span>
+          <div class="loading-spinner"></div>
+        </button>
+      </form>
     </div>
-    <div class="border-t pt-4 mt-4 text-lg font-semibold">
-      Total: $<span id="order-total">0.00</span>
+
+    <!-- Right: Order Summary -->
+    <div class="glass-card p-6 rounded-xl shadow-2xl">
+      <h2 class="text-3xl font-bold mb-6 text-gradient-primary">Order Summary</h2>
+      
+      <!-- Order Items -->
+      <div id="order-summary" class="space-y-4 mb-6">
+        <div class="skeleton-loader"></div>
+        <div class="skeleton-loader"></div>
+      </div>
+
+      <!-- Order Total -->
+      <div class="border-t border-opacity-10 pt-4">
+        <div class="flex justify-between items-center text-lg font-semibold">
+          <span>Total:</span>
+          <span class="text-2xl text-primary">$<span id="order-total">0.00</span></span>
+        </div>
+      </div>
+
+      <!-- Payment Assurance -->
+      <div class="mt-6 p-4 bg-opacity-10 rounded-lg">
+        <div class="flex items-center space-x-3 text-sm">
+          <i class="fas fa-lock text-primary"></i>
+          <span class="opacity-75">256-bit SSL secured checkout</span>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>
-{% endblock %}
 
-{% block scripts %}
   {{ super() }}
   <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+
+<style>
+.glass-card {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+}
+
+.form-group {
+  @apply mb-5;
+}
+
+.form-label {
+  @apply block text-sm font-medium mb-2 text-gray-300;
+}
+
+.input-wrapper {
+  @apply relative;
+}
+
+.input-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 text-gray-400;
+}
+
+.form-input {
+  @apply w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg 
+         text-white placeholder-gray-500 focus:ring-2 focus:ring-primary 
+         focus:border-transparent transition-all;
+}
+
+.validation-message {
+  @apply text-sm text-red-400 mt-1 h-4;
+}
+
+.btn-gradient-primary {
+  background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
+  @apply relative overflow-hidden border-none;
+}
+
+.loading-spinner {
+  @apply absolute inset-0 flex items-center justify-center bg-primary opacity-0 
+         transition-opacity;
+}
+
+button.loading .button-content {
+  @apply opacity-0;
+}
+
+button.loading .loading-spinner {
+  @apply opacity-100;
+}
+
+.skeleton-loader {
+  @apply h-16 bg-gray-700 rounded-lg animate-pulse;
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
+}
+</style>
+
+
 {% endblock %}
