@@ -1,118 +1,116 @@
+// static/js/checkout.js
+
 document.addEventListener('DOMContentLoaded', () => {
-  // ——————— DOM Caching ———————
   const summaryContainer = document.getElementById('order-summary');
   const totalEl          = document.getElementById('order-total');
   const form             = document.getElementById('checkout-form');
-  const csrfToken        = document.querySelector('meta[name="csrf-token"]').content;
+  const csrfToken        = document.querySelector('input[name="csrf_token"]').value;
   const toastContainer   = document.getElementById('toastContainer');
 
-  // ——————— Toast Helper ———————
-  const showToast = (message, type='success') => {
-    const toastEl = document.createElement('div');
-    toastEl.innerHTML = `
-      <div class="toast align-items-center text-bg-${type} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+  // — Toast helper —
+  function showToast(msg, variant = 'success') {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = `
+      <div class="toast align-items-center text-bg-${variant} border-0 mb-2" 
+           role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
-          <div class="toast-body">${message}</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          <div class="toast-body">${msg}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" 
+                  data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>`;
-    const node = toastEl.firstElementChild;
-    toastContainer.appendChild(node);
-    const bsToast = new bootstrap.Toast(node, { delay: 4000 });
-    bsToast.show();
-    node.addEventListener('hidden.bs.toast', () => node.remove());
-  };
-
-  // ——————— Render Order Summary ———————
-  async function loadSummary() {
-    summaryContainer.innerHTML = '<p>Loading your cart…</p>';
-    try {
-      const res = await fetch('/cart/summary', { credentials: 'same-origin' });
-      if (!res.ok) throw new Error('Could not load cart summary');
-      const data = await res.json();
-      renderSummary(data.items, data.total);
-    } catch (err) {
-      summaryContainer.innerHTML = `<p class="text-danger">${err.message}</p>`;
-    }
+    const toastEl = wrapper.firstElementChild;
+    toastContainer.appendChild(toastEl);
+    new bootstrap.Toast(toastEl, { delay: 4000 }).show();
+    toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
   }
 
+  // — Render the summary —
   function renderSummary(items, total) {
-    if (!items || Object.keys(items).length === 0) {
+    if (!items || items.length === 0) {
       summaryContainer.innerHTML = '<p>Your cart is empty.</p>';
       totalEl.textContent = '0.00';
       return;
     }
 
-    // Build list
     summaryContainer.innerHTML = '';
-    Object.values(items).forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'd-flex justify-content-between';
-      div.innerHTML = `
+    items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'd-flex justify-content-between mb-3';
+      row.innerHTML = `
         <div>
           <strong>${item.name}</strong>
           <div class="small text-muted">
             ${item.quantity} × $${parseFloat(item.price).toFixed(2)}
           </div>
         </div>
-        <div>
-          $${(item.quantity * item.price).toFixed(2)}
-        </div>`;
-      summaryContainer.appendChild(div);
+        <div>$${(item.quantity * item.price).toFixed(2)}</div>`;
+      summaryContainer.appendChild(row);
     });
 
     totalEl.textContent = parseFloat(total).toFixed(2);
   }
 
-  // ——————— Form Submission ———————
+  // — Fetch & display the cart —
+  async function loadSummary() {
+    summaryContainer.innerHTML = '<p>Loading your cart…</p>';
+    try {
+      const res  = await fetch('/cart/json', { credentials: 'same-origin' });
+      if (!res.ok) throw new Error('Could not load cart summary');
+      const data = await res.json();
+      renderSummary(data.items, data.total);
+    } catch (err) {
+      summaryContainer.innerHTML = `<p class="text-danger">${err.message}</p>`;
+      totalEl.textContent = '0.00';
+    }
+  }
+
+  // — Handle form submission —
   form.addEventListener('submit', async e => {
     e.preventDefault();
+    e.stopPropagation();
 
+    const btn     = form.querySelector('button[type="submit"]');
+    const spinner = btn.querySelector('.loading-spinner');
     const payload = {
       name:    form.name.value.trim(),
       address: form.address.value.trim(),
-      zip:     form.zip ? form.zip.value.trim() : '',
+      zip:     form.zip.value.trim(),
       phone:   form.phone.value.trim()
     };
 
-    // Basic client-side validation
     if (!payload.name || !payload.address || !payload.phone) {
-      showToast('Please fill in all required fields.', 'warning');
-      return;
+      return showToast('All fields are required.', 'warning');
     }
 
-    // Disable button to prevent double submissions
-    const submitBtn = form.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
+    btn.disabled = true;
+    spinner.classList.remove('hidden');
 
     try {
-      const res = await fetch('/checkout', {
-        method: 'POST',
+      const res  = await fetch('/cart/checkout', {
+        method:      'POST',
         credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken
+          'X-CSRFToken':  csrfToken
         },
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.description || err.message || 'Checkout failed');
-      }
-
       const data = await res.json();
-      showToast(data.message || 'Order placed successfully!', 'success');
+      if (!res.ok) throw new Error(data.description || data.message || 'Checkout failed');
 
-      // Redirect to payment page or confirmation
-      window.location.href = `/payment/${data.order_id}`;
+      showToast(data.message, 'success');
+      // Redirect to payment page
+      window.location.href = `/payments/${data.order_id}/checkout`;
     } catch (err) {
       showToast(err.message, 'danger');
     } finally {
-      submitBtn.disabled = false;
+      btn.disabled = false;
+      spinner.classList.add('hidden');
     }
   });
 
-  // ——————— Init ———————
+  // — Kick things off —
   loadSummary();
 });

@@ -33,11 +33,14 @@ def create_app(config_class=None):
     from app.cart.routes import cart_bp
     from app.main.routes import main_bp
     from app.admin.routes import admin_bp
-
+    from app.payment.routes import payments_bp
+    
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(cart_bp, url_prefix='/cart')
     app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(payments_bp, url_prefix='/payments')
+
 
     # User loader for login management
     from app.admin.models import User

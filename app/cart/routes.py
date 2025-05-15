@@ -32,14 +32,12 @@ def handle_exception(err):
 # ——————— GET Cart JSON ———————
 @cart_bp.route('/json', methods=['GET'])
 def get_cart_json():
-    cart = Cart()  # loads/validates session once :contentReference[oaicite:8]{index=8}
+    cart = Cart()
     items_out = []
-
     for pid, item in cart.get_items().items():
         product = Product.query.get(pid)
         if not product or not product.is_active:
-            continue  # skip deleted or inactive products
-
+            continue
         items_out.append({
             'id': pid,
             'name': item['name'],
@@ -48,15 +46,12 @@ def get_cart_json():
             'current_price': float(product.price),
             'available': product.is_active
         })
-
-    response = {
+    return jsonify({
         'items': items_out,
         'total': float(cart.total),
         'count': cart.item_count,
         'unique_items': cart.unique_items
-    }
-    # Optionally add caching headers here for performance :contentReference[oaicite:9]{index=9}
-    return jsonify(response), 200
+    }), 200
 
 
 # ——————— POST Add to Cart ———————
@@ -102,12 +97,23 @@ def checkout_page():
     return render_template('cart/checkout.html')
 
 
+@cart_bp.route('/summary', methods=['GET'])
+def cart_summary():
+    cart = Cart()
+    return jsonify({
+        'items': cart.get_items(),
+        'count': cart.item_count,
+        'unique_items': cart.unique_items,
+        'total': float(cart.total)
+    }), 200
+
+
 @cart_bp.route('/checkout', methods=['POST'])
 def checkout():
     cart = Cart()
     if cart.item_count == 0:
         abort(400, description="Cart is empty")
-    data = request.get_json() or {}
+    data    = request.get_json() or {}
     name    = data.get('name', '').strip()
     address = data.get('address', '').strip()
     phone   = data.get('phone', '').strip()
@@ -122,8 +128,7 @@ def checkout():
         payment_status='Pending'
     )
     db.session.add(order)
-    db.session.flush()  # get order.id
-
+    db.session.flush()  # assign order.id
     for pid, item in cart.get_items().items():
         db.session.add(OrderItem(
             order_id=order.id,
@@ -132,22 +137,9 @@ def checkout():
             price=item['price'],
             quantity=item['quantity']
         ))
-
     db.session.commit()
-    cart.clear()  # clear the cart now that the order exists
-
+    cart.clear()
     return jsonify({
         'order_id': order.id,
         'message': 'Order created, ready for payment'
-    }), 200
-
-
-@cart_bp.route('/summary', methods=['GET'])
-def cart_summary():
-    cart = Cart()
-    return jsonify({
-        'items': cart.get_items(),
-        'count': cart.item_count,
-        'unique_items': cart.unique_items,
-        'total': float(cart.total)
     }), 200

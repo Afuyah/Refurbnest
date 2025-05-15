@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Secure Checkout</title>
+
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script>window.orderId = {{ order_id }};</script>
+
+  <!-- Google Fonts & Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: #333;
+    }
+
+    #preloader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease-out;
+    }
+
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .checkout-container {
+      max-width: 420px;
+      margin: 80px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .secure-banner {
+      background: #e8f5ff;
+      color: #007bff;
+      border-radius: 6px;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .secure-banner i {
+      margin-right: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    input {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 0.65rem 0.75rem;
+      font-size: 1rem;
+      width: 100%;
+      transition: border-color 0.2s ease-in-out;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    button[type="submit"] {
+      background: #007bff;
+      border: none;
+      color: white;
+      padding: 0.75rem;
+      font-size: 1rem;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      position: relative;
+    }
+
+    button[type="submit"]:hover {
+      background: #0056b3;
+    }
+
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      display: none;
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 2px solid rgba(255,255,255,0.6);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .footer-note {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+    }
+
+    #toastContainer {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1055;
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toastContainer"></div>
+
+  <div class="checkout-container">
+    <h1><i class="fas fa-lock"></i> Secure Checkout</h1>
+
+    <div class="secure-banner">
+      <i class="fas fa-shield-alt"></i>
+      SSL Encrypted · PCI Compliant
+    </div>
+
+    <form id="payment-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="form-group">
+        <label for="cardholder_name">Cardholder Name</label>
+        <input id="cardholder_name" name="cardholder_name" type="text" required placeholder="John Doe" />
+      </div>
+
+      <div class="form-group">
+        <label for="card_number">Card Number</label>
+        <input id="card_number" name="card_number" type="text" maxlength="19"
+               inputmode="numeric" required placeholder="1234 5678 9012 3456" />
+      </div>
+
+      <div class="d-flex gap-2">
+        <div class="flex-fill form-group">
+          <label for="expiry_date">Expiry Date (MM/YY)</label>
+          <input id="expiry_date" name="expiry_date" type="text" maxlength="5"
+                 inputmode="numeric" required placeholder="MM/YY" />
+        </div>
+        <div class="flex-fill form-group">
+          <label for="cvv">CVV</label>
+          <input id="cvv" name="cvv" type="password" maxlength="4"
+                 inputmode="numeric" required placeholder="123" />
+        </div>
+      </div>
+
+      <button type="submit">
+        <i class="fas fa-credit-card"></i> Pay Now
+        <span class="loading-spinner"></span>
+      </button>
+    </form>
+
+    <p class="footer-note">
+      We never store your CVV. Card numbers are encrypted.
+    </p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function() {
+      const form = document.getElementById('payment-form');
+      const spinner = form.querySelector('.loading-spinner');
+      const csrf = document.querySelector('meta[name="csrf-token"]').content;
+      const toasts = document.getElementById('toastContainer');
+
+      function showToast(msg, variant = 'success') {
+        const el = document.createElement('div');
+        el.innerHTML = `
+          <div class="toast align-items-center text-bg-${variant} border-0 mb-2" role="alert">
+            <div class="d-flex">
+              <div class="toast-body">${msg}</div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+          </div>`;
+        const toast = el.firstElementChild;
+        toasts.appendChild(toast);
+        new bootstrap.Toast(toast, { delay: 4000 }).show();
+        toast.addEventListener('hidden.bs.toast', () => toast.remove());
+      }
+
+      // Auto-format card number: XXXX XXXX XXXX XXXX
+      form.card_number.addEventListener('input', e => {
+        e.target.value = e.target.value.replace(/\D/g, '')
+          .replace(/(.{4})/g, '$1 ')
+          .trim();
+      });
+
+      // Auto-format expiry date: MM/YY
+      form.expiry_date.addEventListener('input', e => {
+        let v = e.target.value.replace(/\D/g, '');
+        if (v.length >= 3) {
+          v = v.slice(0, 2) + '/' + v.slice(2, 4);
+        }
+        e.target.value = v;
+      });
+
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        spinner.style.display = 'inline-block';
+        const btn = form.querySelector('button');
+        btn.disabled = true;
+
+        const payload = {
+          cardholder_name: form.cardholder_name.value.trim(),
+          card_number: form.card_number.value.replace(/\s+/g, ''),
+          expiry_date: form.expiry_date.value.trim(),
+          cvv: form.cvv.value.trim()
+        };
+
+        try {
+          const res = await fetch(`/payments/${window.orderId}/checkout`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrf
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Payment failed');
+          showToast(data.message, 'success');
+          window.location.href = data.next;
+        } catch (err) {
+          showToast(err.message, 'danger');
+        } finally {
+          spinner.style.display = 'none';
+          btn.disabled = false;
+        }
+      });
+
+      window.addEventListener('load', () => {
+        const pre = document.getElementById('preloader');
+        pre.classList.add('hidden');
+        setTimeout(() => pre.remove(), 500);
+      });
+    })();
+  </script>
+</body>
+</html>

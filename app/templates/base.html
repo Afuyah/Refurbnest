@@ -234,12 +234,23 @@
         <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.list_products') }}">Store</a></li>
         <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.view_wishlist') }}">Collections</a></li>
         <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.contact') }}">Contact</a></li>
+
+
+
         {% if current_user.is_authenticated %}
           {% if current_user.has_role('Admin') %}
             <li class="nav-item"><a class="nav-link px-3 text-warning" href="{{ url_for('admin.dashboard') }}">Admin</a></li>
           {% endif %}
         {% endif %}
       </ul>
+
+ {% if current_user.is_authenticated %}
+        <a class="btn btn-danger px-3 ms-2" href="{{ url_for('auth.logout') }}">Logout</a>
+      {% else %}
+        <a class="btn btn-primary px-3 ms-2" href="{{ url_for('auth.login') }}">Login</a>
+      {% endif %}
+
+      
     </div>
 
     <!-- Right Side: Cart + Auth -->
@@ -253,11 +264,7 @@
         <span class="sr-only">0 items in cart</span>
       </button>
 
-      {% if current_user.is_authenticated %}
-        <a class="btn btn-danger px-3 ms-2" href="{{ url_for('auth.logout') }}">Logout</a>
-      {% else %}
-        <a class="btn btn-primary px-3 ms-2" href="{{ url_for('auth.login') }}">Login</a>
-      {% endif %}
+     
     </div>
 
     <!-- Toggler -->

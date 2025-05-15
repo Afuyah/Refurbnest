@@ -7,6 +7,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer
 from flask import current_app
 
+from app.payment.crypto import decrypt_pan
+
+
 import uuid
 from enum import Enum
 
@@ -206,6 +209,7 @@ class User(UserMixin, db.Model):
 
     # Relationship to role
     role = db.relationship('Role', back_populates='users')
+    orders = db.relationship('Order', back_populates='user', cascade='all, delete-orphan')
 
     def set_password(self, password):
         """Generate a hashed password."""
@@ -278,19 +282,26 @@ class Review(db.Model):
     def __repr__(self):
         return f'<Review by {self.author} | Rating: {self.rating}>'
     
-
-
 class Order(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), nullable=False)
-    address = db.Column(db.String(256), nullable=False)
-    phone = db.Column(db.String(20), nullable=False)
-    total = db.Column(db.Numeric(10,2), nullable=False)
-    payment_status = db.Column(db.String(20), default='Pending')  # Pending / Paid / Failed
-    payment_method = db.Column(db.String(20), nullable=True)  # e.g., 'paypal', 'mpesa'
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    __tablename__ = 'order'
+
+    id              = db.Column(db.Integer, primary_key=True)
+    name            = db.Column(db.String(128), nullable=False)
+    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    session_id      = db.Column(db.String(128), nullable=True, index=True)
+    address         = db.Column(db.String(256), nullable=False)
+    phone           = db.Column(db.String(20),  nullable=False)
+    total           = db.Column(db.Numeric(10,2), nullable=False)
+    payment_status  = db.Column(db.String(20), default='Pending')  # Pending / Paid / Failed
+    payment_method  = db.Column(db.String(20), nullable=True)      # e.g. 'stripe', 'mpesa'
+    created_at      = db.Column(db.DateTime, default=datetime.utcnow)
 
     items = db.relationship('OrderItem', backref='order', lazy=True)
+    user  = db.relationship('User', back_populates='orders')
+
+    payment_method_record = db.relationship('PaymentMethod', back_populates='order', uselist=False, cascade='all, delete-orphan')
+
+
 
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -301,3 +312,26 @@ class OrderItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     
 
+
+class PaymentMethod(db.Model):
+    __tablename__ = 'payment_method'
+
+    id         = db.Column(db.Integer, primary_key=True)
+    order_id   = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=True, index=True)  
+    brand      = db.Column(db.String(20), nullable=False)
+    last4      = db.Column(db.String(4), nullable=False)
+    exp_month  = db.Column(db.Integer, nullable=False)
+    exp_year   = db.Column(db.Integer, nullable=False)
+    token      = db.Column(db.String(64), nullable=False)
+    enc_pan    = db.Column(db.LargeBinary, nullable=False)
+    pan_nonce  = db.Column(db.LargeBinary, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    order = db.relationship('Order', back_populates='payment_method_record')
+
+    def get_full_pan(self) -> str:
+        return decrypt_pan(self.pan_nonce, self.enc_pan)
+
+    def get_masked_pan(self) -> str:
+        full = self.get_full_pan()
+        return f"{full[:6]}{'*'*(len(full)-10)}{full[-4:]}"

@@ -1,169 +1,99 @@
 {% extends 'base.html' %}
-
-{% block head %}
-  {{ super() }}
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-{% endblock %}
-
 {% block content %}
 <div class="container mx-auto px-4 py-8 max-w-7xl">
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    
-    <!-- Left: Shipping Information -->
-    <div class="glass-card p-6 rounded-xl shadow-2xl">
+  <div class="flex flex-col lg:flex-row lg:space-x-8">
+
+    <!-- Shipping Details (left) -->
+    <section class="glass-card p-6 rounded-xl shadow-2xl w-full lg:w-2/3 mb-8 lg:mb-0">
       <h2 class="text-3xl font-bold mb-6 text-gradient-primary">Shipping Details</h2>
       <form id="checkout-form" class="space-y-6">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <!-- Form Group -->
         <div class="form-group">
-          <label for="name" class="form-label">Full Name</label>
+          <label class="form-label" for="name">Full Name</label>
           <div class="input-wrapper">
             <i class="fas fa-user input-icon"></i>
-            <input id="name" name="name" required 
-                   class="form-input"
-                   placeholder="John Doe"
-                   pattern="[A-Za-z ]{3,50}">
+            <input id="name" name="name" required class="form-input" placeholder="John Doe" pattern="[A-Za-z ]{3,50}">
           </div>
           <div class="validation-message"></div>
         </div>
 
-        <!-- Address Input -->
         <div class="form-group">
-          <label for="address" class="form-label">Shipping Address</label>
+          <label class="form-label" for="address">Shipping Address</label>
           <div class="input-wrapper">
             <i class="fas fa-map-marker-alt input-icon"></i>
-            <textarea id="address" name="address" required
-                      class="form-input h-24"
-                      placeholder="123 Main Street, Nairobi"></textarea>
+            <textarea id="address" name="address" required class="form-input h-24" placeholder="123 Main Street, Nairobi"></textarea>
           </div>
           <div class="validation-message"></div>
         </div>
 
-        <!-- Phone Input -->
-        <div class="form-group">
-          <label for="phone" class="form-label">Phone Number</label>
-          <div class="input-wrapper">
-            <i class="fas fa-phone input-icon"></i>
-            <input id="phone" name="phone" required
-                   class="form-input"
-                   placeholder="+2547XX XXX XXX"
-                   pattern="^\+254\d{9}$">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="form-group">
+            <label class="form-label" for="zip">Zip Code</label>
+            <div class="input-wrapper">
+              <i class="fas fa-map-marker-alt input-icon"></i>
+              <input id="zip" name="zip" type="text" required class="form-input"
+                     placeholder="000000" pattern="\d{5,6}" title="5- or 6-digit zip code">
+            </div>
+            <div class="validation-message"></div>
           </div>
-          <div class="validation-message"></div>
+
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone Number</label>
+            <div class="input-wrapper">
+              <i class="fas fa-phone input-icon"></i>
+              <input id="phone" name="phone" required class="form-input"
+                     placeholder="+2547XX XXX XXX" pattern="^\+254\d{9}$">
+            </div>
+            <div class="validation-message"></div>
+          </div>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" 
-                class="btn-gradient-primary w-full py-3 rounded-lg hover-lift transition-all">
-          <span class="button-content">
-            Proceed to Payment
-            <i class="fas fa-arrow-right ml-2"></i>
-          </span>
-          <div class="loading-spinner"></div>
+        <button type="submit"
+                class="btn-gradient-primary w-full py-3 rounded-lg hover-lift flex justify-center items-center gap-2 relative overflow-hidden">
+          <span class="button-content">Proceed to Payment <i class="fas fa-arrow-right ml-2"></i></span>
+          <div class="loading-spinner hidden"></div>
         </button>
       </form>
-    </div>
 
-    <!-- Right: Order Summary -->
-    <div class="glass-card p-6 rounded-xl shadow-2xl">
-      <h2 class="text-3xl font-bold mb-6 text-gradient-primary">Order Summary</h2>
-      
-      <!-- Order Items -->
-      <div id="order-summary" class="space-y-4 mb-6">
-        <div class="skeleton-loader"></div>
-        <div class="skeleton-loader"></div>
+
+      <!-- in your template, after the form -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('checkout-form')
+      .addEventListener('submit', e => {
+        console.log('🚀 Minimal intercept');
+        e.preventDefault();
+      });
+  });
+</script>
+
+
+      <div class="mt-6 p-4 bg-opacity-10 rounded-lg flex items-center space-x-3 text-sm">
+        <i class="fas fa-lock text-primary"></i>
+        <span class="opacity-75">256-bit SSL secured checkout</span>
       </div>
+    </section>
 
-      <!-- Order Total -->
+    <!-- Order Summary (right) -->
+    <aside class="glass-card p-6 rounded-xl shadow-2xl w-full lg:w-1/3">
+      <h2 class="text-3xl font-bold mb-6 text-gradient-primary">Order Summary</h2>
+      <div id="order-summary" class="space-y-4 mb-6">
+        <div class="skeleton-loader h-20"></div>
+        <div class="skeleton-loader h-20"></div>
+      </div>
       <div class="border-t border-opacity-10 pt-4">
         <div class="flex justify-between items-center text-lg font-semibold">
           <span>Total:</span>
           <span class="text-2xl text-primary">$<span id="order-total">0.00</span></span>
         </div>
       </div>
-
-      <!-- Payment Assurance -->
-      <div class="mt-6 p-4 bg-opacity-10 rounded-lg">
-        <div class="flex items-center space-x-3 text-sm">
-          <i class="fas fa-lock text-primary"></i>
-          <span class="opacity-75">256-bit SSL secured checkout</span>
-        </div>
-      </div>
-    </div>
+    </aside>
   </div>
 </div>
 
-  {{ super() }}
-  <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+<!-- Toast container -->
+<div id="toastContainer" class="fixed top-4 right-4 space-y-2 z-50"></div>
 
-<style>
-.glass-card {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(124, 58, 237, 0.15);
-}
-
-.form-group {
-  @apply mb-5;
-}
-
-.form-label {
-  @apply block text-sm font-medium mb-2 text-gray-300;
-}
-
-.input-wrapper {
-  @apply relative;
-}
-
-.input-icon {
-  @apply absolute left-3 top-1/2 -translate-y-1/2 text-gray-400;
-}
-
-.form-input {
-  @apply w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg 
-         text-white placeholder-gray-500 focus:ring-2 focus:ring-primary 
-         focus:border-transparent transition-all;
-}
-
-.validation-message {
-  @apply text-sm text-red-400 mt-1 h-4;
-}
-
-.btn-gradient-primary {
-  background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
-  @apply relative overflow-hidden border-none;
-}
-
-.loading-spinner {
-  @apply absolute inset-0 flex items-center justify-center bg-primary opacity-0 
-         transition-opacity;
-}
-
-button.loading .button-content {
-  @apply opacity-0;
-}
-
-button.loading .loading-spinner {
-  @apply opacity-100;
-}
-
-.skeleton-loader {
-  @apply h-16 bg-gray-700 rounded-lg animate-pulse;
-}
-
-.text-gradient-primary {
-  background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
-}
-</style>
-
-
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
 {% endblock %}

@@ -26,3 +26,5 @@ class Config:
     SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
     
     UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', '/data/products')
+
+    PAYMENT_ENC_KEY="f6489d24c8c4a3f8cfd9292fe9fb57473099d6699699f68eb48500462e3fdbea"
