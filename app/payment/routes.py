@@ -48,8 +48,10 @@ def checkout(order_id):
         return render_template(
             'payments/checkout.html',
             order_id=order.id,
-            order_total=order.total
+            order_total=order.total,
+            amount=order.total  # 👈 ADD THIS LINE
         )
+
 
     # 3) POST → validate
     data       = request.get_json(silent=True) or request.form

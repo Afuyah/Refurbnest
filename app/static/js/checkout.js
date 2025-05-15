@@ -38,13 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const row = document.createElement('div');
       row.className = 'd-flex justify-content-between mb-3';
       row.innerHTML = `
-        <div>
+        <div class="text-black">
           <strong>${item.name}</strong>
-          <div class="small text-muted">
+          <div class=" text-black">
             ${item.quantity} × $${parseFloat(item.price).toFixed(2)}
           </div>
         </div>
-        <div>$${(item.quantity * item.price).toFixed(2)}</div>`;
+        <div class="text-black">$${(item.quantity * item.price).toFixed(2)}</div>`;
       summaryContainer.appendChild(row);
     });
 

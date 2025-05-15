@@ -11,11 +11,7 @@
             padding: 0;
         }
 
-        /* Base Styles */
-        html {
-            scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent;
-        }
+      
 
         body {
             font-family: 'Poppins', system-ui, -apple-system, sans-serif;
