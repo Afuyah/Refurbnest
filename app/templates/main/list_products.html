@@ -131,31 +131,7 @@ data-product-price="{{ product.price }}"
 </div></div>
 
 <!-- Optimized Lazy Loading Script -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const lazyLoad = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.onload = () => {
-                    img.classList.add('loaded');
-                    const skeleton = img.previousElementSibling;
-                    if (skeleton) skeleton.style.display = 'none';
-                };
-                observer.unobserve(img);
-            }
-        });
-    };
 
-    const observer = new IntersectionObserver(lazyLoad, {
-        rootMargin: '200px 0px',
-        threshold: 0.01
-    });
-
-    document.querySelectorAll('.lazy-load').forEach(img => observer.observe(img));
-});
-</script>
 
 <style>
     /* Add these styles to your CSS */
@@ -220,48 +196,54 @@ document.addEventListener('DOMContentLoaded', () => {
 <script defer src="{{ url_for('static', filename='js/productlist.js') }}"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Lazy Load with Intersection Observer
-        const lazyImages = document.querySelectorAll('.lazy-load');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.addEventListener('load', () => {
-                        img.classList.add('loaded');
-                        const skeleton = img.previousElementSibling;
-                        if (skeleton && skeleton.classList.contains('skeleton')) {
-                            skeleton.style.display = 'none'; // 🚀 Hide skeleton once image loads
-                        }
-                    });
-                    observer.unobserve(img);
-                }
-            });
-        }, { rootMargin: '100px' });
-
-        lazyImages.forEach(img => observer.observe(img));
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Native lazy-loading feature detection
+  if ('loading' in HTMLImageElement.prototype) {
+    document.querySelectorAll('img.lazy-load').forEach(img => {
+      img.loading = 'lazy';
+      img.src = img.dataset.src;
     });
+    return;
+  }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const lazyImages = document.querySelectorAll('.lazy-load');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.addEventListener('load', () => {
-                        img.classList.add('loaded');
-                    });
-                    observer.unobserve(img);
-                }
-            });
-        }, { rootMargin: '100px' });
+  // 2. Observer configuration
+  const config = {
+    rootMargin: '100px 0px',  // start loading 100px before viewport
+    threshold: 0.1            // when 10% of the image is visible
+  };
 
-        lazyImages.forEach(img => observer.observe(img));
+  // 3. Intersection callback
+  const onIntersection = (entries, observer) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+
+      // 4. Load the image
+      img.src = img.dataset.src;
+      img.addEventListener('load', () => {
+        img.classList.add('loaded');  // for fade-in CSS
+        const skeleton = img.previousElementSibling;
+        if (skeleton?.classList.contains('skeleton')) {
+          skeleton.style.display = 'none';  // hide placeholder
+        }
+      });
+      img.addEventListener('error', () => {
+        console.error(`Failed to load image: ${img.dataset.src}`);
+      });
+
+      // 5. Stop observing once handled
+      observer.unobserve(img);
     });
+  };
 
+  // 6. Instantiate the observer
+  const observer = new IntersectionObserver(onIntersection, config);
 
+  // 7. Observe all lazy-load images
+  document.querySelectorAll('img.lazy-load').forEach(img => {
+    observer.observe(img);
+  });
+});
 </script>
 
 {% endblock %}
