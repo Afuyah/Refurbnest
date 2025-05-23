@@ -16,50 +16,43 @@
                animate-fade-in-up"
         style="animation-delay: {{ loop.index0 * 50 }}ms"
       >
-        <!-- Image Container -->
-        <div class="relative aspect-square overflow-hidden">
-          <div class="skeleton absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse"></div>
+       <!-- Image Container -->
+<div class="relative aspect-square overflow-hidden">
+  <div class="skeleton absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse"></div>
 
-          {% if product.images %}
-          <img
-            data-src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
-            alt="{{ product.name }}"
-            class="lazy-load w-full h-full object-cover opacity-0 transition-opacity duration-500"
-            loading="lazy"
-            onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}';"
-          />
-          {% else %}
-          <img
-            src="{{ url_for('static', filename='images/default.jpg') }}"
-            alt="Default Product Image"
-            class="w-full h-full object-cover opacity-100"
-          />
-          {% endif %}
+  <img
+    data-src="{{ product.image_url }}"
+    alt="{{ product.name }}"
+    class="lazy-load w-full h-full object-cover opacity-0 transition-opacity duration-500"
+    loading="lazy"
+    onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}';"
+  />
 
-          <!-- Overlay -->
-          <div
-            class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent
-                   opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
-          >
-            <a
-              href="{{ url_for('main.view_product', product_id=product.id) }}"
-              class="w-full text-center py-2 bg-gray-800/50 backdrop-blur-sm rounded-lg
-                     text-cyan-400 hover:text-white transition-colors"
-            >
-              Full Details & Specs
-            </a>
-          </div>
+  <!-- Overlay -->
+  <div
+    class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent
+           opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
+  >
+    <a
+      href="{{ url_for('main.view_product', product_id=product.id) }}"
+      class="w-full text-center py-2 bg-gray-800/50 backdrop-blur-sm rounded-lg
+             text-cyan-400 hover:text-white transition-colors"
+    >
+      Full Details & Specs
+    </a>
+  </div>
 
-          <!-- Discount Badge -->
-          {% if product.discount %}
-          <div
-            class="absolute top-3 right-3 bg-gradient-to-r from-emerald-600 to-cyan-600
-                   text-xs font-bold px-3 py-1 rounded-full shadow-lg"
-          >
-            -{{ product.discount }}%
-          </div>
-          {% endif %}
-        </div>
+  <!-- Discount Badge -->
+  {% if product.discount %}
+  <div
+    class="absolute top-3 right-3 bg-gradient-to-r from-emerald-600 to-cyan-600
+           text-xs font-bold px-3 py-1 rounded-full shadow-lg"
+  >
+    -{{ product.discount }}%
+  </div>
+  {% endif %}
+</div>
+
 
         <!-- Details -->
         <div class="p-4 space-y-3">

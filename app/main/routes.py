@@ -94,7 +94,7 @@ def get_primary_image_url(product):
 
 
 # ---------------------------------------
-# Product Routes (Improved)
+# Product Routes 
 # ---------------------------------------
 from sqlalchemy.orm import joinedload
 
@@ -127,11 +127,12 @@ def list_products():
         'id': product.id,
         'name': product.name,
         'price': product.price,
-        #'original_price': product.original_price,
         'brand': product.brand.name,
         'category': product.category.name,
-        'image_url': product.images[0].image_path if product.images else url_for('static', filename='images/default.jpg')
+        'image_url': url_for('product_image', filename=product.images[0].image_path)
+                     if product.images else url_for('static', filename='images/default.jpg')
     } for product in products]
+    
 
     # Get filter-related data
     brands = Brand.query.all()  # Cache for 1 hour
