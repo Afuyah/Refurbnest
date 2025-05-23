@@ -200,7 +200,7 @@
 /* Toast Notification Styling */
 .toast-message {
     position: fixed;
-    bottom: 2rem;
+    bottom: 3rem;
     right: 2rem;
     background: #28a745;
     color: white;
@@ -227,34 +227,169 @@
   
    
 
-<nav class="fixed top-0 left-0 right-0 bg-black/60 backdrop-blur-md z-50">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-    <a href="{{ url_for('main.home') }}" class="text-xl font-bold tracking-wide">RefurbNest</a>
 
-    <button class="lg:hidden text-white text-2xl" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+    <nav class="fixed top-0 left-0 right-0 bg-gray-900 text-gray-100 z-50">
 
-    <ul class="hidden lg:flex space-x-6 text-sm font-medium">
-      <li><a href="{{ url_for('main.home') }}" class="hover:text-yellow-400">Home</a></li>
-      <li><a href="{{ url_for('main.list_products') }}" class="hover:text-yellow-400">Store</a></li>
-      <li><a href="{{ url_for('main.view_wishlist') }}" class="hover:text-yellow-400">Collections</a></li>
-      <li><a href="{{ url_for('main.contact') }}" class="hover:text-yellow-400">Contact</a></li>
-      {% if current_user.is_authenticated %}
-        <li><a href="{{ url_for('auth.logout') }}" class="hover:text-yellow-400">Logout</a></li>
-        {% if current_user.has_role('Admin') %}
-          <li><a href="{{ url_for('admin.dashboard') }}" class="text-green-400 font-semibold">Admin</a></li>
-        {% endif %}
-      {% else %}
-        <li><a href="{{ url_for('auth.login') }}" class="hover:text-yellow-400">Login</a></li>
-      {% endif %}
-    </ul>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
 
-    <!-- Cart Icon -->
-    <button id="cartIcon" class="relative text-yellow-400 text-xl ml-4">
+      <!-- Logo + Brand -->
+      <div class="flex items-center">
+        <a href="{{ url_for('main.home') }}" class="flex items-center gap-2">
+          <!--<img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="h-8 w-8">-->
+          <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
+            RefurbNest
+          </span>
+        </a>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden lg:flex lg:items-center lg:space-x-6">
+
+        <!-- Links -->
+        <a href="{{ url_for('main.home') }}" class="hover:text-white transition">Home</a>
+        <a href="{{ url_for('main.list_products') }}" class="hover:text-white transition">Products</a>
+        <div x-data="{ open: false }" class="relative">
+          <button @mouseover="open=true" @mouseleave="open=false"
+                  class="flex items-center hover:text-white transition">
+            Categories
+            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+          </button>
+          <!-- Dropdown -->
+          <div x-show="open" @mouseover="open=true" @mouseleave="open=false"
+               class="absolute left-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg py-2 z-20"
+               x-cloak
+               x-transition:enter="transition ease-out duration-200"
+               x-transition:enter-start="opacity-0 transform -translate-y-2"
+               x-transition:enter-end="opacity-100 transform translate-y-0"
+               x-transition:leave="transition ease-in duration-150"
+               x-transition:leave-start="opacity-100 transform translate-y-0"
+               x-transition:leave-end="opacity-0 transform -translate-y-2">
+            {% for cat in categories %}
+            <a href="{{ url_for('main.list_products', category=cat.id) }}"
+               class="block px-4 py-2 hover:bg-gray-700 transition">{{ cat.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+        <a href="{{ url_for('main.contact') }}" class="hover:text-white transition">About</a>
+        <a href="{{ url_for('main.contact') }}" class="hover:text-white transition">Contact</a>
+
+        <!-- Search -->
+        <div class="relative">
+          <input type="text" placeholder="Search..."
+                 class="bg-gray-800 text-gray-200 placeholder-gray-400 rounded-full pl-10 pr-4 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+          <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        </div>
+      </div>
+
+      <!-- Right-side Actions -->
+      <div class="flex items-center space-x-4">
+
+        <!-- Cart -->
+       <button id="cartIcon" class="relative text-yellow-400 text-xl ml-4">
       <i class="fas fa-shopping-cart"></i>
       <span id="cartBadge" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
     </button>
+
+       
+
+        <!-- User Menu -->
+        {% if current_user.is_authenticated %}
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="flex items-center gap-2 hover:text-white transition">
+            <img src="{{ current_user.avatar_url }}" alt="Avatar" class="h-8 w-8 rounded-full object-cover">
+            <span>{{ current_user.name }}</span>
+            <i class="fas fa-chevron-down text-xs"></i>
+          </button>
+          <div x-show="open" @click.outside="open = false"
+               class="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg py-2 z-20"
+               x-cloak
+               x-transition>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-700 transition">Profile</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-700 transition">Orders</a>
+            <form method="POST" action="{{ url_for('auth.logout') }}">
+              <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-700 transition">Logout</button>
+            </form>
+          </div>
+        </div>
+        {% else %}
+        <a href="{{ url_for('auth.login') }}" class="hover:text-white transition">Sign In</a>
+        <a href="{{ url_for('auth.register') }}" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-full transition">Sign Up</a>
+        {% endif %}
+
+        <!-- Mobile Hamburger -->
+        <button id="mobileMenuButton" class="lg:hidden hover:text-white transition">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Slide-in Menu -->
+  <div id="mobileMenu"
+       class="fixed inset-0 z-40 transform -translate-x-full bg-gray-900/95 backdrop-blur-lg transition-transform duration-300 lg:hidden"
+       aria-hidden="true">
+    <div class="px-6 py-8 space-y-6">
+      <button id="mobileMenuClose" class="text-gray-400 hover:text-white">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <a href="{{ url_for('main.home') }}" class="block text-xl">Home</a>
+      <a href="{{ url_for('main.list_products') }}" class="block text-xl">Products</a>
+      <div x-data="{ open: false }">
+        <button @click="open = !open" class="flex items-center justify-between w-full text-xl">
+          Categories
+          <i class="fas fa-chevron-down" :class="{ 'rotate-180': open }"></i>
+        </button>
+        <div x-show="open" class="mt-2 space-y-2 pl-4" x-cloak x-transition>
+          {% for cat in categories %}
+          <a href="{{ url_for('main.list_products', category=cat.id) }}" class="block">{{ cat.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <a href="{{ url_for('main.home') }}" class="block text-xl">About</a>
+      <a href="{{ url_for('main.contact') }}" class="block text-xl">Contact</a>
+      <div class="pt-4 border-t border-gray-700 space-y-4">
+        {% if current_user.is_authenticated %}
+        <a href="#" class="block">Profile</a>
+        <a href="#" class="block">Orders</a>
+        <form method="POST" action="{{ url_for('auth.logout') }}">
+          <button type="submit" class="w-full text-left">Logout</button>
+        </form>
+        {% else %}
+        <a href="{{ url_for('auth.login') }}" class="block">Sign In</a>
+        <a href="{{ url_for('auth.register') }}" class="block">Sign Up</a>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </nav>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenu = document.getElementById('mobileMenu');
+  document.getElementById('mobileMenuButton').addEventListener('click', () => {
+    mobileMenu.classList.remove('-translate-x-full');
+  });
+  document.getElementById('mobileMenuClose').addEventListener('click', () => {
+    mobileMenu.classList.add('-translate-x-full');
+  });
+
+  // Dark/light mode toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon   = document.getElementById('themeIcon');
+  themeToggle.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    const isDark = document.documentElement.classList.contains('dark');
+    themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    localStorage.setItem('darkMode', isDark);
+  });
+  // Preserve mode on load
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.documentElement.classList.add('dark');
+    themeIcon.className = 'fas fa-sun';
+  }
+</script>
+
 
     <!-- Main Content -->
 <main class="container-fluid flex-grow-1 pt-4 mt-5">

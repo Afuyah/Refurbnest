@@ -43,7 +43,7 @@ def create_app(config_class=None):
 
 
     # User loader for login management
-    from app.admin.models import User
+    from app.admin.models import User, Category, Brand
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -54,4 +54,10 @@ def create_app(config_class=None):
     def product_image(filename):
         return send_from_directory('/data/products', filename)
 
+    @app.context_processor
+    def inject_globals():
+        return {
+            'categories': Category.query.order_by(Category.name).all(),
+            'brands':     Brand.query.order_by(Brand.name).all()   
+        }    
     return app
