@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -49,10 +49,29 @@ def create_app(config_class=None):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # Serve images from /data/products
+    # ----------------------------
+    # Serve Product Images from Local Folder
+    # ----------------------------
     @app.route('/products/<filename>')
     def product_image(filename):
         return send_from_directory('/data/products', filename)
+
+    # ----------------------------
+    # Jinja Filter: Get Product Image URL or Default
+    # ----------------------------
+    def product_image_url(img):
+        try:
+            if img and img.image_path:
+                filename = img.image_path.rsplit('/', 1)[-1]
+                return url_for('product_image', filename=filename)
+        except Exception:
+            pass
+        return url_for('static', filename='images/default.jpg')
+
+    # Register Jinja filter
+    app.jinja_env.filters['product_image_url'] = product_image_url
+        
+
 
     @app.context_processor
     def inject_globals():

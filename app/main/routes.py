@@ -93,6 +93,20 @@ def get_primary_image_url(product):
         return url_for('static', filename='images/placeholder.svg')
 
 
+
+
+def get_product_image_url(product):
+    if product.images:
+        image_path = product.images[0].image_path
+        filename = image_path.rsplit('/', 1)[-1]
+        return url_for('product_image', filename=filename)
+    else:
+        return url_for('static', filename='images/default.jpg')
+
+
+
+
+
 # ---------------------------------------
 # Product Routes 
 # ---------------------------------------
@@ -129,10 +143,10 @@ def list_products():
         'price': product.price,
         'brand': product.brand.name,
         'category': product.category.name,
-        'image_url': url_for('product_image', filename=product.images[0].image_path)
-                     if product.images else url_for('static', filename='images/default.jpg')
+        'image_url': get_product_image_url(product)
     } for product in products]
-    
+
+        
 
     # Get filter-related data
     brands = Brand.query.all()  # Cache for 1 hour
