@@ -1,0 +1,270 @@
+
+ <!-- Cart Sidebar -->
+<div id="cartSidebar" class="cart-sidebar" aria-hidden="true">
+    <div class="cart-header glass-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="cart-title mb-0">
+                <i class="fas fa-shopping-bag me-2"></i>
+                Your Cart
+                <span id="cartItemCount" class="badge bg-gradient-primary rounded-pill ms-2">0</span>
+            </h5>
+            <button id="closeCartBtn" class="close-btn hover-scale" aria-label="Close cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="cartItems" class="cart-items">
+        <!-- Empty state -->
+        <div class="empty-cart text-center py-5">
+            <div class="empty-icon mb-3">
+                <i class="fas fa-shopping-cart fa-3x text-muted opacity-25"></i>
+            </div>
+            <h6 class="text-muted mb-2">Your cart is empty</h6>
+            <p class="small text-muted opacity-75">Start shopping to add items</p>
+            <button class="btn btn-outline-primary mt-3 hover-lift" id="continueShoppingBtn">
+                Continue Shopping
+            </button>
+        </div>
+
+        <!-- Cart items will be dynamically inserted here -->
+    </div>
+
+    <div class="cart-footer glass-footer">
+        <div class="subtotal d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted">Subtotal:</span>
+            <strong id="cartSubtotal" class="h5 text-primary">$0.00</strong>
+        </div>
+        <div class="tax-note small text-muted opacity-75 mb-3">
+            Taxes and shipping calculated at checkout
+        </div>
+        <button class="btn btn-gradient-primary w-100 mb-2 py-3 hover-lift" id="checkoutBtn">
+            <i class="fas fa-lock me-2"></i> Secure Checkout
+        </button>
+        
+        <div class="payment-options text-center mt-3">
+            <img src="/static/images/payment-methods.png" 
+                 alt="Accepted payment methods: Visa, Mastercard, American Express, PayPal" 
+                 class="img-fluid payment-methods opacity-75">
+        </div>
+        <div class="continue-shopping text-center mt-3">
+            <button class="btn btn-link text-decoration-none p-0 text-muted hover-lift" 
+                    id="continueShoppingBtn2">
+                <i class="fas fa-arrow-left me-1"></i> Continue Shopping
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Sidebar Overlay -->
+<div id="cartOverlay" class="cart-overlay"></div>
+
+<!-- Toast Container -->
+<div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <!-- Toast notifications will be inserted here -->
+</div>
+
+<style>
+/* Cart Sidebar Styling */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(15px);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    border-left: 1px solid rgba(124, 58, 237, 0.15);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.cart-sidebar.active {
+    right: 0;
+}
+
+.glass-header {
+    background: rgba(30, 41, 59, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+}
+
+.glass-footer {
+    background: rgba(30, 41, 59, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+}
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(124, 58, 237, 0.5) transparent;
+}
+
+.cart-items::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cart-items::-webkit-scrollbar-thumb {
+    background-color: rgba(124, 58, 237, 0.5);
+    border-radius: 3px;
+}
+
+.cart-items::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.25rem;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-gradient-primary {
+    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
+    border: none;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-gradient-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, 
+        transparent 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 75%);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.cart-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.payment-methods {
+    filter: grayscale(100%) brightness(1.5);
+    transition: filter 0.3s ease;
+}
+
+.payment-methods:hover {
+    filter: grayscale(0%) brightness(1);
+}
+
+/* Toast styling */
+.toast-container {
+    min-width: 350px;
+}
+
+.toast {
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.toast-header {
+    background: rgba(30, 41, 59, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .cart-sidebar {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .toast-container {
+        min-width: 100%;
+        padding: 1rem;
+    }
+}
+</style>
+
+<script>
+// Basic cart toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const cartIcon = document.getElementById('cartIcon');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    
+    function toggleCart() {
+        cartSidebar.classList.toggle('active');
+        cartOverlay.classList.toggle('active');
+        cartSidebar.setAttribute('aria-hidden', !cartSidebar.classList.contains('active'));
+    }
+    
+    cartIcon.addEventListener('click', toggleCart);
+    closeCartBtn.addEventListener('click', toggleCart);
+    cartOverlay.addEventListener('click', toggleCart);
+    
+    // Continue shopping buttons
+    const continueBtns = document.querySelectorAll('[id^="continueShoppingBtn"]');
+    continueBtns.forEach(btn => {
+        btn.addEventListener('click', toggleCart);
+    });
+});
+</script>
+
+<!-- Cart Sidebar Overlay -->
+<div id="cartOverlay" class="cart-overlay"></div>

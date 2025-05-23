@@ -25,146 +25,6 @@
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <style>
-        /* CSS Reset */
-        :root {
-            --gradient-primary: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --transition-base: 300ms ease-in-out;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Base Styles */
-        html {
-            scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-            background: #0a0a0f;
-            color: #f8f9fa;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.6;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Typography */
-        .logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        /* Navigation */
-        .nav-link {
-            position: relative;
-            transition: color var(--transition-base);
-            padding: 0.5rem 1rem !important;
-            color: black;
-        }
-
-        .nav-link:not(.btn):hover::after,
-        .nav-link:not(.btn):focus-visible::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-primary);
-            transform-origin: center;
-            transition: transform var(--transition-base);
-        }
-
-        /* Glass Effect */
-        .glass-effect {
-            background: #cdc;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(1rem); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in both;
-        }
-
-        /* Accessibility */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        /* Mobile First Styles */
-        @media (max-width: 768px) {
-            .navbar-collapse {
-                background: var(--glass-bg);
-                backdrop-filter: blur(10px);
-                padding: 1rem;
-                margin-top: 1rem;
-                border-radius: 0.5rem;
-            }
-
-            .nav-item .btn {
-                width: 100%;
-                margin-top: 0.5rem;
-            }
-
-            main {
-                margin-top: 5rem;
-                padding-inline: 1rem;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            body {
-                background: white !important;
-                color: black !important;
-            }
-
-            .navbar, footer {
-                display: none;
-            }
-        }
-
-
-
-   /* Cart Icon */
-.cart-icon {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: relative;
-}
-
-/* Cart Badge */
 #cartBadge {
   font-size: 0.9rem;
   color: white;
@@ -194,9 +54,6 @@
   }
 }
 
-
-
-
 /* Toast Notification Styling */
 .toast-message {
     position: fixed;
@@ -217,179 +74,11 @@
     opacity: 1;
     transform: translateY(0);
 }
-
-
-
-
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
   
-   
-
-
-    <nav class="fixed top-0 left-0 right-0 bg-gray-900 text-gray-100 z-50">
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-
-      <!-- Logo + Brand -->
-      <div class="flex items-center">
-        <a href="{{ url_for('main.home') }}" class="flex items-center gap-2">
-          <!--<img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="h-8 w-8">-->
-          <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
-            RefurbNest
-          </span>
-        </a>
-      </div>
-
-      <!-- Desktop Menu -->
-      <div class="hidden lg:flex lg:items-center lg:space-x-6">
-
-        <!-- Links -->
-        <a href="{{ url_for('main.home') }}" class="hover:text-white transition">Home</a>
-        <a href="{{ url_for('main.list_products') }}" class="hover:text-white transition">Products</a>
-        <div x-data="{ open: false }" class="relative">
-          <button @mouseover="open=true" @mouseleave="open=false"
-                  class="flex items-center hover:text-white transition">
-            Categories
-            <i class="fas fa-chevron-down ml-1 text-xs"></i>
-          </button>
-          <!-- Dropdown -->
-          <div x-show="open" @mouseover="open=true" @mouseleave="open=false"
-               class="absolute left-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg py-2 z-20"
-               x-cloak
-               x-transition:enter="transition ease-out duration-200"
-               x-transition:enter-start="opacity-0 transform -translate-y-2"
-               x-transition:enter-end="opacity-100 transform translate-y-0"
-               x-transition:leave="transition ease-in duration-150"
-               x-transition:leave-start="opacity-100 transform translate-y-0"
-               x-transition:leave-end="opacity-0 transform -translate-y-2">
-            {% for cat in categories %}
-            <a href="{{ url_for('main.list_products', category=cat.id) }}"
-               class="block px-4 py-2 hover:bg-gray-700 transition">{{ cat.name }}</a>
-            {% endfor %}
-          </div>
-        </div>
-        <a href="{{ url_for('main.contact') }}" class="hover:text-white transition">About</a>
-        <a href="{{ url_for('main.contact') }}" class="hover:text-white transition">Contact</a>
-
-        <!-- Search -->
-        <div class="relative">
-          <input type="text" placeholder="Search..."
-                 class="bg-gray-800 text-gray-200 placeholder-gray-400 rounded-full pl-10 pr-4 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-400">
-          <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-        </div>
-      </div>
-
-      <!-- Right-side Actions -->
-      <div class="flex items-center space-x-4">
-
-        <!-- Cart -->
-       <button id="cartIcon" class="relative text-yellow-400 text-xl ml-4">
-      <i class="fas fa-shopping-cart"></i>
-      <span id="cartBadge" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
-    </button>
-
-       
-
-        <!-- User Menu -->
-        {% if current_user.is_authenticated %}
-        <div x-data="{ open: false }" class="relative">
-          <button @click="open = !open" class="flex items-center gap-2 hover:text-white transition">
-            <img src="{{ current_user.avatar_url }}" alt="Avatar" class="h-8 w-8 rounded-full object-cover">
-            <span>{{ current_user.name }}</span>
-            <i class="fas fa-chevron-down text-xs"></i>
-          </button>
-          <div x-show="open" @click.outside="open = false"
-               class="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg py-2 z-20"
-               x-cloak
-               x-transition>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-700 transition">Profile</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-700 transition">Orders</a>
-            <form method="POST" action="{{ url_for('auth.logout') }}">
-              <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-700 transition">Logout</button>
-            </form>
-          </div>
-        </div>
-        {% else %}
-        <a href="{{ url_for('auth.login') }}" class="hover:text-white transition">Sign In</a>
-        <a href="{{ url_for('auth.register') }}" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-full transition">Sign Up</a>
-        {% endif %}
-
-        <!-- Mobile Hamburger -->
-        <button id="mobileMenuButton" class="lg:hidden hover:text-white transition">
-          <i class="fas fa-bars text-2xl"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile Slide-in Menu -->
-  <div id="mobileMenu"
-       class="fixed inset-0 z-40 transform -translate-x-full bg-gray-900/95 backdrop-blur-lg transition-transform duration-300 lg:hidden"
-       aria-hidden="true">
-    <div class="px-6 py-8 space-y-6">
-      <button id="mobileMenuClose" class="text-gray-400 hover:text-white">
-        <i class="fas fa-times text-2xl"></i>
-      </button>
-      <a href="{{ url_for('main.home') }}" class="block text-xl">Home</a>
-      <a href="{{ url_for('main.list_products') }}" class="block text-xl">Products</a>
-      <div x-data="{ open: false }">
-        <button @click="open = !open" class="flex items-center justify-between w-full text-xl">
-          Categories
-          <i class="fas fa-chevron-down" :class="{ 'rotate-180': open }"></i>
-        </button>
-        <div x-show="open" class="mt-2 space-y-2 pl-4" x-cloak x-transition>
-          {% for cat in categories %}
-          <a href="{{ url_for('main.list_products', category=cat.id) }}" class="block">{{ cat.name }}</a>
-          {% endfor %}
-        </div>
-      </div>
-      <a href="{{ url_for('main.home') }}" class="block text-xl">About</a>
-      <a href="{{ url_for('main.contact') }}" class="block text-xl">Contact</a>
-      <div class="pt-4 border-t border-gray-700 space-y-4">
-        {% if current_user.is_authenticated %}
-        <a href="#" class="block">Profile</a>
-        <a href="#" class="block">Orders</a>
-        <form method="POST" action="{{ url_for('auth.logout') }}">
-          <button type="submit" class="w-full text-left">Logout</button>
-        </form>
-        {% else %}
-        <a href="{{ url_for('auth.login') }}" class="block">Sign In</a>
-        <a href="{{ url_for('auth.register') }}" class="block">Sign Up</a>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</nav>
-
-<script>
-  // Mobile menu toggle
-  const mobileMenu = document.getElementById('mobileMenu');
-  document.getElementById('mobileMenuButton').addEventListener('click', () => {
-    mobileMenu.classList.remove('-translate-x-full');
-  });
-  document.getElementById('mobileMenuClose').addEventListener('click', () => {
-    mobileMenu.classList.add('-translate-x-full');
-  });
-
-  // Dark/light mode toggle
-  const themeToggle = document.getElementById('themeToggle');
-  const themeIcon   = document.getElementById('themeIcon');
-  themeToggle.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-    const isDark = document.documentElement.classList.contains('dark');
-    themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-    localStorage.setItem('darkMode', isDark);
-  });
-  // Preserve mode on load
-  if (localStorage.getItem('darkMode') === 'true') {
-    document.documentElement.classList.add('dark');
-    themeIcon.className = 'fas fa-sun';
-  }
-</script>
-
+    {% include 'partials/navbar.html' %}
 
     <!-- Main Content -->
 <main class="container-fluid flex-grow-1 pt-4 mt-5">
@@ -413,345 +102,88 @@
     </div>
 </main>
 
+{% include 'partials/cart_sidebar.html' %}
 
+<div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100"></div>
 
- <!-- Cart Sidebar -->
-<div id="cartSidebar" class="cart-sidebar" aria-hidden="true">
-    <div class="cart-header glass-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="cart-title mb-0">
-                <i class="fas fa-shopping-bag me-2"></i>
-                Your Cart
-                <span id="cartItemCount" class="badge bg-gradient-primary rounded-pill ms-2">0</span>
-            </h5>
-            <button id="closeCartBtn" class="close-btn hover-scale" aria-label="Close cart">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
+{% include 'partials/footer.html' %}
+  <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 
-    <div id="cartItems" class="cart-items">
-        <!-- Empty state -->
-        <div class="empty-cart text-center py-5">
-            <div class="empty-icon mb-3">
-                <i class="fas fa-shopping-cart fa-3x text-muted opacity-25"></i>
-            </div>
-            <h6 class="text-muted mb-2">Your cart is empty</h6>
-            <p class="small text-muted opacity-75">Start shopping to add items</p>
-            <button class="btn btn-outline-primary mt-3 hover-lift" id="continueShoppingBtn">
-                Continue Shopping
-            </button>
-        </div>
-
-        <!-- Cart items will be dynamically inserted here -->
-    </div>
-
-    <div class="cart-footer glass-footer">
-        <div class="subtotal d-flex justify-content-between align-items-center mb-2">
-            <span class="text-muted">Subtotal:</span>
-            <strong id="cartSubtotal" class="h5 text-primary">$0.00</strong>
-        </div>
-        <div class="tax-note small text-muted opacity-75 mb-3">
-            Taxes and shipping calculated at checkout
-        </div>
-        <button class="btn btn-gradient-primary w-100 mb-2 py-3 hover-lift" id="checkoutBtn">
-            <i class="fas fa-lock me-2"></i> Secure Checkout
-        </button>
-        
-        <div class="payment-options text-center mt-3">
-            <img src="/static/images/payment-methods.png" 
-                 alt="Accepted payment methods: Visa, Mastercard, American Express, PayPal" 
-                 class="img-fluid payment-methods opacity-75">
-        </div>
-        <div class="continue-shopping text-center mt-3">
-            <button class="btn btn-link text-decoration-none p-0 text-muted hover-lift" 
-                    id="continueShoppingBtn2">
-                <i class="fas fa-arrow-left me-1"></i> Continue Shopping
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Cart Sidebar Overlay -->
-<div id="cartOverlay" class="cart-overlay"></div>
-
-<!-- Toast Container -->
-<div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-    <!-- Toast notifications will be inserted here -->
-</div>
-
-<style>
-/* Cart Sidebar Styling */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 100%;
-    max-width: 420px;
-    height: 100vh;
-    background: rgba(15, 23, 42, 0.98);
-    backdrop-filter: blur(15px);
-    z-index: 1050;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    border-left: 1px solid rgba(124, 58, 237, 0.15);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
-}
-
-.cart-sidebar.active {
-    right: 0;
-}
-
-.glass-header {
-    background: rgba(30, 41, 59, 0.8);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 1.5rem;
-}
-
-.glass-footer {
-    background: rgba(30, 41, 59, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 1.5rem;
-}
-
-.cart-items {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1.5rem;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(124, 58, 237, 0.5) transparent;
-}
-
-.cart-items::-webkit-scrollbar {
-    width: 6px;
-}
-
-.cart-items::-webkit-scrollbar-thumb {
-    background-color: rgba(124, 58, 237, 0.5);
-    border-radius: 3px;
-}
-
-.cart-items::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.close-btn {
-    background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 1.25rem;
-    transition: all 0.2s ease;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-}
-
-.close-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.hover-scale:hover {
-    transform: scale(1.05);
-}
-
-.hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.btn-gradient-primary {
-    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
-    border: none;
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-gradient-primary::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, 
-        transparent 25%,
-        rgba(255, 255, 255, 0.1) 50%,
-        transparent 75%);
-    transform: rotate(45deg);
-    animation: shine 3s infinite;
-}
-
-.bg-gradient-primary {
-    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
-}
-
-@keyframes shine {
-    0% { transform: translateX(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) rotate(45deg); }
-}
-
-.cart-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 1040;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.cart-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.payment-methods {
-    filter: grayscale(100%) brightness(1.5);
-    transition: filter 0.3s ease;
-}
-
-.payment-methods:hover {
-    filter: grayscale(0%) brightness(1);
-}
-
-/* Toast styling */
-.toast-container {
-    min-width: 350px;
-}
-
-.toast {
-    background: rgba(30, 41, 59, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(124, 58, 237, 0.3);
-    border-radius: 0.75rem;
-    overflow: hidden;
-}
-
-.toast-header {
-    background: rgba(30, 41, 59, 0.8);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Responsive adjustments */
-@media (max-width: 576px) {
-    .cart-sidebar {
-        width: 100%;
-        max-width: 100%;
-    }
-    
-    .toast-container {
-        min-width: 100%;
-        padding: 1rem;
-    }
-}
-</style>
+   <!-- Bootstrap 5 Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
+        crossorigin="anonymous"></script>
 
 <script>
-// Basic cart toggle functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const cartIcon = document.getElementById('cartIcon');
-    const cartSidebar = document.getElementById('cartSidebar');
-    const cartOverlay = document.getElementById('cartOverlay');
-    const closeCartBtn = document.getElementById('closeCartBtn');
+document.addEventListener('DOMContentLoaded', () => {
+    // Enhanced Mobile Menu Handling
+    const navbar = document.querySelector('.navbar');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
     
-    function toggleCart() {
-        cartSidebar.classList.toggle('active');
-        cartOverlay.classList.toggle('active');
-        cartSidebar.setAttribute('aria-hidden', !cartSidebar.classList.contains('active'));
-    }
+    // Close menu when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.navbar') && navbarCollapse.classList.contains('show')) {
+            bootstrap.Collapse.getInstance(navbarCollapse).hide();
+        }
+    });
+
+    // Dynamic Navbar Scroll Effect
+    const updateNavbar = () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+        navbar.classList.toggle('shadow-sm', window.scrollY > 50);
+    };
     
-    cartIcon.addEventListener('click', toggleCart);
-    closeCartBtn.addEventListener('click', toggleCart);
-    cartOverlay.addEventListener('click', toggleCart);
+    window.addEventListener('scroll', updateNavbar);
+    updateNavbar(); // Initial check
+
+    // Add aria-expanded state for accessibility
+    navbarCollapse.addEventListener('show.bs.collapse', () => {
+        navbar.querySelector('[aria-expanded]').setAttribute('aria-expanded', 'true');
+    });
     
-    // Continue shopping buttons
-    const continueBtns = document.querySelectorAll('[id^="continueShoppingBtn"]');
-    continueBtns.forEach(btn => {
-        btn.addEventListener('click', toggleCart);
+    navbarCollapse.addEventListener('hide.bs.collapse', () => {
+        navbar.querySelector('[aria-expanded]').setAttribute('aria-expanded', 'false');
     });
 });
 </script>
 
-<!-- Cart Sidebar Overlay -->
-<div id="cartOverlay" class="cart-overlay"></div>
+<!-- Application Scripts -->
+<script src="{{url_for('static', filename='js/home.js')}}" defer></script>
 
-<!-- Add this toast container in your main layout/base template -->
-<div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-    <!-- Toast notifications will be inserted here -->
-  </div>
-
-  <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
-
-
-
-    <!-- Footer -->
-<footer class="glass-effect mt-auto">
-    <div class="container-fluid px-lg-4 py-4 text-center">  <!-- Changed to container-fluid -->
-        <p class="mb-0 small">&copy; 2024 RefurbNest | 
-            <a class="text-decoration-none link-light" href="{{ url_for('main.privacy_policy') }}">Privacy Policy</a>
-        </p>
-    </div>
-</footer>
-
-
-
-<style>
-
-</style>
-
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Enhanced mobile menu functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const navbarCollapse = document.querySelector('.navbar-collapse');
-
-            // Close menu when clicking outside on mobile
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.navbar') && navbarCollapse.classList.contains('show')) {
-                    navbarCollapse.classList.remove('show');
-                }
-            });
-
-            // Dynamic navbar scroll effect
-            window.addEventListener('scroll', () => {
-                const navbar = document.querySelector('.navbar');
-                navbar.classList.toggle('scrolled', window.scrollY > 50);
-            });
-        });
-    </script>
-<script src="{{url_for('static', filename='js/home.js')}}"></script>
+<!-- Cookie Consent -->
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
 <script>
-window.addEventListener("load", function(){
-  window.cookieconsent.initialise({
-    palette: {
-      popup: { background: "#000" },
-      button: { background: "#f1d600" }
-    },
-    theme: "classic",
-    content: {
-      message: "This website uses cookies to ensure you get the best experience.",
-      dismiss: "Got it!",
-      link: "",
-      href: "#"
-    }
-  });
+document.addEventListener('DOMContentLoaded', function() {
+    if(typeof cookieconsent === 'undefined') return;
+    
+    window.cookieconsent.initialise({
+        palette: {
+            popup: { 
+                background: '#1a1a1a',
+                text: '#ffffff'
+            },
+            button: { 
+                background: '#10b981', // Emerald-500
+                text: '#ffffff'
+            }
+        },
+        theme: 'classic',
+        content: {
+            message: 'We use cookies to enhance your browsing experience and analyze site traffic.',
+            dismiss: 'Accept',
+            link: 'Learn more',
+            href: '{{ url_for("main.privacy_policy") }}'
+        },
+        cookie: {
+            name: 'refurbnest_consent',
+            domain: window.location.hostname,
+            path: '/',
+            expires: 365
+        }
+    });
 });
 </script>
-
-
 </body>
 </html>

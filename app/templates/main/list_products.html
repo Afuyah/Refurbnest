@@ -5,81 +5,100 @@
 {% block content %}
 {% include 'partials/brand_nav.html' %}
 
-<main class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 pb-2">
-  <!-- Product Grid -->
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-         id="product-list">
+<main class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:ml-64">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-list">
       {% for product in products %}
-     <article class="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl hover:shadow-cyan-900/20 transition-all duration-300 ease-out hover:-translate-y-2 border border-gray-700/50 overflow-hidden animate-fade-in-up"
-         style="animation-delay: {{ loop.index0 * 50 }}ms">
-    <!-- Image Container -->
-    <div class="relative aspect-square overflow-hidden">
-        <!-- Loading Skeleton -->
-        <div class="skeleton absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse"></div>
-        
-        <!-- Main Product Image -->
-        {% if product.images %}
-        <img 
-            data-src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
+      <article
+        class="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl
+               hover:shadow-cyan-900/20 transition-all duration-300 ease-out
+               hover:-translate-y-2 border border-gray-700/50 overflow-hidden
+               animate-fade-in-up"
+        style="animation-delay: {{ loop.index0 * 50 }}ms"
+      >
+        <!-- Image Container -->
+        <div class="relative aspect-square overflow-hidden">
+          <div class="skeleton absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse"></div>
+
+          {% if product.images %}
+          <img
+            data-src="{{ url_for('product_image', filename=product.images[0].image_path) }}"
             alt="{{ product.name }}"
             class="lazy-load w-full h-full object-cover opacity-0 transition-opacity duration-500"
             loading="lazy"
-            onload="this.classList.add('opacity-100'), this.previousElementSibling.remove()"
-            onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}'">
-        {% else %}
-        <img 
+            onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}';"
+          />
+          {% else %}
+          <img
             src="{{ url_for('static', filename='images/default.jpg') }}"
+            alt="Default Product Image"
             class="w-full h-full object-cover opacity-100"
-            alt="Default Product Image">
-        {% endif %}
+          />
+          {% endif %}
 
-        <!-- Image Overlay Content -->
-        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-            <a href="{{ url_for('main.view_product', product_id=product.id) }}" 
-               class="w-full text-center py-2 bg-gray-800/50 backdrop-blur-sm rounded-lg text-cyan-400 hover:text-white transition-colors">
-                Full Details & Specs
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent
+                   opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
+          >
+            <a
+              href="{{ url_for('main.view_product', product_id=product.id) }}"
+              class="w-full text-center py-2 bg-gray-800/50 backdrop-blur-sm rounded-lg
+                     text-cyan-400 hover:text-white transition-colors"
+            >
+              Full Details & Specs
             </a>
-        </div>
+          </div>
 
-        <!-- Discount Badge -->
-        {% if product.discount %}
-        <div class="absolute top-3 right-3 bg-gradient-to-r from-emerald-600 to-cyan-600 text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+          <!-- Discount Badge -->
+          {% if product.discount %}
+          <div
+            class="absolute top-3 right-3 bg-gradient-to-r from-emerald-600 to-cyan-600
+                   text-xs font-bold px-3 py-1 rounded-full shadow-lg"
+          >
             -{{ product.discount }}%
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
-    </div>
 
-    <!-- Product Details -->
-    <div class="p-4 space-y-3">
-        <div class="min-h-[3rem]">
+        <!-- Details -->
+        <div class="p-4 space-y-3">
+          <div class="min-h-[3rem]">
             <h3 class="text-lg font-semibold text-gray-100 truncate">{{ product.name }}</h3>
             <p class="text-sm text-cyan-400">{{ product.category.name }}</p>
-        </div>
-
-        <div class="flex items-center justify-between">
+          </div>
+          <div class="flex items-center justify-between">
             <div>
-                <p class="text-xl font-bold text-emerald-400">${{ product.price }}</p>
-                {% if product.original_price %}
-                <p class="text-sm text-gray-400 line-through">${{ product.original_price }}</p>
-                {% endif %}
+              <p class="text-xl font-bold text-emerald-400">${{ product.price }}</p>
+              {% if product.original_price %}
+              <p class="text-sm text-gray-400 line-through">${{ product.original_price }}</p>
+              {% endif %}
             </div>
-            <button class="add-to-cart-btn flex items-center gap-2 px-4 py-2 bg-gray-700/50 hover:bg-emerald-600/50 backdrop-blur-sm text-emerald-400 hover:text-white rounded-full transition-all"
-                    data-product-id="{{ product.id }}">
-                <i class="fas fa-cart-plus text-sm"></i>
-                <span class="text-sm font-medium">Add</span>
+            <button
+              class="add-to-cart-btn flex items-center gap-2 px-4 py-2 bg-gray-700/50
+                     hover:bg-emerald-600/50 backdrop-blur-sm text-emerald-400 hover:text-white
+                     rounded-full transition-all"
+              data-product-id="{{ product.id }}"
+            >
+              <i class="fas fa-cart-plus text-sm"></i>
+              <span class="text-sm font-medium">Add</span>
             </button>
+          </div>
         </div>
-    </div>
-</article>
+      </article>
       {% else %}
-      <!-- Empty State -->
       <div class="col-span-full py-24 text-center">
         <div class="max-w-md mx-auto space-y-4">
           <div class="relative w-48 h-48 mx-auto">
             <div class="absolute inset-0 bg-gray-700/50 rounded-full backdrop-blur-sm"></div>
-            <svg class="w-full h-full text-cyan-500 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+            <svg
+              class="w-full h-full text-cyan-500 animate-float" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7..."
+              />
             </svg>
           </div>
           <h3 class="text-2xl font-bold text-gray-100">Nothing Found</h3>
@@ -89,33 +108,31 @@
       {% endfor %}
     </div>
 
-    <!-- Pagination -->
     {% if pagination.pages > 1 %}
     <div class="mt-12 flex justify-center">
       <nav class="flex space-x-2">
         {% if pagination.has_prev %}
-        <a href="{{ url_for('main.list_products', page=pagination.prev_num) }}"
-           class="px-4 py-2 rounded-lg bg-gray-700/50 hover:bg-emerald-600/50 text-gray-300 hover:text-white transition-all">
-          &laquo; Previous
-        </a>
+        <a
+          href="{{ url_for('main.list_products', page=pagination.prev_num) }}"
+          class="px-4 py-2 rounded-lg bg-gray-700/50 hover:bg-emerald-600/50 text-gray-300 hover:text-white transition"
+        >&laquo; Previous</a>
         {% endif %}
-
         {% for page_num in pagination.iter_pages() %}
-          {% if page_num %}
-            <a href="{{ url_for('main.list_products', page=page_num) }}"
-               class="px-4 py-2 rounded-lg {{ 'bg-emerald-600/50 text-white' if page_num == pagination.page else 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50' }} transition-all">
-              {{ page_num }}
-            </a>
-          {% else %}
-            <span class="px-4 py-2 text-gray-500">...</span>
-          {% endif %}
+        {% if page_num %}
+        <a
+          href="{{ url_for('main.list_products', page=page_num) }}"
+          class="px-4 py-2 rounded-lg transition
+                 {{ 'bg-emerald-600/50 text-white' if page_num == pagination.page else 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50' }}"
+        >{{ page_num }}</a>
+        {% else %}
+        <span class="px-4 py-2 text-gray-500">…</span>
+        {% endif %}
         {% endfor %}
-
         {% if pagination.has_next %}
-        <a href="{{ url_for('main.list_products', page=pagination.next_num) }}"
-           class="px-4 py-2 rounded-lg bg-gray-700/50 hover:bg-emerald-600/50 text-gray-300 hover:text-white transition-all">
-          Next &raquo;
-        </a>
+        <a
+          href="{{ url_for('main.list_products', page=pagination.next_num) }}"
+          class="px-4 py-2 rounded-lg bg-gray-700/50 hover:bg-emerald-600/50 text-gray-300 hover:text-white transition"
+        >Next &raquo;</a>
         {% endif %}
       </nav>
     </div>
@@ -125,68 +142,48 @@
 
 <style>
   @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
-
   .animate-fade-in-up {
     animation: fade-in-up 0.6s ease-out forwards;
+    animation-play-state: paused;
     opacity: 0;
   }
-
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-10px); }
   }
-
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
+  .animate-float { animation: float 3s ease-in-out infinite; }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Intersection Observer for lazy loading and animations
-  const observers = [];
-  
-  // Lazy Load Images
-  const lazyLoadObserver = new IntersectionObserver((entries) => {
+  // Lazy-load
+  const lazyObserver = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.dataset.src;
-        img.onload = () => {
-          img.style.opacity = '1';
-          const skeleton = img.previousElementSibling;
-          if (skeleton) skeleton.remove();
-        };
-        lazyLoadObserver.unobserve(img);
-      }
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+      img.src = img.dataset.src;
+      img.onload = () => {
+        img.classList.add('opacity-100');
+        const s = img.previousElementSibling;
+        if (s && s.classList.contains('skeleton')) s.remove();
+      };
+      obs.unobserve(img);
     });
-  }, { rootMargin: '200px' });
+  },{rootMargin:'200px',threshold:0.1});
+  document.querySelectorAll('img.lazy-load').forEach(i=>lazyObserver.observe(i));
 
-  document.querySelectorAll('.lazy-load').forEach(img => lazyLoadObserver.observe(img));
-
-  // Scroll Animation Trigger
-  const animationObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.animationPlayState = 'running';
-      }
+  // Fade-in-up
+  const animObserver = new IntersectionObserver((entries,obs)=>{
+    entries.forEach(e=>{
+      if (!e.isIntersecting) return;
+      e.target.style.animationPlayState = 'running';
+      obs.unobserve(e.target);
     });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.animate-fade-in-up').forEach(el => animationObserver.observe(el));
-
-  // Cleanup observers
-  observers.push(lazyLoadObserver, animationObserver);
+  },{threshold:0.1});
+  document.querySelectorAll('.animate-fade-in-up').forEach(e=>animObserver.observe(e));
 });
 </script>
-
 {% endblock %}
