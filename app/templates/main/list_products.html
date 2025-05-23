@@ -3,247 +3,126 @@
 {% block title %}Premium Refurbished Tech | {% endblock %}
 
 {% block content %}
+<div class="mt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+    <div class="bg-white/5 backdrop-blur-lg rounded-xl p-6 mb-8 mt-4 shadow-xl">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                {% if selected_category %}
+                    {{ selected_category.name }}
+                {% else %}
+                    All Products
+                {% endif %}
+            </h2>
+        </div>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-list">
+            {% for product in products %}
+            <article class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <div class="aspect-square bg-gray-700 animate-pulse">
+                        <img data-src="{{ url_for('product_image', filename=product.image_url.split('/')[-1]) }}"
+                            alt="{{ product.name }}" 
+                            class="lazy-load w-full h-full object-cover transition-opacity duration-300 opacity-0"
+                            loading="lazy"
+                            onload="this.style.opacity = '1'">
+                    </div>
+                    
+                    <div class="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <a href="{{ url_for('main.view_product', product_id=product.id) }}" 
+                           class="text-white px-6 py-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors duration-200">
+                            View Details
+                        </a>
+                    </div>
 
-<div class="layout-wrapper mt-5">
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/home.css')}}">    
-{% include 'partials/brand_nav.html' %}
-<div class="filter-bar glassmorphism mt-3 mb-2">
-  <div class="container position-relative">
-    <!-- Section Header -->
-    <div class="section-header text-center mb-4">
-      <h2 class="text-gradient mb-2">
-        {% if selected_category %}
-          {{ selected_category.name }}
-        {% else %}
-          All Products
-        {% endif %}
-      </h2>
-    
-    </div>
+                    {% if product.discount %}
+                    <div class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        -{{ product.discount }}%
+                    </div>
+                    {% endif %}
+                </div>
 
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-2 truncate">{{ product.name }}</h3>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="space-y-1">
+                            <p class="text-emerald-400 font-bold text-xl">${{ product.price }}</p>
+                            {% if product.original_price %}
+                            <p class="text-gray-400 text-sm line-through">${{ product.original_price }}</p>
+                            {% endif %}
+                        </div>
 
-<div class="product-grid " id="product-list">
-    {% for product in products %}
-    <article class="product-card" data-brand="{{ product.brand_id }}" data-category="{{ product.category_id }}">
-        <div class="card-media">
-            <div class="media-container">
-                <div class="skeleton"></div>
-                <img data-src="{{ url_for('product_image', filename=product.image_url.split('/')[-1]) }}"
-                    alt="{{ product.name }}" class="lazy-load blur-up" loading="lazy">
-
-                <div class="media-overlay">
-                    <a href="{{ url_for('main.view_product', product_id=product.id) }}" class="view-button">
-                        <span>View Details</span>
-                    </a>
+                        <button class="add-to-cart-btn bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                                data-product-id="{{ product.id }}"
+                                data-product-name="{{ product.name }}"
+                                data-product-price="{{ product.price }}">
+                            <i class="fas fa-cart-plus mr-2"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </article>
+            {% else %}
+            <div class="col-span-full text-center py-12">
+                <div class="max-w-md mx-auto">
+                    <div class="w-32 h-32 bg-gray-700 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">No Products Found</h4>
+                    <p class="text-gray-400">Try adjusting your filters or check back later</p>
                 </div>
             </div>
-
-            {% if product.discount %}
-            <div class="discount-badge">
-                -{{ product.discount }}%
-            </div>
-            {% endif %}
-        </div>
-        <h6 class="product-title">{{ product.name }}</h6>
-        <div class="d-flex justify-content-between align-items-center " style="min-height: 4;">
-            <div class="price-container" style="margin-right: 4px;">
-                <span class="current-price">${{ product.price }}</span>
-                {% if product.original_price %}
-                <span class="original-price">${{ product.original_price }}</span>
-                {% endif %}
-            </div>
-
-            <!-- In your product template -->
-<button class="add-to-cart-btn" 
-data-product-id="{{ product.id }}"
-data-product-name="{{ product.name }}"
-data-product-price="{{ product.price }}"
-<span class="btn-content">
-<i class="fas fa-cart-plus mr-1"></i>
- Add To Cart
-</span>
-
-</button>
-
-        </div>
-    </article>
-    {% else %}
-    <div class="empty-state">
-        <div class="empty-illustration">
-            <svg viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" />
-            </svg>
-        </div>
-        <h4>No Products Found</h4>
-        <p>Try adjusting your filters or check back later</p>
-    </div>
-    {% endfor %}
-</div>
-
-
-<!-- Pagination Controls -->
-    {% if pagination.pages > 1 %}
-    <nav aria-label="Product pagination" class="mt-4">
-        <ul class="pagination justify-content-center">
-            {% if pagination.has_prev %}
-            <li class="page-item">
-                <a class="page-link" 
-                   href="{{ url_for('main.list_products', 
-                            page=pagination.prev_num, 
-                            brand=selected_brand_id, 
-                            category=selected_category.id if selected_category) }}">
-                    Previous
-                </a>
-            </li>
-            {% endif %}
-
-            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
-                {% if page_num %}
-                    <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
-                        <a class="page-link" 
-                           href="{{ url_for('main.list_products', 
-                                    page=page_num, 
-                                    brand=selected_brand_id, 
-                                    category=selected_category.id if selected_category) }}">
-                            {{ page_num }}
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled"><span class="page-link">...</span></li>
-                {% endif %}
             {% endfor %}
+        </div>
 
-            {% if pagination.has_next %}
-            <li class="page-item">
-                <a class="page-link" 
-                   href="{{ url_for('main.list_products', 
-                            page=pagination.next_num, 
-                            brand=selected_brand_id, 
-                            category=selected_category.id if selected_category) }}">
-                    Next
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    {% endif %}
-</div></div>
+        {% if pagination.pages > 1 %}
+        <nav class="mt-8">
+            <ul class="flex justify-center space-x-2">
+                {% if pagination.has_prev %}
+                <li>
+                    <a href="{{ url_for('main.list_products', 
+                                page=pagination.prev_num, 
+                                brand=selected_brand_id, 
+                                category=selected_category.id if selected_category) }}"
+                       class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-200">
+                        Previous
+                    </a>
+                </li>
+                {% endif %}
 
-<!-- Optimized Lazy Loading Script -->
+                {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+                    {% if page_num %}
+                        <li>
+                            <a href="{{ url_for('main.list_products', 
+                                        page=page_num, 
+                                        brand=selected_brand_id, 
+                                        category=selected_category.id if selected_category) }}"
+                               class="px-4 py-2 {% if page_num == pagination.page %}bg-emerald-600 text-white{% else %}bg-gray-700 hover:bg-gray-600{% endif %} rounded-lg transition-colors duration-200">
+                                {{ page_num }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="px-4 py-2">...</li>
+                    {% endif %}
+                {% endfor %}
 
-
-<style>
-    /* Add these styles to your CSS */
-    .pagination {
-        margin: 2rem 0;
-    }
-
-    .page-item.active .page-link {
-        background-color: #7C3AED;
-        border-color: #7C3AED;
-    }
-
-    .page-link {
-        color: #7C3AED;
-        margin: 0 0.25rem;
-        border-radius: 0.5rem;
-    }
-
-    .page-link:hover {
-        color: #10B981;
-    }
-</style>
-
-
-
-<style>
-    .skeleton {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg,
-                var(--surface) 0px,
-                rgba(255, 255, 255, 0.1) 40px,
-                var(--surface) 80px);
-        background-size: 600px;
-        animation: shimmer 1.6s infinite linear;
-        border-radius: 8px;
-        z-index: 1;
-    }
-
-    /* Hide the shimmer once image has fully loaded */
-    img.loaded+.skeleton {
-        display: none;
-    }
-
-    @keyframes shimmer {
-        0% {
-            background-position: -600px 0;
-        }
-
-        100% {
-            background-position: 600px 0;
-        }
-    }
-
-
-
-</style>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/productlist.css') }}">
-<script defer src="{{ url_for('static', filename='js/productlist.js') }}"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Native lazy-loading feature detection
-  if ('loading' in HTMLImageElement.prototype) {
-    document.querySelectorAll('img.lazy-load').forEach(img => {
-      img.loading = 'lazy';
-      img.src = img.dataset.src;
-    });
-    return;
-  }
-
-  // 2. Observer configuration
-  const config = {
-    rootMargin: '100px 0px',  // start loading 100px before viewport
-    threshold: 0.1            // when 10% of the image is visible
-  };
-
-  // 3. Intersection callback
-  const onIntersection = (entries, observer) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const img = entry.target;
-
-      // 4. Load the image
-      img.src = img.dataset.src;
-      img.addEventListener('load', () => {
-        img.classList.add('loaded');  // for fade-in CSS
-        const skeleton = img.previousElementSibling;
-        if (skeleton?.classList.contains('skeleton')) {
-          skeleton.style.display = 'none';  // hide placeholder
-        }
-      });
-      img.addEventListener('error', () => {
-        console.error(`Failed to load image: ${img.dataset.src}`);
-      });
-
-      // 5. Stop observing once handled
-      observer.unobserve(img);
-    });
-  };
-
-  // 6. Instantiate the observer
-  const observer = new IntersectionObserver(onIntersection, config);
-
-  // 7. Observe all lazy-load images
-  document.querySelectorAll('img.lazy-load').forEach(img => {
-    observer.observe(img);
-  });
-});
-</script>
-
+                {% if pagination.has_next %}
+                <li>
+                    <a href="{{ url_for('main.list_products', 
+                                page=pagination.next_num, 
+                                brand=selected_brand_id, 
+                                category=selected_category.id if selected_category) }}"
+                       class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-200">
+                        Next
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -6,52 +6,49 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
 
-<!-- Hero with Categories Section -->
-<section class="hero-section position-relative overflow-hidden pb-5 mt-4">
-  <!-- Background Layer -->
-  <div class="hero-background position-absolute top-0 start-0 w-100 h-100 z-0">
-    <!-- Techy Particle SVG Layer -->
-    <svg class="hero-svg-particles" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
-      <circle cx="200" cy="150" r="4" class="glow-circle" />
-      <circle cx="400" cy="300" r="2.5" class="glow-circle" />
-      <circle cx="600" cy="180" r="3.5" class="glow-circle" />
-      <circle cx="750" cy="400" r="2" class="glow-circle" />
-      <circle cx="900" cy="100" r="5" class="glow-circle" />
+<section class="relative overflow-hidden h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-purple-500 to-green-400">
+  <!-- Particle SVG Layer -->
+  <div class="absolute inset-0 -z-10">
+    <svg class="w-full h-full opacity-30" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+      <circle cx="200" cy="150" r="4" class="fill-white animate-pulse"></circle>
+      <circle cx="400" cy="300" r="2.5" class="fill-white animate-pulse delay-200"></circle>
+      <circle cx="600" cy="180" r="3.5" class="fill-white animate-pulse delay-400"></circle>
+      <circle cx="750" cy="400" r="2" class="fill-white animate-pulse delay-600"></circle>
+      <circle cx="900" cy="100" r="5" class="fill-white animate-pulse delay-800"></circle>
     </svg>
-
-    <!-- Gradient Overlay -->
-    <div class="gradient-overlay w-100 h-100 position-absolute top-0 start-0"></div>
   </div>
 
-  <!-- Foreground Content -->
-  <div class="container position-relative z-2 min-vh-100 d-flex flex-column justify-content-center align-items-center text-center">
-    <div class="trust-badges mb-4 animate__animated animate__fadeInDown">
-      <span class="badge glass-effect me-2">
-        <i class="fas fa-shield-alt me-2"></i>Certified Premium
-      </span>
-      <span class="badge glass-effect">
-        <i class="fas fa-clock-rotate-left me-2"></i>24-Month Warranty
-      </span>
-    </div>
-
-    <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInUp">
-      <span class="text-stroke-primary">Re</span>
-      <span class="text-gradient-primary">Imagine</span>
-      <span class="text-stroke-primary">Tech</span>
-    </h1>
-
-    <p class="lead text-black mb-4 animate__animated animate__fadeInUp animate__delay-1s">
-      Premium refurbished electronics with expert certification
-    </p>
-
-    <a href="{{ url_for('main.list_products') }}" 
-       class="btn btn-lg btn-gradient-primary rounded-pill px-5 animate__animated animate__fadeInUp animate__delay-1s">
-      Explore Collection
-      <i class="fas fa-arrow-right ms-2"></i>
-    </a>
+  <!-- Glassmorphic Badges -->
+  <div class="flex space-x-4 mb-8 animate-fade-in-down">
+    <span class="px-4 py-2 bg-white/30 backdrop-blur-md rounded-full flex items-center space-x-2 text-white font-medium">
+      <i class="fas fa-shield-alt"></i>
+      <span>Certified Premium</span>
+    </span>
+    <span class="px-4 py-2 bg-white/30 backdrop-blur-md rounded-full flex items-center space-x-2 text-white font-medium">
+      <i class="fas fa-clock-rotate-left"></i>
+      <span>24-Month Warranty</span>
+    </span>
   </div>
+
+  <!-- Headline -->
+  <h1 class="text-6xl font-extrabold mb-4 animate-fade-in-up">
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">Re</span>
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">Imagine</span>
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">Tech</span>
+  </h1>
+
+  <!-- Subheading -->
+  <p class="text-lg text-white/90 mb-6 animate-fade-in-up delay-200">
+    Premium refurbished electronics with expert certification
+  </p>
+
+  <!-- CTA Button -->
+  <a href="{{ url_for('main.list_products') }}"
+     class="inline-flex items-center px-8 py-4 bg-white text-gray-900 rounded-full font-semibold hover:scale-105 transition-transform animate-fade-in-up delay-400">
+    Explore Collection
+    <i class="fas fa-arrow-right ml-3"></i>
+  </a>
 </section>
-
 
 
 <section class="featured-products-section py-5 position-relative">
@@ -251,81 +248,94 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <!-- Value Propositions Grid -->
-<section class="py-5">
-  <div class="container">
-    <div class="row g-4 justify-content-center">
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card glass-effect h-100 hover-lift">
-          <div class="card-body p-4">
-            <div class="icon-wrapper bg-primary mb-3">
-              <i class="fas fa-microscope fa-2x"></i>
-            </div>
-            <h3 class="h2 mb-3">Expert Certification</h3>
-            <p class="text-black">112-point inspection process with OEM-grade testing</p>
-          </div>
+<section class="py-12 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Expert Certification -->
+      <div class="group bg-white/80 backdrop-blur-lg rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-microscope text-3xl text-blue-600"></i>
         </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-3">Expert Certification</h3>
+        <p class="text-gray-600">112-point inspection process with OEM-grade testing</p>
       </div>
 
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card glass-effect h-100 hover-lift">
-          <div class="card-body p-4">
-            <div class="icon-wrapper bg-success mb-3">
-              <i class="fas fa-leaf fa-2x"></i>
-            </div>
-            <h3 class="h2 mb-3">Eco-Conscious</h3>
-            <p class="text-black">Sustainable tech lifecycle management</p>
-          </div>
+      <!-- Eco-Conscious -->
+      <div class="group bg-white/80 backdrop-blur-lg rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-leaf text-3xl text-green-600"></i>
         </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-3">Eco-Conscious</h3>
+        <p class="text-gray-600">Sustainable tech lifecycle management</p>
       </div>
 
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card glass-effect h-100 hover-lift">
-          <div class="card-body p-4">
-            <div class="icon-wrapper bg-warning mb-3">
-              <i class="fas fa-percent fa-2x"></i>
-            </div>
-            <h3 class="h2 mb-3">Smart Value</h3>
-            <p class="text-black">Premium quality at 40-60% below retail</p>
-          </div>
+      <!-- Smart Value -->
+      <div class="group bg-white/80 backdrop-blur-lg rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-percent text-3xl text-yellow-600"></i>
         </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-3">Smart Value</h3>
+        <p class="text-gray-600">Premium quality at 40-60% below retail</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Stats Section -->
-<section class="py-5">
-  <div class="container">
-    <div class="row g-4 justify-content-center text-center">
-      <div class="col-6 col-md-3">
-        <div class="stat-card glass-effect">
-          <div class="display-4 fw-bold text-primary" data-count="15">0</div>
-          <div class="text-black">Thousand Renewed</div>
-        </div>
+<section class="py-12 bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <!-- Thousand Renewed -->
+      <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+        <div class="text-4xl font-bold text-blue-400 mb-2" data-count="15">0</div>
+        <div class="text-gray-300 uppercase text-sm font-medium">Thousand Renewed</div>
       </div>
-      <div class="col-6 col-md-3">
-        <div class="stat-card glass-effect">
-          <div class="display-4 fw-bold text-primary" data-count="98.7">0</div>
-          <div class="text-black">Satisfaction Rate</div>
-        </div>
+
+      <!-- Satisfaction Rate -->
+      <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+        <div class="text-4xl font-bold text-blue-400 mb-2" data-count="98.7">0</div>
+        <div class="text-gray-300 uppercase text-sm font-medium">Satisfaction Rate</div>
       </div>
     </div>
   </div>
 </section>
 
+<script>
+// Number animation script (remains the same)
+document.addEventListener('DOMContentLoaded', () => {
+  const animateCount = (element) => {
+    const target = parseFloat(element.dataset.count);
+    const duration = 2000;
+    const start = Date.now();
+    const initial = parseFloat(element.textContent);
 
+    const update = () => {
+      const elapsed = Date.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const current = initial + (target - initial) * progress;
+      
+      element.textContent = Number.isInteger(target) 
+        ? Math.floor(current) 
+        : current.toFixed(1);
 
+      if (progress < 1) requestAnimationFrame(update);
+    };
 
+    requestAnimationFrame(update);
+  };
 
-<!-- Best Offers Section -->
-<section class="best-offers py-5">
-  <div class="container">
-    <h2 class="section-title text-gradient text-center mb-5">
+  document.querySelectorAll('[data-count]').forEach(animateCount);
+});
+</script>
+
+<section class="py-12 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent">
       Today's Best Offers 🔥
     </h2>
 
     <!-- Products Container -->
-    <div id="offers-grid" class="offers-grid">
+    <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <!-- Cards inserted here by JavaScript -->
     </div>
   </div>
@@ -333,31 +343,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- Offer Card Template (hidden) -->
 <template id="offer-card-template">
-  <div class="offer-card">
-    <div class="offer-media">
-      <div class="offer-badge">Featured Offer</div>
-      <img class="offer-image" loading="lazy" alt="Product image">
-      <div class="offer-overlay">
-        <a class="offer-view-btn">View Deal</a>
+  <div class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+    <div class="relative overflow-hidden rounded-t-xl">
+      <div class="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-medium z-10">
+        Featured Offer
+      </div>
+      <img class="w-full h-48 object-cover rounded-t-xl" loading="lazy" alt="Product image">
+      <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+        <a class="px-6 py-2 bg-white text-gray-900 rounded-full font-medium hover:bg-gray-100 transition-colors">
+          View Deal
+        </a>
       </div>
     </div>
-    <div class="offer-body">
-      <h3 class="offer-title"></h3>
-      <div class="offer-pricing">
-        <span class="offer-price"></span>
-        <span class="offer-original-price d-none"></span>
+    
+    <div class="p-4">
+      <h3 class="text-lg font-semibold text-gray-900 mb-2"></h3>
+      
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-xl font-bold text-red-600"></span>
+        <span class="text-gray-400 line-through hidden"></span>
       </div>
-      <div class="offer-meta">
-        <span class="discount-percent"></span>
-        <span class="rating"><i class="fas fa-star"></i> <span class="rating-value"></span></span>
+
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-red-600 font-medium"></span>
+        <div class="flex items-center text-yellow-400">
+          <i class="fas fa-star"></i>
+          <span class="ml-1 text-gray-600"></span>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('offers-grid');
-  const tpl  = document.getElementById('offer-card-template').content;
+  const tpl = document.getElementById('offer-card-template').content;
 
   async function loadOffers() {
     try {
@@ -366,47 +387,48 @@ document.addEventListener('DOMContentLoaded', () => {
       const products = await res.json();
 
       if (!products.length) {
-        grid.innerHTML = '<p class="text-center">No offers available</p>';
+        grid.innerHTML = '<p class="text-center text-gray-500">No offers available</p>';
         return;
       }
 
-      // Only show up to 8
       products.slice(0, 8).forEach(p => {
         const clone = document.importNode(tpl, true);
+        const card = clone.querySelector('div');
 
         // Media
-        const img = clone.querySelector('.offer-image');
+        const img = clone.querySelector('img');
         img.src = p.image;
         img.alt = p.name;
-        const viewLink = clone.querySelector('.offer-view-btn');
-        viewLink.href = `/product/${p.id}`;   // adjust to your route
-        viewLink.textContent = 'View Deal';
+        
+        // View Deal Link
+        const viewLink = clone.querySelector('a');
+        viewLink.href = `/products/${p.id}`;
 
-        // Body
-        clone.querySelector('.offer-title').textContent = p.name;
-        clone.querySelector('.offer-price').textContent = `$${p.price.toFixed(2)}`;
+        // Body Content
+        clone.querySelector('h3').textContent = p.name;
+        const priceEl = clone.querySelector('.text-xl');
+        priceEl.textContent = `$${p.price.toFixed(2)}`;
 
-        // Original price & discount
+        // Original Price & Discount
         if (p.original_price) {
-          const op = clone.querySelector('.offer-original-price');
-          op.textContent = `$${p.original_price.toFixed(2)}`;
-          op.classList.remove('d-none');
+          const originalPrice = clone.querySelector('.line-through');
+          originalPrice.textContent = `$${p.original_price.toFixed(2)}`;
+          originalPrice.classList.remove('hidden');
 
           const discount = Math.round((1 - (p.price / p.original_price)) * 100);
-          clone.querySelector('.discount-percent').textContent = `Save ${discount}%`;
-        } else {
-          clone.querySelector('.discount-percent').textContent = '';
+          clone.querySelector('.text-red-600').textContent = `Save ${discount}%`;
         }
 
-        // Static rating or from API
-        clone.querySelector('.rating-value').textContent = p.rating || '4.8';
+        // Rating
+        const ratingValue = clone.querySelector('.text-gray-600');
+        ratingValue.textContent = p.rating || '4.8';
 
         grid.appendChild(clone);
       });
 
     } catch (err) {
       console.error('Could not load offers', err);
-      grid.innerHTML = '<p class="text-center text-danger">Failed to load offers.</p>';
+      grid.innerHTML = '<p class="text-center text-red-500">Failed to load offers</p>';
     }
   }
 
@@ -414,328 +436,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
-<!-- Styles for Best Offers Section -->
-<style>
-.best-offers {
-    background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(11,16,35,0.95) 100%);
-    border-top: 1px solid rgba(255,255,255,0.1);
-    margin-top: 4rem;
-}
-
-.offers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.offer-card {
-    background: rgba(255,255,255,0.05);
-    border-radius: 1rem;
-    overflow: hidden;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(124,58,237,0.3);
-}
-
-.offer-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(124,58,237,0.2);
-}
-
-.offer-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
-    color: white;
-    padding: 0.25rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.9rem;
-    z-index: 2;
-}
-
-.offer-media {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1rem 1rem 0 0;
-}
-
-.offer-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.offer-card:hover .offer-image {
-    transform: scale(1.05);
-}
-
-.offer-overlay {
-    position: absolute;
-    bottom: -100%;
-    left: 0;
-    right: 0;
-    background: rgba(0,0,0,0.8);
-    padding: 1rem;
-    transition: bottom 0.3s ease;
-}
-
-.offer-card:hover .offer-overlay {
-    bottom: 0;
-}
-
-.offer-view-btn {
-    display: block;
-    text-align: center;
-    background: #7C3AED;
-    color: white;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    transition: background 0.3s ease;
-}
-
-.offer-view-btn:hover {
-    background: #10B981;
-    color: white;
-}
-
-.offer-pricing {
-    margin: 1rem 0;
-}
-
-.offer-price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #10B981;
-}
-
-.offer-original-price {
-    text-decoration: line-through;
-    color: #94a3b8;
-    margin-left: 0.5rem;
-}
-
-.offer-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #94a3b8;
-    font-size: 0.9rem;
-}
-
-.discount-percent {
-    color: #10B981;
-    font-weight: 500;
-}
-
-.rating {
-    color: #fbbf24;
-}
-
-@media (max-width: 768px) {
-    .offers-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .offer-image {
-        height: 150px;
-    }
-}
-</style>
-
-
-
-
-
-
-
-
-
 <!-- Featured Brands Section -->
-<section class="py-5 bg-dark mb-3">
-  <div class="container">
-    <div class="row g-4 align-items-center justify-content-center">
-      <div class="col-12 text-center mb-4">
-        <h3 class="text-white mb-0">Trusted by Leading Brands</h3>
-      </div>
-      <div class="col-6 col-md-3">
-        <img src="https://www.pngegg.com/en/png-ztywq" alt="Apple" class="img-fluid brand-logo">
-      </div>
-      <div class="col-6 col-md-3">
-        <img src="https://blog.boon.so/samsung-logo/" alt="Samsung" class="img-fluid brand-logo">
-      </div>
-      <div class="col-6 col-md-3">
-        Dell
-      </div>
-      <div class="col-6 col-md-3">
-        Sony
+<section class="py-12 bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-8">
+      <h3 class="text-2xl font-semibold text-white">Trusted by Leading Brands</h3>
+    </div>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center">
+      <!-- Brand Logos -->
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="/path/to/apple-logo.png" alt="Apple" class="h-12 object-contain">
       </div>
       
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="/path/to/samsung-logo.png" alt="Samsung" class="h-12 object-contain">
+      </div>
+
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="/path/to/dell-logo.png" alt="Dell" class="h-12 object-contain">
+      </div>
+
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="/path/to/sony-logo.png" alt="Sony" class="h-12 object-contain">
+      </div>
     </div>
   </div>
 </section>
 
-
-
-
 <!-- Social Floating Buttons -->
-<div class="social-floating">
-  <div class="d-flex flex-column gap-2">
-    <a href="#" class="btn btn-icon btn-dark rounded-circle hover-lift">
-      <i class="fab fa-instagram"></i>
+<div class="fixed bottom-6 right-6 z-50">
+  <div class="flex flex-col gap-3">
+    <a href="#" class="w-12 h-12 rounded-full bg-gray-800 hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-white hover:-translate-y-1">
+      <i class="fab fa-instagram text-xl"></i>
     </a>
-    <a href="#" class="btn btn-icon btn-dark rounded-circle hover-lift">
-      <i class="fab fa-twitter"></i>
+    
+    <a href="#" class="w-12 h-12 rounded-full bg-gray-800 hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-white hover:-translate-y-1">
+      <i class="fab fa-twitter text-xl"></i>
     </a>
-    <a href="#" class="btn btn-icon btn-dark rounded-circle hover-lift">
-      <i class="fab fa-tiktok"></i>
+    
+    <a href="#" class="w-12 h-12 rounded-full bg-gray-800 hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-white hover:-translate-y-1">
+      <i class="fab fa-tiktok text-xl"></i>
     </a>
   </div>
 </div>
 
-<style>
-  
-  /* Social Floating Buttons CSS */
-.social-floating {
-    position: fixed;
-    right: 1.5rem;
-    bottom: 1.5rem;
-    z-index: 1000;
-}
-
-.btn-icon {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    position: relative;
-    transition: all 0.3s ease;
-    animation: float 3s ease-in-out infinite;
-}
-
-.btn-icon i {
-    font-size: 1.2rem;
-}
-
-.hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-}
-
-/* Floating Animation */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
-/* Individual animation delays */
-.btn-icon:nth-child(1) { animation-delay: 0.2s; }
-.btn-icon:nth-child(2) { animation-delay: 0.4s; }
-.btn-icon:nth-child(3) { animation-delay: 0.6s; }
-
-/* Optional: Pause animation on hover */
-.social-floating:hover .btn-icon {
-    animation-play-state: paused;
-}
-
-
-
-.particle-animation {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%2300c6ff' stop-opacity='0.8' /%3E%3Cstop offset='100%25' stop-color='%230072ff' stop-opacity='0' /%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23g)'%3E%3Ccircle cx='20%25' cy='30%25' r='2' /%3E%3Ccircle cx='40%25' cy='70%25' r='1.5' /%3E%3Ccircle cx='60%25' cy='20%25' r='2.5' /%3E%3Ccircle cx='80%25' cy='60%25' r='1.8' /%3E%3Ccircle cx='25%25' cy='80%25' r='1.2' /%3E%3Ccircle cx='70%25' cy='40%25' r='1.6' /%3E%3Ccircle cx='10%25' cy='50%25' r='1' /%3E%3Ccircle cx='90%25' cy='20%25' r='2' /%3E%3Ccircle cx='50%25' cy='50%25' r='3' fill='white' opacity='0.6' /%3E%3Ccircle cx='33%25' cy='10%25' r='1.4' /%3E%3Ccircle cx='66%25' cy='85%25' r='1.7' /%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 0.15;
-  pointer-events: none;
-}
-
-</style>
-
-<script>
-
-
-
-
-  // Animate number counters
-  document.querySelectorAll('[data-count]').forEach(el => {
-    const target = parseFloat(el.dataset.count)
-    const duration = 2000
-    const start = Date.now()
-    
-    const update = () => {
-      const elapsed = Date.now() - start
-      const progress = Math.min(elapsed / duration, 1)
-      el.textContent = (progress * target).toFixed(progress > 0.99 ? 0 : 1)
-      
-      if (progress < 1) requestAnimationFrame(update)
-    }
-    
-    requestAnimationFrame(update)
-  })
-  
-  // Initialize animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible')
-      }
-    })
-  }, { threshold: 0.1 })
-  
-  document.querySelectorAll('.hover-lift').forEach(el => observer.observe(el))
-  
-  
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    const totalSlides = {{ featured_products|length }};
-    new Swiper('.featured-swiper', {
-      loop: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      },
-      // Automatically fill blanks if slide count < group size
-      loopFillGroupWithBlank: true,
-      // Responsive breakpoints with capping
-      breakpoints: {
-        576: {
-          slidesPerView: Math.min(2, totalSlides),
-          slidesPerGroup: Math.min(2, totalSlides)
-        },
-        992: {
-          slidesPerView: Math.min(3, totalSlides),
-          slidesPerGroup: Math.min(3, totalSlides)
-        }
-      },
-      // Mobile default
-      slidesPerView: Math.min(1, totalSlides),
-      slidesPerGroup: Math.min(1, totalSlides)
-    });
-    console.log('Swiper initialized with', totalSlides, 'slides');
-  });
-  
-  
-  
-  
-  
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 
 {% endblock %}

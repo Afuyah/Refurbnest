@@ -1,151 +1,54 @@
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
 
-<div >
-  <!-- Toggle button (mobile) -->
-  <div class="d-lg-none text-end mb-2">
-    <button id="toggleBrandSidebar" class="btn btn-outline-light btn-sm">
-      <i class="fas fa-filter me-1"></i> Filter Brands
+<div class="relative">
+  <!-- Mobile Toggle Button -->
+  <div class="lg:hidden text-right mb-4">
+    <button id="toggleBrandSidebar" class="px-4 py-2 text-sm border border-gray-600 rounded-lg hover:border-emerald-400 hover:text-emerald-300 transition-colors">
+      <i class="fas fa-filter mr-2"></i>
+      Filter Brands
     </button>
   </div>
 
   <!-- Brand Sidebar -->
-  <aside id="brandSidebar" class="brand-sidebar glassmorphism">
-    <div class="sidebar-header">
-      <h4 class="text-gradient">Browse Brands</h4>
-      <p class="text-muted mb-3">Filter by manufacturer</p>
-    </div>
+  <aside id="brandSidebar" class="lg:block fixed lg:relative inset-y-0 left-0 w-64 z-50 bg-gray-800/80 backdrop-blur-lg lg:bg-transparent lg:backdrop-blur-none transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <div class="p-6 lg:p-4 border-r border-gray-700 lg:border-none">
+      <div class="mb-6">
+        <h4 class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+          Browse Brands
+        </h4>
+        <p class="text-gray-400 mt-1 text-sm">Filter by manufacturer</p>
+      </div>
 
-    <div class="brand-list">
-      <!-- All Brands -->
-      <a
-        href="{{ url_for('main.list_products',
-                         category=selected_category.id if selected_category else None) }}"
-        class="brand-card {% if not selected_brand_id %}active{% endif %}">
-        <div class="brand-card-inner">
-          <i class="fas fa-globe me-2"></i>
-          All Brands
-        </div>
-      </a>
+      <div class="space-y-2">
+        <!-- All Brands -->
+        <a href="{{ url_for('main.list_products', category=selected_category.id if selected_category else None) }}"
+           class="flex items-center px-4 py-3 rounded-lg transition-colors {% if not selected_brand_id %}bg-gray-700 border border-emerald-400/30{% else %}hover:bg-gray-700/50{% endif %}">
+          <i class="fas fa-globe mr-3 text-gray-400"></i>
+          <span class="text-gray-300">All Brands</span>
+        </a>
 
-      <!-- Dynamic Brand Items -->
-      {% for brand in brands %}
-      <a
-        href="{{ url_for('main.list_products',
-                         brand=brand.id,
-                         category=selected_category.id if selected_category else None) }}"
-        class="brand-card {% if brand.id|string == selected_brand_id %}active{% endif %}">
-        <div class="brand-card-inner">
+        <!-- Dynamic Brand Items -->
+        {% for brand in brands %}
+        <a href="{{ url_for('main.list_products', brand=brand.id, category=selected_category.id if selected_category else None) }}"
+           class="flex items-center px-4 py-3 rounded-lg transition-colors {% if brand.id|string == selected_brand_id %}bg-gray-700 border border-emerald-400/30{% else %}hover:bg-gray-700/50{% endif %}">
           {% if brand.logo %}
-          <img
-            src="{{ url_for('brand_logo', filename=brand.logo) }}"
-            alt="{{ brand.name }} logo"
-            class="brand-logo me-2"
-          />
+          <img src="{{ url_for('brand_logo', filename=brand.logo) }}" 
+               alt="{{ brand.name }} logo"
+               class="w-8 h-8 mr-3 object-contain">
           {% endif %}
-          <span>{{ brand.name }}</span>
-        </div>
-      </a>
-      {% endfor %}
+          <span class="text-gray-300">{{ brand.name }}</span>
+        </a>
+        {% endfor %}
+      </div>
     </div>
   </aside>
-
-
 </div>
 
-<style>
-/* Overall Layout via CSS Grid */  
-.layout-wrapper {
-  display: grid;  
-  grid-template-columns: 240px 1fr;  
-  gap: 1rem;  
-  min-height: 100vh;  
-  padding-bottom: 2rem;  
-}  
-.main-content { overflow-x: hidden; }  
-
-/* Mid-size Screens */  
-@media (max-width: 1200px) {  
-  .layout-wrapper { grid-template-columns: 220px 1fr; }  
-}  
-
-/* Mobile: one-column + toggle */  
-@media (max-width: 992px) {  
-  .layout-wrapper { grid-template-columns: 1fr; padding: 0; }  
-  #toggleBrandSidebar { display: inline-block; }  
-  .brand-sidebar { display: none; margin-bottom: 1rem; }  
-  .brand-sidebar.show { display: block; }  
-}  
-
-/* Sidebar Styling */  
-.brand-sidebar {  
-  position: sticky; top: 1rem;  
-  height: calc(100vh - 2rem); overflow-y: auto;  
-  background: rgba(15,23,42,0.7); backdrop-filter: blur(12px);  
-  border-radius: 1rem; padding: 1.5rem;  
-  border: 1px solid rgba(255,255,255,0.1);  
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);  
-}  
-
-/* Brand Cards */  
-.brand-list { display: flex; flex-direction: column; gap: 0.75rem; }  
-.brand-card {  
-  display: flex; align-items: center;  
-  padding: 0.75rem 1rem; border-radius: 0.75rem;  
-  background: rgba(255,255,255,0.05); color: #e2e8f0;  
-  text-decoration: none; transition: all 0.3s;  
-  border: 1px solid transparent;  
-}  
-.brand-card:hover {  
-  background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.1);  
-  transform: translateX(5px);  
-}  
-.brand-card.active {  
-  background: linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(16,185,129,0.2) 100%);  
-  border-color: rgba(124,58,237,0.3);  
-}  
-.brand-logo { width: 32px; height: 32px; object-fit: contain; }  
-
-/* Brand Grid on Mobile */  
-@media (max-width: 992px) {  
-  .brand-list {  
-    display: grid;  
-    grid-template-columns: repeat(auto-fill, minmax(120px,1fr));  
-    gap: 0.5rem;  
-  }  
-  .brand-card { flex-direction: column; text-align: center; padding: 1rem; }  
-  .brand-card:hover { transform: translateY(-3px); }  
-}  
-@media (max-width: 576px) { .brand-list { grid-template-columns: repeat(2,1fr); } }  
-
-/* Product Grid */  
-.product-grid { margin-left: 0.25rem; width: calc(100% + 0.25rem); }  
-.product-card {  
-  flex: 1 1 calc(33.333% - 0.5rem); margin: 0.25rem;  
-  background: #fff; border-radius: 0.75rem; overflow: hidden;  
-  transition: transform 0.3s;  
-}  
-.product-card:hover { transform: translateY(-5px); }  
-@media (max-width: 768px) { .product-card { flex: 1 1 calc(50% - 0.5rem); } }  
-@media (max-width: 576px) { .product-card { flex: 1 1 100%; margin: 0.25rem 0; } }  
-
-/* Skeleton Loader */  
-.skeleton {  
-  position: absolute; top:0; left:0; width:100%; height:100%;  
-  background: linear-gradient(90deg, var(--surface) 0, rgba(255,255,255,0.1) 40px, var(--surface) 80px);  
-  background-size:600px; animation: shimmer 1.6s infinite linear;  
-  border-radius:8px; z-index:1;  
-}  
-img.loaded + .skeleton { display:none; }  
-@keyframes shimmer { 0% { background-position: -600px 0; } 100% { background-position: 600px 0; } }
-</style>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const toggleBtn = document.getElementById("toggleBrandSidebar");
-  const sidebar = document.getElementById("brandSidebar");
-  toggleBtn.addEventListener("click", () => sidebar.classList.toggle("show"));
+// Toggle mobile sidebar
+document.getElementById('toggleBrandSidebar').addEventListener('click', () => {
+  const sidebar = document.getElementById('brandSidebar');
+  sidebar.classList.toggle('translate-x-0');
 });
 </script>
+
