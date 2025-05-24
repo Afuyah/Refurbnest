@@ -4,7 +4,7 @@ import os
 import logging
 import time
 from datetime import datetime
-from flask import (Blueprint, render_template, request, redirect, url_for,current_app,
+from flask import (Blueprint, render_template, request,session, redirect, url_for,current_app,
                    flash, jsonify, abort)
 from flask_login import login_required, current_user
 from flask_limiter import Limiter
@@ -99,6 +99,11 @@ def validate_payment_token(token: str) -> Order:
     except (BadSignature, SignatureExpired, KeyError):
         security_logger.warning(f"Invalid or expired payment token: {token}")
         return None
+def clear_payment_session_data():
+    session.pop('cart', None)
+    session.pop('payment_data', None)
+    session.pop('selected_method', None)
+
 
 
 def validate_expiry(expiry_str: str) -> tuple:
