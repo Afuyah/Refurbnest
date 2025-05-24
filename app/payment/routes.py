@@ -228,7 +228,8 @@ def checkout(payment_token):
             security_logger.info(f"Payment completed for order {order.id}")
 
             # 7) Response handling
-            thank_you_url = url_for('payments.thank_you', payment_token=payment_token)
+            thank_you_url = url_for('payments.thank_you', order_id=order.id)
+
             return json_response(
                 message="Payment successful",
                 next=thank_you_url
