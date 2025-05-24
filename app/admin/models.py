@@ -300,7 +300,14 @@ class Order(db.Model):
     user  = db.relationship('User', back_populates='orders')
 
     payment_method_record = db.relationship('PaymentMethod', back_populates='order', uselist=False, cascade='all, delete-orphan')
-
+    payment_token = db.Column(db.String(256), unique=True, index=True)
+    
+    def generate_payment_token(self):
+        s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        self.payment_token = s.dumps({
+            'order_id': self.id,
+            'ts': time.time()
+        }, salt='payment-token')
 
 
 class OrderItem(db.Model):
