@@ -14,7 +14,11 @@
 
   <!-- CSRF token for fetch() -->
   <meta name="csrf-token" content="{{ csrf_token() }}"/>
-  <script>window.orderId = {{ order_id }};</script>
+ <script>
+  // Ensure this is JSON-safe and always defined
+  window.paymentToken = {{ payment_token|tojson }};
+</script>
+
 
   <style>
     @keyframes fadeIn {
@@ -223,32 +227,39 @@
           e.target.value = v.slice(0,5);
         },
 
-        async submitCard() {
-          this.processingCard = true;
-          const csrf = document.querySelector('meta[name="csrf-token"]').content;
-          const form = document.getElementById('payment-form');
-          const payload = {
-            cardholder_name: form.cardholder_name.value.trim(),
-            card_number:     form.card_number.value.replace(/\s+/g, ''),
-            expiry_date:     form.expiry_date.value.trim(),
-            cvv:             form.cvv.value.trim()
-          };
-          try {
-            const res = await fetch(`/payments/${window.orderId}/checkout`, {
+         async submitCard() {
+        this.processingCard = true;
+        const csrf = document.querySelector('meta[name="csrf-token"]').content;
+        const form = document.getElementById('payment-form');
+        const payload = {
+          cardholder_name: form.cardholder_name.value.trim(),
+          card_number:     form.card_number.value.replace(/\s+/g, ''),
+          expiry_date:     form.expiry_date.value.trim(),
+          cvv:             form.cvv.value.trim()
+        };
+        try {
+         
+          const res = await fetch(
+            `/checkout/${window.paymentToken}`, 
+            {
               method: 'POST',
-              headers: { 'Content-Type':'application/json','X-CSRFToken':csrf },
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf
+              },
               body: JSON.stringify(payload)
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Payment failed');
-            this.showToast('Payment successful! Redirecting…', 'success');
-            setTimeout(() => window.location.href = data.next, 1000);
-          } catch (err) {
-            this.showToast(err.message, 'error');
-          } finally {
-            this.processingCard = false;
-          }
-        },
+            }
+          );
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Payment failed');
+          this.showToast('Payment successful! Redirecting…', 'success');
+          setTimeout(() => window.location.href = data.next, 1000);
+        } catch (err) {
+          this.showToast(err.message, 'error');
+        } finally {
+          this.processingCard = false;
+        }
+      },
 
         redirectPayPal() {
           window.location.href = `/payments/${window.orderId}/paypal`;
