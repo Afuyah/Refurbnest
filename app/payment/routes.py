@@ -13,6 +13,7 @@ from flask_wtf.csrf import generate_csrf, validate_csrf
 from wtforms import ValidationError
 limiter = Limiter(get_remote_address)
 from app.admin.models import PaymentMethod,PaymentEvent,Order
+from app.email.payment_confirmation import send_payment_confirmation_email
 from .crypto import encrypt_pan, luhn_checksum
 from app import db
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
@@ -212,7 +213,7 @@ def detect_brand_api():
 
 @payments_bp.route('/<string:payment_token>', methods=['GET', 'POST'])
 def checkout(payment_token):
-    """Secure payment processing endpoint with graceful token handling"""
+    
     try:
         # 1) Enhanced token validation with state awareness
         order = validate_payment_token(payment_token)
@@ -329,8 +330,6 @@ def checkout(payment_token):
     except Exception as e:
         security_logger.error(f"Unexpected checkout error: {str(e)}", exc_info=True)
         return error_response("An unexpected error occurred. Please contact support.", payment_token)
-
-
 
 @payments_bp.route('/thank-you/<int:order_id>')
 def thank_you(order_id):
