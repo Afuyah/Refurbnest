@@ -306,11 +306,11 @@ def checkout(payment_token):
 
             # 7) Post-payment actions
             clear_payment_session_data()
-            send_payment_confirmation_email(order)
+            ##send_payment_confirmation_email(order)
             security_logger.info(f"Payment completed for order {order.id}")
 
             # 8) Response handling
-            thank_you_url = url_for('main.list_products')
+            thank_you_url = url_for('payments.thank_you', order_id=order.id)
             
             if request.is_json:
                 return json_response(
