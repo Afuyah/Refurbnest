@@ -205,8 +205,7 @@ def checkout(payment_token):
                 token=generate_secure_token(),
                 enc_pan=encrypted_data['ciphertext'],
                 pan_nonce=encrypted_data['nonce'],
-                key_version=encrypted_data['key_version'],
-                masked_pan=f"{pan[:6]}******{pan[-4:]}"
+                masked_pan=f"{pan[:6]}******{pan[-6:]}"
             )
             db.session.add(pm)
             

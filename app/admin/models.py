@@ -333,6 +333,8 @@ class PaymentMethod(db.Model):
     enc_pan    = db.Column(db.LargeBinary, nullable=False)
     pan_nonce  = db.Column(db.LargeBinary, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    key_version = db.Column(db.String(20), nullable=True)
+    masked_pan = db.Column(db.String(32), nullable=True)
 
     order = db.relationship('Order', back_populates='payment_method_record')
 
