@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       showToast(data.message, 'success');
       // Redirect to payment page
-      window.location.href = `/payments/${data.order_id}/checkout`;
+      window.location.href = data.redirect;
     } catch (err) {
       showToast(err.message, 'danger');
     } finally {

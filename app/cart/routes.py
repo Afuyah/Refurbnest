@@ -1,5 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, flash, render_template,jsonify, current_app as app
 from app.cart.cart import Cart
+from flask_login import current_user
 from app.admin.models import Product  
 from flask import request, redirect, flash, url_for, render_template
 from app.admin.models import Order, OrderItem, db
@@ -7,6 +8,7 @@ from app.email.confirm_email import send_order_confirmation
 from decimal import Decimal
 from .cart import CartError  
 from werkzeug.exceptions import HTTPException
+from itsdangerous import URLSafeTimedSerializer
 
 
 cart_bp = Blueprint('cart', __name__)
@@ -108,15 +110,25 @@ def cart_summary():
     }), 200
 
 
+def generate_payment_token(order):
+    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return s.dumps(
+        {'order_id': order.id}, 
+        salt='payment-token'
+    )
+
+
 @cart_bp.route('/checkout', methods=['POST'])
 def checkout():
     cart = Cart()
     if cart.item_count == 0:
         abort(400, description="Cart is empty")
-    data    = request.get_json() or {}
-    name    = data.get('name', '').strip()
+
+    data = request.get_json() or {}
+    name = data.get('name', '').strip()
     address = data.get('address', '').strip()
-    phone   = data.get('phone', '').strip()
+    phone = data.get('phone', '').strip()
+
     if not all([name, address, phone]):
         abort(400, description="Missing required fields")
 
@@ -125,10 +137,12 @@ def checkout():
         address=address,
         phone=phone,
         total=cart.total,
-        payment_status='Pending'
+        payment_status='Pending',
+       
     )
     db.session.add(order)
-    db.session.flush()  # assign order.id
+    db.session.flush()  # assigns order.id
+
     for pid, item in cart.get_items().items():
         db.session.add(OrderItem(
             order_id=order.id,
@@ -137,9 +151,18 @@ def checkout():
             price=item['price'],
             quantity=item['quantity']
         ))
+
+    # ✅ Generate payment token and store it
+    token = generate_payment_token(order)
+    order.payment_token = token
+
     db.session.commit()
     cart.clear()
+
+    # 🔐 Final redirect to secure subdomain
+    payment_url = f"https://secure.salesta.store/checkout/{token}"
+
     return jsonify({
-        'order_id': order.id,
-        'message': 'Order created, ready for payment'
+        'message': 'Order created, ready for payment',
+        'redirect': payment_url
     }), 200
