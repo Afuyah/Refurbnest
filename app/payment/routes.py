@@ -143,15 +143,22 @@ def checkout(payment_token):
 
         # 2) GET request - show payment form
         if request.method == 'GET':
+            token = generate_csrf()
             return render_template(
                 'payments/checkout.html',
                 order=order,
-                csrf_token=generate_csrf(),
+                csrf_token=token,
                 payment_token=payment_token
             )
 
         # 3) CSRF protection
-        if not validate_csrf(request.form.get('csrf_token')):
+        raw_csrf = (
+            request.form.get('csrf_token')
+            or request.headers.get('X-CSRFToken')
+        )
+        try:
+            validate_csrf(raw_csrf)
+        except ValidationError:
             abort(403)
 
         # 4) Payment validation pipeline
@@ -216,8 +223,9 @@ def checkout(payment_token):
             thank_you_url = url_for('payments.thank_you', payment_token=payment_token)
             return json_response(
                 message="Payment successful",
-                redirect=thank_you_url
+                next=thank_you_url
             ) if request.is_json else redirect(thank_you_url)
+
             
         except (exc.SQLAlchemyError, ValueError) as e:
             db.session.rollback()
@@ -227,20 +235,6 @@ def checkout(payment_token):
     except Exception as e:
         security_logger.error(f"Checkout error: {str(e)}", exc_info=True)
         return error_response("Processing error occurred", payment_token)
-
-
-@payments_bp.route('/cards', methods=['GET'])
-@login_required
-def list_cards():
-    cards = (
-        PaymentMethod.query
-        .filter_by(user_id=current_user.id)
-        .order_by(PaymentMethod.created_at.desc())
-        .all()
-    )
-    return render_template('payments/cards.html', cards=cards)
-
-
 
 
 @payments_bp.route('/thank-you/<int:order_id>')
