@@ -12,9 +12,7 @@ from flask_limiter.util import get_remote_address
 from flask_wtf.csrf import generate_csrf, validate_csrf
 from wtforms import ValidationError
 limiter = Limiter(get_remote_address)
-
-from app.admin.models import PaymentMethod
-from app.admin.models import Order         
+from app.admin.models import PaymentMethod,PaymentEvent,Order
 from .crypto import encrypt_pan, luhn_checksum
 from app import db
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
@@ -297,7 +295,9 @@ def checkout(payment_token):
                 order_id=order.id,
                 status="Paid",
                 amount=order.total,
-                details=f"Card ending in {pan[-4:]}"
+                processor=order.payment_method,
+                details=f"Payment processed via {pm.brand} card",
+                ip_address=request.remote_addr
             )
             db.session.add(payment_event)
             

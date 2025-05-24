@@ -344,3 +344,20 @@ class PaymentMethod(db.Model):
     def get_masked_pan(self) -> str:
         full = self.get_full_pan()
         return f"{full[:6]}{'*'*(len(full)-10)}{full[-4:]}"
+
+
+class PaymentEvent(db.Model):
+    __tablename__ = 'payment_events'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    status = db.Column(db.String(20), nullable=False)  # Paid/Failed/Refunded etc.
+    amount = db.Column(db.Numeric(10,2), nullable=False)
+    processor = db.Column(db.String(20), nullable=False)  # stripe/mpesa/etc
+    details = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    error_code = db.Column(db.String(50))
+    ip_address = db.Column(db.String(45))
+
+    # Relationship
+    order = db.relationship('Order', backref='payment_events')
