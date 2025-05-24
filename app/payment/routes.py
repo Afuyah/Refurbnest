@@ -32,6 +32,22 @@ payments_bp = Blueprint(
     template_folder='templates/payments'
 )
 
+
+def error_response(message, token=None, order=None):
+    """Handles both JSON and HTML error responses with optional context."""
+    if request.is_json:
+        return jsonify({'error': message}), 400
+
+    return render_template(
+        'payments/checkout.html',
+        error=message,
+        payment_token=token,
+        order=order,  # optional for template context
+        csrf_token=generate_csrf()
+    ), 400
+
+
+
 # Enhanced card brand detection with more accurate patterns
 def detect_card_brand(pan: str) -> str:
     """Improved card brand detection with comprehensive pattern matching"""
@@ -64,7 +80,7 @@ def sanitize_pan(raw_pan: str) -> str:
     return re.sub(r'\D+', '', raw_pan)[:19]  # Limit to max PAN length
 
 def validate_payment_token(token: str) -> Order:
-    """Secure token validation with expiration"""
+    """Validate payment token without checking user identity."""
     s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
         data = s.loads(
@@ -74,12 +90,12 @@ def validate_payment_token(token: str) -> Order:
         )
         return Order.query.filter_by(
             id=data['order_id'],
-            user_id=current_user.id,
             payment_status='Pending'
         ).first()
     except (BadSignature, SignatureExpired, KeyError):
-        security_logger.warning(f"Invalid payment token: {token}")
+        security_logger.warning(f"Invalid or expired payment token: {token}")
         return None
+
 
 def validate_expiry(expiry_str: str) -> tuple:
     """Robust expiry date validation"""
