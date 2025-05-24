@@ -147,72 +147,69 @@ def detect_brand_api():
 
 @payments_bp.route('/<string:payment_token>', methods=['GET', 'POST'])
 def checkout(payment_token):
-    """Secure payment processing endpoint"""
+    """Secure payment processing endpoint with graceful token handling"""
     try:
-        # 1) Token validationn
+        # 1) Enhanced token validation with state awareness
         order = validate_payment_token(payment_token)
+        
         if not order:
-            security_logger.warning(f"Invalid order access: {payment_token}")
+            security_logger.warning(f"Invalid token access attempt: {payment_token}")
+            return handle_expired_token()
+            
+        # 2) Handle different order states
+        if order.payment_status == 'Paid':
+            return handle_already_paid(order)
+        elif order.payment_status == 'Failed':
+            return handle_retry_payment(order)
+        elif order.payment_status != 'Pending':
             abort(404)
 
-        # 2) GET request - show payment form
+        # 3) GET request - show payment form
         if request.method == 'GET':
             token = generate_csrf()
             return render_template(
                 'payments/checkout.html',
                 order=order,
                 csrf_token=token,
-                payment_token=payment_token
+                payment_token=payment_token,
+                stripe_key=current_app.config.get('STRIPE_PUBLIC_KEY', '')
             )
 
-        # 3) CSRF protection
+        # 4) CSRF protection
         raw_csrf = (
             request.form.get('csrf_token')
             or request.headers.get('X-CSRFToken')
+            or request.headers.get('X-XSRF-TOKEN')
         )
         try:
             validate_csrf(raw_csrf)
         except ValidationError:
+            security_logger.warning(f"CSRF validation failed for order {order.id}")
             abort(403)
 
-        # 4) Payment validation pipeline
+        # 5) Payment validation pipeline
         data = request.get_json(silent=True) or request.form
-        pan    = sanitize_pan(data.get('card_number', ''))
+        pan = sanitize_pan(data.get('card_number', ''))
         expiry = data.get('expiry_date', '')
-        cvv    = data.get('cvv', '')
+        cvv = data.get('cvv', '')
         
-        validation_errors = []
-        if not (13 <= len(pan) <= 19 and pan.isdigit() and luhn_checksum(pan)):
-            validation_errors.append("Invalid card number")
-            security_logger.warning(f"Invalid PAN attempt for order {order.id}")
-        
-        # Expiry validation
-        expiry_data = validate_expiry(expiry)
-        if not expiry_data:
-            validation_errors.append("Invalid or expired date")
-        else:
-            month, year = expiry_data
-            
-        # CVV validation
-        brand = detect_card_brand(pan)
-        expected_cvv_length = 4 if brand == 'AMEX' else 3
-        if not (cvv.isdigit() and len(cvv) == expected_cvv_length):
-            validation_errors.append(f"CVV must be {expected_cvv_length} digits")
-
+        validation_errors = validate_payment_details(pan, expiry, cvv, order.id)
         if validation_errors:
             return error_response(validation_errors, payment_token)
 
-        # 5) Process payment
+        # 6) Process payment
         try:
             # Encrypt PAN with versioned keys
             encrypted_data = encrypt_pan(pan)
+            if not encrypted_data:
+                raise ValueError("PAN encryption failed")
             
             # Create payment method record
             pm = PaymentMethod(
-                brand=brand,
+                brand=detect_card_brand(pan),
                 last4=pan[-4:],
-                exp_month=month,
-                exp_year=year,
+                exp_month=int(expiry.split('/')[0]),
+                exp_year=int(expiry.split('/')[1]),
                 token=generate_secure_token(),
                 enc_pan=encrypted_data['ciphertext'],
                 pan_nonce=encrypted_data['nonce'],
@@ -221,35 +218,51 @@ def checkout(payment_token):
             )
             db.session.add(pm)
 
+            # Update order status
             order.payment_status = "Paid"
-            order.payment_method = "card"  # or whatever label you're using
-            order.payment_method_record = pm  # Assigns the PaymentMethod relationship
-            order.payment_token = None  # Invalidate the token after successful payment
+            order.payment_method = "card"
+            order.payment_method_record = pm
+            order.payment_token = None  # Invalidate token
+            order.paid_at = datetime.utcnow()
 
+            # Create payment event for audit trail
+            payment_event = PaymentEvent(
+                order_id=order.id,
+                status="Paid",
+                amount=order.total,
+                details=f"Card ending in {pan[-4:]}"
+            )
+            db.session.add(payment_event)
             
             db.session.commit()
 
-            # 6) Post-payment actions
+            # 7) Post-payment actions
             clear_payment_session_data()
+            send_payment_confirmation_email(order)
             security_logger.info(f"Payment completed for order {order.id}")
 
-            # 7) Response handling
-            thank_you_url = url_for('payments.thank_you', order_id=order.id)
-
-            return json_response(
-                message="Payment successful",
-                next=thank_you_url
-            ) if request.is_json else redirect(thank_you_url)
-
+            # 8) Response handling
+            thank_you_url = url_for('main.list_products')
             
+            if request.is_json:
+                return json_response(
+                    message="Payment successful",
+                    redirect=thank_you_url,
+                    order_id=order.id
+                )
+            return redirect(thank_you_url)
+
         except (exc.SQLAlchemyError, ValueError) as e:
             db.session.rollback()
-            security_logger.error(f"Payment processing error: {str(e)}")
-            return error_response("Payment processing failed", payment_token)
+            security_logger.error(f"Payment processing error for order {order.id}: {str(e)}")
+            order.payment_status = "Failed"
+            db.session.commit()
+            return error_response("Payment processing failed. Please try again.", payment_token)
 
     except Exception as e:
-        security_logger.error(f"Checkout error: {str(e)}", exc_info=True)
-        return error_response("Processing error occurred", payment_token)
+        security_logger.error(f"Unexpected checkout error: {str(e)}", exc_info=True)
+        return error_response("An unexpected error occurred. Please contact support.", payment_token)
+
 
 
 @payments_bp.route('/thank-you/<int:order_id>')
