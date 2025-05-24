@@ -36,6 +36,35 @@ payments_bp = Blueprint(
     template_folder='templates/payments'
 )
 
+
+def validate_payment_details(pan, expiry, cvv, order_id=None):
+    errors = []
+
+    # Validate card number (PAN)
+    if not (pan.isdigit() and 13 <= len(pan) <= 19 and luhn_checksum(pan)):
+        errors.append("Invalid card number.")
+        security_logger.warning(f"Invalid PAN attempt on order {order_id}")
+
+    # Validate expiry
+    try:
+        month, year = map(int, expiry.split('/'))
+        now = datetime.utcnow()
+        exp_date = datetime(year=2000 + year if year < 100 else year, month=month, day=1)
+        if exp_date < now.replace(day=1):
+            errors.append("Card is expired.")
+    except Exception:
+        errors.append("Invalid expiry date format. Use MM/YY.")
+
+    # Validate CVV
+    brand = detect_card_brand(pan)
+    expected_length = 4 if brand == 'AMEX' else 3
+    if not (cvv.isdigit() and len(cvv) == expected_length):
+        errors.append(f"CVV must be {expected_length} digits.")
+
+    return errors
+
+
+
 def json_response(success=True, message='', **kwargs):
     return jsonify({
         'success': success,
@@ -95,7 +124,7 @@ def handle_expired_token():
 
 
 
-    
+
 # Enhanced card brand detection with more accurate patterns
 def detect_card_brand(pan: str) -> str:
     """Improved card brand detection with comprehensive pattern matching"""
