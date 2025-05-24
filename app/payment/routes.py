@@ -1,6 +1,6 @@
 import time
 from datetime import datetime
-from flask import (Blueprint, render_template, request, redirect, url_for,
+from flask import (Blueprint, render_template, request, redirect, url_for,current_app,
                    flash, jsonify, abort)
 from flask_login import login_required, current_user
 from flask_limiter import Limiter
@@ -16,6 +16,13 @@ from app import db
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 from sqlalchemy import exc
 
+security_logger = logging.getLogger('security')
+if not security_logger.handlers:
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
+    handler.setFormatter(formatter)
+    security_logger.addHandler(handler)
+    security_logger.setLevel(logging.INFO)
 
 payments_bp = Blueprint(
     'payments',
