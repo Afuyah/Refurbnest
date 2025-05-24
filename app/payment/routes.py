@@ -205,14 +205,16 @@ def checkout(payment_token):
                 token=generate_secure_token(),
                 enc_pan=encrypted_data['ciphertext'],
                 pan_nonce=encrypted_data['nonce'],
-                masked_pan=f"{pan[:6]}******{pan[-6:]}"
+                key_version=encrypted_data['key_version'],
+                masked_pan=f"{pan[:6]}******{pan[-4:]}"
             )
             db.session.add(pm)
-            
-            # Update order status
-            order.payment_method = pm
-            order.payment_status = 'Paid'
-            order.payment_token = None  # Invalidate token
+
+            order.payment_status = "Paid"
+            order.payment_method = "card"  # or whatever label you're using
+            order.payment_method_record = pm  # Assigns the PaymentMethod relationship
+            order.payment_token = None  # Invalidate the token after successful payment
+
             
             db.session.commit()
 
