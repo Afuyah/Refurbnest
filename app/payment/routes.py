@@ -87,11 +87,15 @@ def handle_expired_token():
     if request.is_json:
         return json_response(
             error="Payment session expired",
-            redirect=url_for('orders.index'),
+            redirect=url_for('main.home'),
             status=410
         )
-    flash("Your payment session has expired. Please visit your orders to continue.")
-    return redirect(url_for('orders.index'))
+    flash("Your payment session has expired. ")
+    return redirect(url_for('main.home'))
+
+
+
+    
 # Enhanced card brand detection with more accurate patterns
 def detect_card_brand(pan: str) -> str:
     """Improved card brand detection with comprehensive pattern matching"""
