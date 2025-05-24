@@ -57,7 +57,41 @@ def error_response(message, token=None, order=None):
     ), 400
 
 
+def handle_already_paid(order):
+    """Redirect to receipt for completed payments"""
+    receipt_url = url_for('orders.receipt', order_id=order.id)
+    if request.is_json:
+        return json_response(
+            message="Payment already completed",
+            redirect=receipt_url,
+            status=303
+        )
+    return redirect(receipt_url)
 
+def handle_retry_payment(order):
+    """Generate new token for failed payments"""
+    new_token = order.generate_payment_token()
+    db.session.commit()
+    
+    retry_url = url_for('payments.checkout', payment_token=new_token)
+    if request.is_json:
+        return json_response(
+            message="Please retry payment",
+            redirect=retry_url,
+            status=303
+        )
+    return redirect(retry_url)
+
+def handle_expired_token():
+    """Handle invalid/expired tokens gracefully"""
+    if request.is_json:
+        return json_response(
+            error="Payment session expired",
+            redirect=url_for('orders.index'),
+            status=410
+        )
+    flash("Your payment session has expired. Please visit your orders to continue.")
+    return redirect(url_for('orders.index'))
 # Enhanced card brand detection with more accurate patterns
 def detect_card_brand(pan: str) -> str:
     """Improved card brand detection with comprehensive pattern matching"""
