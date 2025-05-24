@@ -7,11 +7,16 @@ def _get_aesgcm():
     key = binascii.unhexlify(key_hex)
     return AESGCM(key)
 
-def encrypt_pan(pan: str):
+def encrypt_pan(pan: str) -> dict:
     aesgcm = _get_aesgcm()
     nonce  = os.urandom(12)
     ct     = aesgcm.encrypt(nonce, pan.encode(), None)
-    return nonce, ct
+    return {
+        'nonce': nonce,
+        'ciphertext': ct,
+        'key_version': None  
+    }
+
 
 def decrypt_pan(nonce: bytes, ciphertext: bytes) -> str:
     aesgcm = _get_aesgcm()
