@@ -165,13 +165,12 @@ def checkout(payment_token):
             abort(403)
 
         # 4) Payment validation pipeline
-        pan = sanitize_pan(request.form.get('card_number', ''))
-        expiry = request.form.get('expiry_date', '')
-        cvv = request.form.get('cvv', '')
+        data = request.get_json(silent=True) or request.form
+        pan    = sanitize_pan(data.get('card_number', ''))
+        expiry = data.get('expiry_date', '')
+        cvv    = data.get('cvv', '')
         
         validation_errors = []
-        
-        # Enhanced PAN validation
         if not (13 <= len(pan) <= 19 and pan.isdigit() and luhn_checksum(pan)):
             validation_errors.append("Invalid card number")
             security_logger.warning(f"Invalid PAN attempt for order {order.id}")
