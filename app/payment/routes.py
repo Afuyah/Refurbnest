@@ -42,8 +42,8 @@ def error_response(message, token=None, order=None):
         'payments/checkout.html',
         error=message,
         payment_token=token,
-        order=order,  # optional for template context
-        csrf_token=generate_csrf()
+        order=order,  
+       
     ), 400
 
 
