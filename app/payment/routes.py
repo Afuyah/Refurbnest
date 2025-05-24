@@ -36,6 +36,12 @@ payments_bp = Blueprint(
     template_folder='templates/payments'
 )
 
+def json_response(success=True, message='', **kwargs):
+    return jsonify({
+        'success': success,
+        'message': message,
+        **kwargs
+    })
 
 def error_response(message, token=None, order=None):
     """Handles both JSON and HTML error responses with optional context."""
