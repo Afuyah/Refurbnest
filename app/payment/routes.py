@@ -71,7 +71,6 @@ def detect_brand_api():
 
 
 @payments_bp.route('/<string:payment_token>', methods=['GET', 'POST'])
-@login_required
 @limiter.limit("5/minute")
 def checkout(payment_token):
     try:
@@ -169,7 +168,7 @@ def checkout(payment_token):
         security_logger.error(f"Checkout error: {str(e)}", exc_info=True)
         return error_response("Processing error occurred", payment_token)
 
-        
+
 
 @payments_bp.route('/cards', methods=['GET'])
 @login_required
