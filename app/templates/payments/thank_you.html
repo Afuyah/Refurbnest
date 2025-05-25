@@ -1,85 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Confirmation #{{ order_id }}</title>
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Tailwind CSS v3 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Confirmation #{{ order_id }}</title>
+  
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Alpine.js for lightweight reactivity -->
   <script src="https://unpkg.com/alpinejs@3.x.x" defer></script>
-    
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-    <div class="container mx-auto px-4 py-8 max-w-3xl">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <!-- Header -->
-            <div class="bg-blue-600 text-white p-6 text-center">
-                <i class="fas fa-check-circle text-5xl mb-4"></i>
-                <h1 class="text-2xl font-bold">Thank You For Your Order!</h1>
-                <p class="mt-2">Order #{{ order_id }} has been confirmed</p>
+<body class="bg-gradient-to-tr from-blue-50 via-white to-blue-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
+
+  <div class="max-w-3xl mx-auto">
+    <div class="glass-card rounded-xl shadow-xl overflow-hidden border border-blue-100">
+      
+      <!-- Header -->
+      <div class="bg-blue-600 text-white text-center p-8">
+        <i class="fas fa-check-circle text-5xl mb-3 text-green-200 animate-pulse"></i>
+        <h1 class="text-3xl font-bold tracking-wide">Thank You for Your Order!</h1>
+        <p class="mt-2 text-sm sm:text-base opacity-90">Your order <strong>#{{ order_id }}</strong> has been confirmed.</p>
+      </div>
+
+      <!-- Order Details -->
+      <div class="p-6 sm:p-8 space-y-8">
+        
+        <!-- Order Summary -->
+        <section>
+          <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Order Summary</h2>
+          <ul class="space-y-3 text-sm sm:text-base">
+            <li class="flex justify-between text-gray-700">
+              <span>Order Date:</span>
+              <span>{{ order_date.strftime('%B %d, %Y at %H:%M') }}</span>
+            </li>
+            <li class="flex justify-between text-gray-700">
+              <span>Payment Method:</span>
+              <span class="capitalize">{{ payment_method }}</span>
+            </li>
+            <li class="flex justify-between font-semibold border-t pt-4 text-lg text-gray-800">
+              <span>Total:</span>
+              <span>${{ "%.2f"|format(order_total) }}</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Items Ordered -->
+        {% if items %}
+        <section>
+          <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Items Ordered</h2>
+          <div class="space-y-4">
+            {% for item in items %}
+            <div class="flex items-center justify-between bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+              <div>
+                <h3 class="font-medium text-gray-900">{{ item.name }}</h3>
+                <p class="text-sm text-gray-500">{{ item.quantity }} × ${{ "%.2f"|format(item.price) }}</p>
+              </div>
+              <div class="text-right font-semibold text-gray-700">
+                ${{ "%.2f"|format(item.quantity * item.price) }}
+              </div>
             </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
 
-            <!-- Order Details -->
-            <div class="p-6">
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Order Date:</span>
-                            <span>{{ order_date.strftime('%B %d, %Y at %H:%M') }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Payment Method:</span>
-                            <span class="capitalize">{{ payment_method }}</span>
-                        </div>
-                        <div class="flex justify-between font-bold border-t pt-3 mt-3">
-                            <span>Total Amount:</span>
-                            <span>${{ "%.2f"|format(order_total) }}</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Customer Support -->
+        <section class="bg-blue-50 p-5 rounded-lg border border-blue-100">
+          <h3 class="font-semibold text-gray-800 mb-2">Need Help?</h3>
+          <p class="text-sm text-gray-600 mb-4">
+            We’ve sent a confirmation to 
+            {% if customer_email %}
+              <span class="font-medium text-gray-800">{{ customer_email }}</span>
+            {% else %}
+              your email
+            {% endif %}.
+          </p>
+          <a href="{{ url_for('main.contact') }}"
+             class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-5 py-2 rounded transition">
+            Contact Support
+          </a>
+        </section>
 
-                <!-- Order Items -->
-                {% if items %}
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-4">Items Ordered</h2>
-                    <div class="space-y-4">
-                        {% for item in items %}
-                        <div class="flex items-center border-b pb-4">
-                            <div class="ml-4">
-                                <h3 class="font-medium">{{ item.name }}</h3>
-                                <p class="text-gray-600 text-sm">{{ item.quantity }} × ${{ "%.2f"|format(item.price) }}</p>
-                            </div>
-                            <div class="ml-auto font-medium">
-                                ${{ "%.2f"|format(item.quantity * item.price) }}
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Customer Support -->
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="font-semibold mb-2">Need Help?</h3>
-                    <p class="text-gray-600 mb-4">We've sent a confirmation to {% if customer_email %}<span class="font-medium">{{ customer_email }}</span>{% else %}your email{% endif %}.</p>
-                    <a href="{{ url_for('main.contact') }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                        Contact Support
-                    </a>
-                </div>
-
-                <!-- Continue Shopping -->
-                <div class="mt-6 text-center">
-                    <a href="{{ url_for('main.list_products') }}" class="inline-block px-6 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition">
-                        Continue Shopping
-                    </a>
-                </div>
-            </div>
+        <!-- Continue Shopping -->
+        <div class="text-center">
+          <a href="{{ url_for('main.list_products') }}"
+             class="inline-block px-6 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-100 transition">
+            Continue Shopping
+          </a>
         </div>
+
+      </div>
     </div>
+  </div>
+
 </body>
 </html>
