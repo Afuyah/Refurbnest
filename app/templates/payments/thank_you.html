@@ -1,162 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Order Confirmation - #{{ order_id }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation #{{ order_id }}</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #2c7be5;
-            --primary-dark: #1a5edb;
-            --success: #00a854;
-            --text: #333;
-            --text-light: #666;
-            --border: #e0e0e0;
-            --bg: #f9f9f9;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            margin: 0;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        .confirmation-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        .confirmation-header {
-            background: var(--primary);
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-        }
-        .confirmation-body {
-            padding: 2rem;
-        }
-        .order-details {
-            margin-bottom: 2rem;
-        }
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .detail-row:last-child {
-            border-bottom: none;
-            font-weight: bold;
-        }
-        .success-icon {
-            font-size: 3rem;
-            color: var(--success);
-            margin-bottom: 1rem;
-        }
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.8rem;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .mt-3 {
-            margin-top: 1.5rem;
-        }
-        .mb-3 {
-            margin-bottom: 1.5rem;
-        }
-        .divider {
-            border-top: 1px dashed var(--border);
-            margin: 1.5rem 0;
-        }
-        @media (max-width: 600px) {
-            .container {
-                margin: 1rem;
-            }
-            .confirmation-body {
-                padding: 1.5rem;
-            }
-        }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <div class="confirmation-card">
-            <div class="confirmation-header">
-                <h1>Order Confirmation</h1>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <!-- Header -->
+            <div class="bg-blue-600 text-white p-6 text-center">
+                <i class="fas fa-check-circle text-5xl mb-4"></i>
+                <h1 class="text-2xl font-bold">Thank You For Your Order!</h1>
+                <p class="mt-2">Order #{{ order_id }} has been confirmed</p>
             </div>
-            
-            <div class="confirmation-body">
-                <div class="text-center">
-                    <div class="success-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h2>Thank You For Your Order!</h2>
-                    <p>Your order #<strong>{{ order_id }}</strong> has been received and is being processed.</p>
-                </div>
 
-                <div class="divider"></div>
-
-                <div class="order-details">
-                    <h3>Order Summary</h3>
-                    <div class="detail-row">
-                        <span>Order Number:</span>
-                        <span>#{{ order_id }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span>Date:</span>
-                        <span>{{ order_date.strftime('%B %d, %Y at %H:%M') }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span>Payment Method:</span>
-                        <span>{{ payment_method }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span>Total Amount:</span>
-                        <span>${{ "%.2f"|format(order_total) }}</span>
+            <!-- Order Details -->
+            <div class="p-6">
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Order Date:</span>
+                            <span>{{ order_date.strftime('%B %d, %Y at %H:%M') }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Payment Method:</span>
+                            <span class="capitalize">{{ payment_method }}</span>
+                        </div>
+                        <div class="flex justify-between font-bold border-t pt-3 mt-3">
+                            <span>Total Amount:</span>
+                            <span>${{ "%.2f"|format(order_total) }}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="divider"></div>
-
-                <div class="text-center">
-                    <p>We've sent a confirmation email to <strong> customer_email </strong>.</p>
-                    <p>For any questions about your order, please contact our support team.</p>
-                    
-                    <div class="mt-3">
-                        <a href="#" class="btn">
-                            <i class="fas fa-truck"></i> Track Your Order
-                        </a>
-                        <a href="{{ url_for('main.home') }}" class="btn mt-3 btn-block">
-                            <i class="fas fa-home"></i> Return to Home
-                        </a>
+                <!-- Order Items -->
+                {% if items %}
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-4">Items Ordered</h2>
+                    <div class="space-y-4">
+                        {% for item in items %}
+                        <div class="flex items-center border-b pb-4">
+                            <div class="ml-4">
+                                <h3 class="font-medium">{{ item.name }}</h3>
+                                <p class="text-gray-600 text-sm">{{ item.quantity }} × ${{ "%.2f"|format(item.price) }}</p>
+                            </div>
+                            <div class="ml-auto font-medium">
+                                ${{ "%.2f"|format(item.quantity * item.price) }}
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
+                </div>
+                {% endif %}
+
+                <!-- Customer Support -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">Need Help?</h3>
+                    <p class="text-gray-600 mb-4">We've sent a confirmation to {% if customer_email %}<span class="font-medium">{{ customer_email }}</span>{% else %}your email{% endif %}.</p>
+                    <a href="{{ url_for('main.contact') }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        Contact Support
+                    </a>
+                </div>
+
+                <!-- Continue Shopping -->
+                <div class="mt-6 text-center">
+                    <a href="{{ url_for('products.index') }}" class="inline-block px-6 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition">
+                        Continue Shopping
+                    </a>
                 </div>
             </div>
         </div>

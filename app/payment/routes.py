@@ -335,25 +335,29 @@ def checkout(payment_token):
 @payments_bp.route('/thank-you/<int:order_id>')
 def thank_you(order_id):
     try:
-        # Fetch the order from database
-        order = Order.query.get_or_404(order_id)
         
-        # Prepare context with all required variables
+        order = Order.query.get_or_404(order_id)
+
+        # Prepare context data with fallbacks
         context = {
             'order_id': order.id,
-            'order_date': order.created_at or datetime.utcnow(), 
-            'payment_method': order.payment_method or "Credit Card", 
-            'order_total': order.total,
-            #'customer_email': order.user.email if order.user else "your@email.com" 
+            'order_date': order.paid_at or order.created_at or datetime.utcnow(),
+            'payment_method': order.payment_method or "Credit Card",
+            'order_total': float(order.total) if order.total else 0.00,
+            #'customer_email': order.user.email if order.user else None,
+            'items': order.items.all() if hasattr(order, 'items') else []
         }
-        
+
         return render_template('payments/thank_you.html', **context)
-        
+
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error loading order {order_id}: {str(e)}")
+        flash("We're having trouble loading your order details. Please try again later.")
+        return redirect(url_for('orders.index'))
+
     except Exception as e:
-        current_app.logger.error(f"Error loading thank you page: {str(e)}")
-        flash("Unable to load order details. Please contact support.")
+        current_app.logger.error(f"Unexpected error in thank-you page: {str(e)}")
+        flash("Something went wrong. Our team has been notified.")
         return redirect(url_for('main.home'))
-
-
 
 
