@@ -341,7 +341,7 @@ def thank_you(order_id):
         # Prepare context data with fallbacks
         context = {
             'order_id': order.id,
-            'order_date': order.paid_at or order.created_at or datetime.utcnow(),
+            'order_date': order.created_at or datetime.utcnow(),
             'payment_method': order.payment_method or "Credit Card",
             'order_total': float(order.total) if order.total else 0.00,
             #'customer_email': order.user.email if order.user else None,
