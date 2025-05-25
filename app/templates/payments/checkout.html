@@ -253,7 +253,7 @@
           const data = await res.json();
           if (!res.ok) throw new Error(data.message || 'Payment failed');
           this.showToast('Payment successful! Redirecting…', 'success');
-          setTimeout(() => window.location.href = data.next, 1000);
+          setTimeout(() => window.location.href = data.redirect, 1000);
         } catch (err) {
           this.showToast(err.message, 'error');
         } finally {
