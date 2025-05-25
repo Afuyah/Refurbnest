@@ -355,7 +355,7 @@ def thank_you(order_id):
     except SQLAlchemyError as e:
         current_app.logger.error(f"Database error loading order {order_id}: {str(e)}")
         flash("We're having trouble loading your order details. Please try again later.")
-        return redirect(url_for('orders.index'))
+        return redirect(url_for('main.home'))
 
     except Exception as e:
         current_app.logger.error(f"Unexpected error in thank-you page: {str(e)}")
