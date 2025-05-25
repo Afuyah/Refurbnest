@@ -331,7 +331,29 @@ def checkout(payment_token):
         security_logger.error(f"Unexpected checkout error: {str(e)}", exc_info=True)
         return error_response("An unexpected error occurred. Please contact support.", payment_token)
 
+
 @payments_bp.route('/thank-you/<int:order_id>')
 def thank_you(order_id):
-    # You can fetch order details here if needed
-    return render_template('payments/thank_you.html', order_id=order_id)
+    try:
+        # Fetch the order from database
+        order = Order.query.get_or_404(order_id)
+        
+        # Prepare context with all required variables
+        context = {
+            'order_id': order.id,
+            'order_date': order.created_at or datetime.utcnow(), 
+            'payment_method': order.payment_method or "Credit Card", 
+            'order_total': order.total,
+            #'customer_email': order.user.email if order.user else "your@email.com" 
+        }
+        
+        return render_template('payments/thank_you.html', **context)
+        
+    except Exception as e:
+        current_app.logger.error(f"Error loading thank you page: {str(e)}")
+        flash("Unable to load order details. Please contact support.")
+        return redirect(url_for('main.home'))
+
+
+
+
