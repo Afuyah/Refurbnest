@@ -3,55 +3,163 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Thank You for Your Order!</title>
+    <title>Order Confirmation - #{{ order_id }}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2c7be5;
+            --primary-dark: #1a5edb;
+            --success: #00a854;
+            --text: #333;
+            --text-light: #666;
+            --border: #e0e0e0;
+            --bg: #f9f9f9;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f9f9f9;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background: var(--bg);
+            color: var(--text);
             margin: 0;
+            line-height: 1.6;
         }
-        .thank-you-container {
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .confirmation-card {
             background: white;
-            padding: 2rem 3rem;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .confirmation-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
             text-align: center;
-            max-width: 400px;
         }
-        h1 {
-            color: #2c7be5;
+        .confirmation-body {
+            padding: 2rem;
         }
-        p {
-            font-size: 1.1rem;
-            margin-top: 1rem;
+        .order-details {
+            margin-bottom: 2rem;
         }
-        a {
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+        }
+        .success-icon {
+            font-size: 3rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+        .btn {
             display: inline-block;
-            margin-top: 2rem;
-            padding: 0.6rem 1.5rem;
-            background-color: #2c7be5;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--primary);
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-weight: 600;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: none;
+            cursor: pointer;
         }
-        a:hover {
-            background-color: #1a5edb;
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+        .divider {
+            border-top: 1px dashed var(--border);
+            margin: 1.5rem 0;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem;
+            }
+            .confirmation-body {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="thank-you-container">
-        <h1>Thank You!</h1>
-        <p>Your order #<strong>{{ order_id }}</strong> has been received successfully.</p>
-        <p>We appreciate your purchase and will process your order soon.</p>
-        <a href="{{ url_for('main.home') }}">Return to Home</a>
+    <div class="container">
+        <div class="confirmation-card">
+            <div class="confirmation-header">
+                <h1>Order Confirmation</h1>
+            </div>
+            
+            <div class="confirmation-body">
+                <div class="text-center">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Thank You For Your Order!</h2>
+                    <p>Your order #<strong>{{ order_id }}</strong> has been received and is being processed.</p>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="order-details">
+                    <h3>Order Summary</h3>
+                    <div class="detail-row">
+                        <span>Order Number:</span>
+                        <span>#{{ order_id }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Date:</span>
+                        <span>{{ order_date.strftime('%B %d, %Y at %H:%M') }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Payment Method:</span>
+                        <span>{{ payment_method }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Total Amount:</span>
+                        <span>${{ "%.2f"|format(order_total) }}</span>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="text-center">
+                    <p>We've sent a confirmation email to <strong> customer_email </strong>.</p>
+                    <p>For any questions about your order, please contact our support team.</p>
+                    
+                    <div class="mt-3">
+                        <a href="#" class="btn">
+                            <i class="fas fa-truck"></i> Track Your Order
+                        </a>
+                        <a href="{{ url_for('main.home') }}" class="btn mt-3 btn-block">
+                            <i class="fas fa-home"></i> Return to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
