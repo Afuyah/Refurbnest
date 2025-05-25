@@ -346,7 +346,7 @@ def thank_you(order_id):
             'payment_method': order.payment_method or "Credit Card",
             'order_total': float(order.total) if order.total else 0.00,
             #'customer_email': order.user.email if order.user else None,
-            'items': order.items.all() if hasattr(order, 'items') else []
+            'items': order.items() if hasattr(order, 'items') else []
         }
 
         return render_template('payments/thank_you.html', **context)
