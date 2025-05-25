@@ -96,7 +96,7 @@ class Product(db.Model):
     is_active = db.Column(db.Boolean, default=True, nullable=True)
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
-
+    sku = db.Column(db.String(50),)
     images = db.relationship('ProductImage', backref='product', lazy=True, cascade='all, delete-orphan')
     reviews = db.relationship('Review', backref='product', lazy=True, cascade='all, delete-orphan')
 
@@ -283,25 +283,27 @@ class Review(db.Model):
         return f'<Review by {self.author} | Rating: {self.rating}>'
     
 class Order(db.Model):
-    __tablename__ = 'order'
-
-    id              = db.Column(db.Integer, primary_key=True)
-    name            = db.Column(db.String(128), nullable=False)
-    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    session_id      = db.Column(db.String(128), nullable=True, index=True)
-    address         = db.Column(db.String(256), nullable=False)
-    phone           = db.Column(db.String(20),  nullable=False)
-    total           = db.Column(db.Numeric(10,2), nullable=False)
-    payment_status  = db.Column(db.String(20), default='Pending')  # Pending / Paid / Failed
-    payment_method  = db.Column(db.String(20), nullable=True)      # e.g. 'stripe', 'mpesa'
-    created_at      = db.Column(db.DateTime, default=datetime.utcnow)
-
-    items = db.relationship('OrderItem', backref='order', lazy=True)
-    user  = db.relationship('User', back_populates='orders')
-
-    payment_method_record = db.relationship('PaymentMethod', back_populates='order', uselist=False, cascade='all, delete-orphan')
-    payment_token = db.Column(db.String(256), unique=True, index=True)
+    __tablename__ = 'orders'
     
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    total = db.Column(db.Numeric(10,2), nullable=False)
+    subtotal = db.Column(db.Numeric(10,2), nullable=False)
+    tax = db.Column(db.Numeric(10,2), default=0.00)
+    shipping_cost = db.Column(db.Numeric(10,2), default=0.00)
+    payment_status = db.Column(db.String(20), default='Pending')
+    payment_method = db.Column(db.String(20), nullable=True)
+    payment_token = db.Column(db.String(256), unique=True, index=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    
+
+    # Relationships
+    items = db.relationship('OrderItem', backref='order', lazy=True, cascade='all, delete-orphan')
+    user = db.relationship('User', back_populates='orders')
+    shipping_address = db.relationship('ShippingAddress', backref='order', uselist=False, cascade='all, delete-orphan')
+    payment_method_record = db.relationship('PaymentMethod',back_populates='order', uselist=False,cascade='all, delete-orphan', foreign_keys='PaymentMethod.order_id')
+
     def generate_payment_token(self):
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         self.payment_token = s.dumps({
@@ -311,32 +313,43 @@ class Order(db.Model):
 
 
 class OrderItem(db.Model):
+    __tablename__ = 'order_items'
+    
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-    product_id = db.Column(db.String(50), nullable=False)
-    name = db.Column(db.String(128), nullable=False)
-    price = db.Column(db.Numeric(10,2), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Numeric(10,2), nullable=False)  # Price at time of purchase
+    
+    # Product details snapshot
+    name = db.Column(db.String(200), nullable=False)
+    sku = db.Column(db.String(100))
+    image_url = db.Column(db.String(255))
+    
+    product = db.relationship('Product')
     
 
 
 class PaymentMethod(db.Model):
-    __tablename__ = 'payment_method'
-
-    id         = db.Column(db.Integer, primary_key=True)
-    order_id   = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=True, index=True)  
-    brand      = db.Column(db.String(20), nullable=False)
-    last4      = db.Column(db.String(4), nullable=False)
-    exp_month  = db.Column(db.Integer, nullable=False)
-    exp_year   = db.Column(db.Integer, nullable=False)
-    token      = db.Column(db.String(64), nullable=False)
-    enc_pan    = db.Column(db.LargeBinary, nullable=False)
-    pan_nonce  = db.Column(db.LargeBinary, nullable=False)
+    __tablename__ = 'payment_methods'  # Changed to plural for consistency
+    
+    id = db.Column(db.Integer, primary_key=True)
+    brand = db.Column(db.String(20), nullable=False)
+    last4 = db.Column(db.String(4), nullable=False)
+    exp_month = db.Column(db.Integer, nullable=False)
+    exp_year = db.Column(db.Integer, nullable=False)
+    token = db.Column(db.String(64), nullable=False)
+    enc_pan = db.Column(db.LargeBinary, nullable=False)
+    pan_nonce = db.Column(db.LargeBinary, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     key_version = db.Column(db.String(20), nullable=True)
     masked_pan = db.Column(db.String(32), nullable=True)
 
-    order = db.relationship('Order', back_populates='payment_method_record')
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False, unique=True)
+    order    = db.relationship('Order', back_populates='payment_method_record', uselist=False)
+
+  
+
 
     def get_full_pan(self) -> str:
         return decrypt_pan(self.pan_nonce, self.enc_pan)
@@ -346,11 +359,35 @@ class PaymentMethod(db.Model):
         return f"{full[:6]}{'*'*(len(full)-10)}{full[-4:]}"
 
 
+class ShippingAddress(db.Model):
+    __tablename__ = 'shipping_addresses'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
+    
+    # Contact Info
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    
+    # Address Details
+    address_line1 = db.Column(db.String(200), nullable=False)
+    address_line2 = db.Column(db.String(200))
+    city = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(100), nullable=False)
+    postal_code = db.Column(db.String(20), nullable=False)
+    country = db.Column(db.String(100), nullable=False)
+    
+    # Shipping Method
+    shipping_method = db.Column(db.String(50), nullable=False)
+    delivery_instructions = db.Column(db.Text)
+
 class PaymentEvent(db.Model):
     __tablename__ = 'payment_events'
     
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=True, index=True)
     status = db.Column(db.String(20), nullable=False)  # Paid/Failed/Refunded etc.
     amount = db.Column(db.Numeric(10,2), nullable=False)
     processor = db.Column(db.String(20), nullable=False)  # stripe/mpesa/etc

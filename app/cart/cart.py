@@ -30,19 +30,21 @@ class Cart:
     MAX_QUANTITY = 100
 
     def __init__(self) -> None:
-        # Load or initialize the cart once per request
         raw: Dict[str, Any] = session.get(self.SESSION_KEY, {})
         self._items: Dict[str, CartItem] = {}
         for pid, data in raw.items():
             try:
                 price = Decimal(str(data['price'])).quantize(Decimal('0.00'))
-                qty   = int(data['quantity'])
+                qty = int(data['quantity'])
                 if price <= 0 or qty < 0:
                     raise ValueError
                 self._items[pid] = CartItem(pid, str(data['name']), price, qty)
             except (KeyError, TypeError, ValueError, InvalidOperation):
-                # skip invalid entries
                 continue
+
+    @property
+    def subtotal(self) -> Decimal:
+        return sum(item.price * item.quantity for item in self._items.values())
 
     def _save(self) -> None:
         """Persist current cart back into the session in one shot."""

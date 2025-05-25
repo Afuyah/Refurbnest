@@ -133,27 +133,16 @@
 </nav>
 
 <script>
-  // Mobile menu toggle
-  const mobileMenu = document.getElementById('mobileMenu');
-  document.getElementById('mobileMenuButton').addEventListener('click', () => {
-    mobileMenu.classList.remove('-translate-x-full');
-  });
-  document.getElementById('mobileMenuClose').addEventListener('click', () => {
-    mobileMenu.classList.add('-translate-x-full');
-  });
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu toggle
+      const mobileMenuButton = document.getElementById('mobileMenuButton');
+      const mobileMenuClose  = document.getElementById('mobileMenuClose');
+      const mobileMenu       = document.getElementById('mobileMenu');
 
-  // Dark/light mode toggle
-  const themeToggle = document.getElementById('themeToggle');
-  const themeIcon   = document.getElementById('themeIcon');
-  themeToggle.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-    const isDark = document.documentElement.classList.contains('dark');
-    themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-    localStorage.setItem('darkMode', isDark);
-  });
-  // Preserve mode on load
-  if (localStorage.getItem('darkMode') === 'true') {
-    document.documentElement.classList.add('dark');
-    themeIcon.className = 'fas fa-sun';
-  }
-</script>
+      if (mobileMenuButton && mobileMenuClose && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+        mobileMenuClose.addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+      }
+
+       });
+  </script>

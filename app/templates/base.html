@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{% block title %}RefurbNest | Your Technology Hub{% endblock %}</title>
+    <title>{% block title %}Salesta | Your Technology Hub{% endblock %}</title>
 
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
             href: '{{ url_for("main.privacy_policy") }}'
         },
         cookie: {
-            name: 'refurbnest_consent',
+            name: 'Salesta_consent',
             domain: window.location.hostname,
             path: '/',
             expires: 365

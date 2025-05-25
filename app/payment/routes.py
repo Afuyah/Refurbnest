@@ -125,9 +125,9 @@ def handle_expired_token():
 
 
 
-# Enhanced card brand detection with more accurate patterns
+#card brand detection 
 def detect_card_brand(pan: str) -> str:
-    """Improved card brand detection with comprehensive pattern matching"""
+    """card brand detection"""
     pan = sanitize_pan(pan)
     
     # Visa: starts with 4, length 13,16,19

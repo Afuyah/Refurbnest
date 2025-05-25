@@ -1,146 +1,214 @@
 {% extends 'base.html' %}
+{% block title %}Checkout - salesta{% endblock %}
 {% block content %}
 
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: {
+            50: '#f0f9ff',
+            100: '#e0f2fe',
+            500: '#3b82f6',
+            600: '#2563eb',
+            700: '#1d4ed8'
+          },
+          slate: {
+            800: '#1e293b',
+            900: '#0f172a'
+          }
+        }
+      }
+    }
+  }
+</script>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 
- <!-- Tailwind CSS v3 -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Alpine.js for lightweight reactivity -->
-  <script src="https://unpkg.com/alpinejs@3.x.x" defer></script>
-  <!-- Font Awesome for icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-
-<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 mt-3">
-  <div class="max-w-7xl mx-auto">
-    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
-      <!-- Shipping Details -->
-      <div class="lg:col-span-2">
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 lg:mb-0">
-          <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Shipping Details</h2>
-            <p class="text-gray-500">Please provide your delivery information</p>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- Checkout Form -->
+      <div class="md:w-2/3">
+        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+          <!-- Progress Steps -->
+          <div class="flex justify-between mb-8">
+            <div class="text-center">
+              <div class="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center mx-auto mb-2 shadow-sm">
+                1
+              </div>
+              <span class="text-sm font-medium text-primary-600">Shipping</span>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                2
+              </div>
+              <span class="text-sm text-gray-500">Payment</span>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                3
+              </div>
+              <span class="text-sm text-gray-500">Confirmation</span>
+            </div>
           </div>
 
-          <form id="checkout-form" class="space-y-6">
+          <h2 class="text-2xl font-bold text-slate-800 mb-6">Shipping Information</h2>
+          
+          <form id="checkout-form" class="space-y-4" method="POST" action="{{ url_for('cart.checkout') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-            <!-- Name Input -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-              <div class="relative">
-                <input
-                  id="name"
-                  name="name"
-                  required
-                  class="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                  placeholder="John Doe"
-                  pattern="[A-Za-z ]{3,50}"
-                >
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                  <i class="fas fa-user text-gray-400"></i>
-                </div>
-              </div>
-              <p class="mt-1 text-sm text-red-600 validation-message hidden"></p>
-            </div>
-
-            <!-- Address Input -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Shipping Address</label>
-              <div class="relative">
-                <textarea
-                  id="address"
-                  name="address"
-                  required
-                  class="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 h-32"
-                  placeholder="123 Main Street, Nairobi"
-                ></textarea>
-                <div class="absolute inset-y-0 left-0 pl-3 pt-3">
-                  <i class="fas fa-map-marker-alt text-gray-400"></i>
-                </div>
-              </div>
-              <p class="mt-1 text-sm text-red-600 validation-message hidden"></p>
-            </div>
-
-            <!-- Grid Group -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Zip Code -->
+            <!-- Contact Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Zip Code</label>
-                <div class="relative">
-                  <input
-                    id="zip"
-                    name="zip" 
-                    type="text"
-                    required
-                    class="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                    placeholder="000000"
-                    pattern="\d{5,6}"
-                  >
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                    <i class="fas fa-map-pin text-gray-400"></i>
-                  </div>
-                </div>
-                <p class="mt-1 text-sm text-red-600 validation-message hidden"></p>
+                <label class="block text-sm font-medium text-slate-700 mb-1">First Name*</label>
+                <input type="text" name="first_name" required 
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-300 bg-white text-slate-800 placeholder-gray-400">
               </div>
-
-              <!-- Phone Number -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                <div class="relative">
-                  <input
-                    id="phone"
-                    name="phone"
-                    required
-                    class="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                    placeholder="+2547XX XXX XXX"
-                    pattern="^\+254\d{9}$"
-                  >
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                    <i class="fas fa-phone text-gray-400"></i>
-                  </div>
-                </div>
-                <p class="mt-1 text-sm text-red-600 validation-message hidden"></p>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Last Name*</label>
+                <input type="text" name="last_name" required 
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
               </div>
             </div>
 
-            <!-- Submit Button -->
-            <button
-              type="submit"
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors relative"
-            >
-              <span class="flex items-center justify-center gap-2">
-                Proceed to Payment
-                <i class="fas fa-arrow-right"></i>
-              </span>
-              <div class="absolute inset-0 bg-blue-700 hidden items-center justify-center loading-spinner">
-                <div class="animate-spin rounded-full h-6 w-6 border-4 border-white border-t-transparent"></div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Email*</label>
+              <input type="email" name="email" required 
+                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Phone*</label>
+              <input type="tel" name="phone" required 
+                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="border-t border-gray-200 pt-4 mt-4">
+              <h3 class="text-lg font-medium text-slate-800 mb-3">Shipping Address</h3>
+              
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Address Line 1*</label>
+                <input type="text" name="address_line1" required 
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
               </div>
+
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Address Line 2</label>
+                <input type="text" name="address_line2" 
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1">City*</label>
+                  <input type="text" name="city" required 
+                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1">State/Region*</label>
+                  <input type="text" name="state" required 
+                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1">Postal Code*</label>
+                  <input type="text" name="postal_code" required 
+                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400">
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Country*</label>
+                <select name="country" required 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800">
+                  <option value="">Select Country</option>
+                  <option value="KE">Kenya</option>
+                  <option value="US">United States</option>
+                  <!-- Add more countries -->
+                </select>
+              </div>
+
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Delivery Instructions</label>
+                <textarea name="delivery_instructions" rows="2"
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-200 focus:border-primary-500 bg-white text-slate-800 placeholder-gray-400"></textarea>
+              </div>
+            </div>
+
+            <!-- Shipping Method -->
+            <div class="border-t border-gray-200 pt-4 mt-4">
+              <h3 class="text-lg font-medium text-slate-800 mb-3">Shipping Method</h3>
+              
+              <div class="space-y-2">
+                <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary-300 bg-white">
+                  <input type="radio" name="shipping_method" value="standard" checked 
+                         class="h-4 w-4 text-primary-600 focus:ring-primary-500">
+                  <div class="ml-3">
+                    <span class="block font-medium text-slate-800">Standard Shipping</span>
+                    <span class="block text-sm text-slate-500">3-5 business days • $5.00</span>
+                  </div>
+                </label>
+                
+                <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary-300 bg-white">
+                  <input type="radio" name="shipping_method" value="express" 
+                         class="h-4 w-4 text-primary-600 focus:ring-primary-500">
+                  <div class="ml-3">
+                    <span class="block font-medium text-slate-800">Express Shipping</span>
+                    <span class="block text-sm text-slate-500">1-2 business days • $12.00</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Continue Button -->
+            <button type="submit" 
+                    class="w-full mt-6 py-3.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition shadow-sm hover:shadow-md">
+              Continue to Payment
             </button>
           </form>
-
-          <!-- Security Badge -->
-          <div class="mt-6 pt-6 border-t border-gray-200 flex items-center justify-center gap-2 text-sm text-gray-500">
-            <i class="fas fa-lock text-blue-500"></i>
-            <span>256-bit SSL Secured Checkout</span>
-          </div>
         </div>
       </div>
 
       <!-- Order Summary -->
-      <div class="mt-8 lg:mt-0">
-        <div class="bg-white rounded-xl shadow-lg p-6">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Order Summary</h2>
-          
-          <!-- Skeleton Loader -->
-          <div id="order-summary" class="space-y-4 mb-6 ">
-            <div class="h-20 bg-gray-100 rounded-lg"></div>
-            <div class="h-20 bg-gray-100 rounded-lg"></div>
+      <div class="md:w-1/3">
+        <div class="bg-white rounded-xl shadow-lg p-6 sticky top-8 border border-gray-200">
+          <h2 class="text-xl font-bold text-slate-800 mb-4">Order Summary</h2>
+
+          <!-- Products List -->
+          <div class="divide-y divide-gray-200">
+            {% for item in cart_items %}
+            <div class="py-4 flex">
+              <img src="{{ item.image_url or url_for('static', filename='images/placeholder-product.png') }}" 
+                   alt="{{ item.name }}" class="h-16 w-16 object-cover rounded-md border border-gray-200">
+              <div class="ml-4">
+                <h3 class="font-medium text-slate-800">{{ item.name }}</h3>
+                <p class="text-sm text-slate-500">{{ item.quantity }} × ${{ "%.2f"|format(item.price) }}</p>
+              </div>
+            </div>
+            {% endfor %}
           </div>
 
-          <!-- Total Price -->
-          <div class="border-t border-gray-200 pt-4">
-            <div class="flex justify-between items-center">
-              <span class="text-lg font-semibold text-gray-700">Total:</span>
-              <span class="text-2xl font-bold text-blue-600">$<span id="order-total">0.00</span></span>
+          <!-- Order Totals -->
+          <div class="border-t border-gray-200 pt-4 mt-4 space-y-3">
+            <div class="flex justify-between">
+              <span class="text-slate-600">Subtotal</span>
+              <span class="text-slate-800">${{ "%.2f"|format(subtotal) }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600">Shipping</span>
+              <span class="text-slate-800" id="shipping-cost">$5.00</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600">Tax</span>
+              <span class="text-slate-800" id="tax-amount">$0.00</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg pt-2">
+              <span class="text-slate-800">Total</span>
+              <span class="text-primary-600" id="order-total">${{ "%.2f"|format(total) }}</span>
             </div>
           </div>
         </div>
@@ -152,20 +220,80 @@
 <!-- Toast Container -->
 <div id="toastContainer" class="fixed top-4 right-4 space-y-2 z-50"></div>
 
-<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('checkout-form');
+  const shippingMethodRadios = document.querySelectorAll('input[name="shipping_method"]');
+  const countrySelect = document.querySelector('select[name="country"]');
+  const stateInput = document.querySelector('input[name="state"]');
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-<style>
-  .loading-spinner {
-    transition: opacity 0.3s ease;
+  
+  // Update shipping cost when method changes
+  shippingMethodRadios.forEach(radio => {
+    radio.addEventListener('change', updateOrderTotals);
+  });
+  
+  // Update tax when country/state changes
+  countrySelect.addEventListener('change', updateOrderTotals);
+  stateInput.addEventListener('input', updateOrderTotals);
+  
+  // Form submission
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRFToken': csrfToken  // ✅ Important: CSRF in header
+        },
+        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Redirect to payment page
+        window.location.href = data.redirect;
+      } else {
+        showToast(data.errors || 'Checkout failed. Please try again.', 'error');
+      }
+    } catch (error) {
+      showToast('An error occurred. Please try again.', 'error');
+      console.error('Checkout error:', error);
+    }
+  });
+  
+  function updateOrderTotals() {
+    // In a real app, you'd fetch these from your backend
+    const shippingCost = document.querySelector('input[name="shipping_method"]:checked').value === 'express' ? 12.00 : 5.00;
+    const taxRate = countrySelect.value === 'US' ? 0.08 : 0.00; // Example tax calculation
+    const taxAmount = parseFloat('{{ subtotal }}') * taxRate;
+    const total = parseFloat('{{ subtotal }}') + shippingCost + taxAmount;
+    
+    document.getElementById('shipping-cost').textContent = '$' + shippingCost.toFixed(2);
+    document.getElementById('tax-amount').textContent = '$' + taxAmount.toFixed(2);
+    document.getElementById('order-total').textContent = '$' + total.toFixed(2);
   }
+  
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `px-4 py-2 rounded-md shadow-md text-white ${
+      type === 'error' ? 'bg-red-500' : 'bg-green-500'
+    }`;
+    toast.textContent = message;
+    
+    const container = document.getElementById('toastContainer');
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.remove();
+    }, 5000);
+  }
+});
+</script>
 
-  button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  button:disabled .loading-spinner {
-    display: flex;
-  }
-</style>
 {% endblock %}

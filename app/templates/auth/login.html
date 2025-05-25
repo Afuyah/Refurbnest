@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Login | RefurbNest{% endblock %}
+{% block title %}Login | Salesta{% endblock %}
 
 {% block content %}
 <div class="auth-container mt-5">
@@ -8,7 +8,7 @@
         <div class="auth-card glassmorphism">
             <div class="auth-header">
                 <h2 class="auth-title">Welcome Back</h2>
-                <p class="auth-subtitle">Login to your RefurbNest account</p>
+                <p class="auth-subtitle">Login to your Salesta account</p>
             </div>
 
             <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form">
