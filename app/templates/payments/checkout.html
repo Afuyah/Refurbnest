@@ -17,7 +17,7 @@
  <script>
   // Ensure this is JSON-safe and always defined
   window.paymentToken = {{ payment_token|tojson }};
-  window.orderAmount = {{ order.total_amount | round(2) }};
+  window.orderAmount = {{ order.total_amount }};
 </script>
 
 
@@ -88,7 +88,7 @@
         <!-- Display Amount -->
         <div class="mt-8 bg-blue-50 p-4 rounded-lg text-center">
           <p class="text-gray-700">Amount to Pay</p>
-          <p class="text-2xl font-bold text-blue-600" x-text="'$' + amount.toFixed(2)"></p>
+          <p class="text-2xl font-bold text-blue-600" x-text="'$' + amount"></p>
 
         </div>
       </div>
