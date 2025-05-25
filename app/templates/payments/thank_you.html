@@ -100,27 +100,31 @@
                             </div>
                         </div>
 
-                        <!-- Right Column -->
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h3 class="font-medium text-gray-700 mb-3 flex items-center">
-                                <i class="fas fa-truck mr-2 text-primary-600"></i>
-                                Delivery Information
-                            </h3>
-                            <div class="space-y-2 text-sm">
-                                <p class="flex items-start">
-                                    <i class="fas fa-user mt-0.5 mr-2 text-gray-500"></i>
-                                    <span>{{ customer_name }}</span>
-                                </p>
-                                <p class="flex items-start">
-                                    <i class="fas fa-map-marker-alt mt-0.5 mr-2 text-gray-500"></i>
-                                    <span>{{ delivery_address }}</span>
-                                </p>
-                                <p class="flex items-start">
-                                    <i class="fas fa-phone mt-0.5 mr-2 text-gray-500"></i>
-                                    <span>{{ contact_phone }}</span>
-                                </p>
-                            </div>
-                        </div>
+                                    <!-- Right Column -->
+                                   <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-700 mb-3 flex items-center">
+                <i class="fas fa-truck mr-2 text-primary-600"></i> Delivery Information
+              </h3>
+              {% if customer_name %}
+              <div class="space-y-2 text-sm">
+                <p class="flex items-start">
+                  <i class="fas fa-user mt-0.5 mr-2 text-gray-500"></i>
+                  <span>{{ customer_name }}</span>
+                </p>
+                <p class="flex items-start">
+                  <i class="fas fa-map-marker-alt mt-0.5 mr-2 text-gray-500"></i>
+                  <span>{{ delivery_address }}</span>
+                </p>
+                <p class="flex items-start">
+                  <i class="fas fa-phone mt-0.5 mr-2 text-gray-500"></i>
+                  <span>{{ contact_phone }}</span>
+                </p>
+              </div>
+              {% else %}
+                <p class="text-sm text-gray-500">No delivery information available.</p>
+              {% endif %}
+            </div>
+
                     </div>
 
                     <!-- Order Items -->
