@@ -17,6 +17,7 @@
  <script>
   // Ensure this is JSON-safe and always defined
   window.paymentToken = {{ payment_token|tojson }};
+  window.orderAmount = {{ order.total_amount | round(2) }};
 </script>
 
 
@@ -87,7 +88,8 @@
         <!-- Display Amount -->
         <div class="mt-8 bg-blue-50 p-4 rounded-lg text-center">
           <p class="text-gray-700">Amount to Pay</p>
-          <p class="text-2xl font-bold text-blue-600">${{ amount }}</p>
+          <p class="text-2xl font-bold text-blue-600" x-text="'$' + amount.toFixed(2)"></p>
+
         </div>
       </div>
 
@@ -148,7 +150,7 @@
                     :disabled="processingCard"
                     class="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition disabled:opacity-50">
               <template x-if="!processingCard">
-                <><i class="fas fa-credit-card"></i><span>Pay Now</span></>
+                <i class="fas fa-credit-card"></i><span>Pay Now</span>
               </template>
               <template x-if="processingCard">
                 <div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
@@ -197,6 +199,7 @@
         processing: false,
         processingCard: false,
         selected: 'card',
+        amount: 0,
         modes: [
           { label: 'Credit Card',   value: 'card',   icon: 'fas fa-credit-card text-blue-600' },
           { label: 'PayPal',        value: 'paypal', icon: 'fab fa-paypal text-blue-700' },
@@ -204,6 +207,7 @@
         ],
 
         init() {
+          this.amount = window.orderAmount || 0;
           window.addEventListener('load', () => { this.loading = false });
         },
 
