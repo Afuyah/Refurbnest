@@ -17,6 +17,7 @@ from app.email.payment_confirmation import send_payment_confirmation_email
 from .crypto import encrypt_pan, luhn_checksum
 from app import db
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import exc
 
 security_logger = logging.getLogger('security')
