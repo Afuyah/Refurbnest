@@ -13,13 +13,12 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 
   <!-- CSRF token for fetch() -->
- <meta name="csrf-token" content="{{ csrf_token }}">
- <script>
-  // Ensure this is JSON-safe and always defined
-  window.paymentToken = {{ payment_token|tojson }};
-  window.orderAmount = {{ order.total_amount }};
-</script>
-
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <script>
+    // Ensure this is JSON-safe and always defined
+    window.paymentToken = {{ payment_token|tojson }};
+    window.orderAmount = {{ order.total|tojson }}; // Pass order total from backend
+  </script>
 
   <style>
     @keyframes fadeIn {
@@ -30,8 +29,7 @@
     /* Vertical divider on md+ */
     .divider-vertical { border-right: 1px solid #e5e7eb; } 
 
-
-.secure-banner {
+    .secure-banner {
       background: #e8f5ff;
       color: #007bff;
       border-radius: 6px;
@@ -46,8 +44,6 @@
     .secure-banner i {
       margin-right: 0.5rem;
     }
-
-    
   </style>
 </head>
 <body>
@@ -63,7 +59,7 @@
        class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-blue-900/75 text-white">
     <div class="animate-spin h-14 w-14 border-4 border-white border-t-transparent rounded-full"></div>
     <p class="mt-4 text-lg text-center px-4">
-      Processing your selection…<br/>Please wait.
+      Processing your payment...<br/>Please don't close this page.
     </p>
   </div>
 
@@ -75,7 +71,7 @@
       <div class="md:w-1/3 p-6 divider-vertical space-y-6">
         <h2 class="text-xl font-semibold">Choose Payment</h2>
         <template x-for="mode in modes" :key="mode.value">
-          <label class="flex items-center space-x-3 cursor-pointer"
+          <label class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50"
                  @change="selectMode(mode.value)">
             <input type="radio" name="payment_mode"
                    :value="mode.value" x-model="selected"
@@ -85,11 +81,23 @@
           </label>
         </template>
 
-        <!-- Display Amount -->
-        <div class="mt-8 bg-blue-50 p-4 rounded-lg text-center">
-          <p class="text-gray-700">Amount to Pay</p>
-          <p class="text-2xl font-bold text-blue-600" x-text="'$' + amount"></p>
-
+        <!-- Order Summary -->
+        <div class="mt-8 bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-sm font-medium text-gray-500 mb-2">ORDER SUMMARY</h3>
+          <div class="space-y-2">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Subtotal</span>
+              <span class="font-medium">$<span x-text="orderAmount.toFixed(2)"></span></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Shipping</span>
+              <span class="font-medium">$5.00</span> <!-- Adjust as needed -->
+            </div>
+            <div class="border-t border-gray-200 pt-2 mt-2 flex justify-between">
+              <span class="font-semibold">Total Amount</span>
+              <span class="font-bold text-blue-600">$<span x-text="(orderAmount + 5).toFixed(2)"></span></span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -97,7 +105,9 @@
       <div class="md:w-2/3 p-6">
         <!-- Card Form -->
         <div x-show="selected==='card'" x-transition class="space-y-4">
-          <h3 class="text-lg font-semibold">Pay by Card</h3>
+          <h3 class="text-lg font-semibold flex items-center gap-2">
+            <i class="far fa-credit-card"></i> Credit/Debit Card
+          </h3>
           <form id="payment-form" @submit.prevent="submitCard()" class="space-y-4">
             <!-- CSRF hidden -->
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -138,10 +148,16 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
-                <input id="cvv" name="cvv"
-                       type="password" inputmode="numeric" maxlength="4" required
-                       placeholder="•••"
-                       class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 transition"/>
+                <div class="relative">
+                  <input id="cvv" name="cvv"
+                         type="password" inputmode="numeric" maxlength="4" required
+                         placeholder="•••"
+                         class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 transition"/>
+                  <button type="button" @click="toggleCVV()" class="absolute right-3 top-3.5 text-gray-400">
+                    <i x-show="!showCVV" class="far fa-eye"></i>
+                    <i x-show="showCVV" class="far fa-eye-slash"></i>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -150,38 +166,46 @@
                     :disabled="processingCard"
                     class="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition disabled:opacity-50">
               <template x-if="!processingCard">
-                <i class="fas fa-credit-card"></i><span>Pay Now</span>
+                <span>Pay $<span x-text="(orderAmount + 5).toFixed(2)"></span></span>
               </template>
               <template x-if="processingCard">
-                <div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                <div class="flex items-center gap-2">
+                  <div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                  <span>Processing...</span>
+                </div>
               </template>
             </button>
 
             <p class="secure-banner">
-        <i class="fas fa-shield-alt"></i>  SSL Encrypted  and PCI-DSS compliant
-      </p>
+              <i class="fas fa-shield-alt"></i> SSL Encrypted and PCI-DSS compliant
+            </p>
           </form>
         </div>
 
         <!-- PayPal Panel -->
         <div x-show="selected==='paypal'" x-transition class="space-y-4">
-          <h3 class="text-lg font-semibold">Pay with PayPal</h3>
+          <h3 class="text-lg font-semibold flex items-center gap-2">
+            <i class="fab fa-paypal"></i> PayPal
+          </h3>
           <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
-            <p class="text-yellow-700">You’ll be redirected to PayPal to complete your payment securely.</p>
+            <p class="text-yellow-700">You'll be redirected to PayPal to complete your payment securely.</p>
             <button @click="redirectPayPal()"
-                    class="mt-3 px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
-              <i class="fab fa-paypal"></i> Continue to PayPal
+                    class="w-full mt-3 px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition flex items-center justify-center gap-2">
+              <i class="fab fa-paypal"></i>
+              <span>Pay $<span x-text="(orderAmount + 5).toFixed(2)"></span> with PayPal</span>
             </button>
           </div>
         </div>
 
         <!-- Cash on Delivery Panel -->
         <div x-show="selected==='cod'" x-transition class="space-y-4">
-          <h3 class="text-lg font-semibold">Pay on Delivery</h3>
+          <h3 class="text-lg font-semibold flex items-center gap-2">
+            <i class="fas fa-truck"></i> Pay on Delivery
+          </h3>
           <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg">
             <p class="text-red-700 flex items-center gap-2">
-              <i class="fas fa-truck"></i>
-              Due to updated policies, Pay on Delivery isn’t available yet. Complete one successful order to unlock this option.
+              <i class="fas fa-info-circle"></i>
+              Currently unavailable. Please use another payment method.
             </p>
           </div>
         </div>
@@ -198,17 +222,19 @@
         loading: true,
         processing: false,
         processingCard: false,
+        showCVV: false,
         selected: 'card',
-        amount: 0,
+        orderAmount: parseFloat(window.orderAmount) || 0,
         modes: [
-          { label: 'Credit Card',   value: 'card',   icon: 'fas fa-credit-card text-blue-600' },
-          { label: 'PayPal',        value: 'paypal', icon: 'fab fa-paypal text-blue-700' },
-          { label: 'Pay on Delivery', value: 'cod',     icon: 'fas fa-truck text-gray-600' }
+          { label: 'Credit/Debit Card', value: 'card', icon: 'far fa-credit-card text-blue-600' },
+          { label: 'PayPal', value: 'paypal', icon: 'fab fa-paypal text-blue-700' },
+          { label: 'Pay on Delivery', value: 'cod', icon: 'fas fa-truck text-gray-600' }
         ],
 
         init() {
-          this.amount = window.orderAmount || 0;
-          window.addEventListener('load', () => { this.loading = false });
+          window.addEventListener('load', () => { 
+            this.loading = false;
+          });
         },
 
         selectMode(val) {
@@ -231,42 +257,54 @@
           e.target.value = v.slice(0,5);
         },
 
-         async submitCard() {
-        this.processingCard = true;
-        const csrf = document.querySelector('meta[name="csrf-token"]').content;
-        const form = document.getElementById('payment-form');
-        const payload = {
-          cardholder_name: form.cardholder_name.value.trim(),
-          card_number:     form.card_number.value.replace(/\s+/g, ''),
-          expiry_date:     form.expiry_date.value.trim(),
-          cvv:             form.cvv.value.trim()
-        };
-        try {
-         
-          const res = await fetch(
-            `/checkout/${window.paymentToken}`, 
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrf
-              },
-              body: JSON.stringify(payload)
-            }
-          );
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.message || 'Payment failed');
-          this.showToast('Payment successful! Redirecting…', 'success');
-          setTimeout(() => window.location.href = data.redirect, 1000);
-        } catch (err) {
-          this.showToast(err.message, 'error');
-        } finally {
-          this.processingCard = false;
-        }
-      },
+        toggleCVV() {
+          this.showCVV = !this.showCVV;
+          const input = document.getElementById('cvv');
+          input.type = this.showCVV ? 'text' : 'password';
+        },
+
+        async submitCard() {
+          this.processingCard = true;
+          const csrf = document.querySelector('meta[name="csrf-token"]').content;
+          const form = document.getElementById('payment-form');
+          
+          const payload = {
+            cardholder_name: form.cardholder_name.value.trim(),
+            card_number: form.card_number.value.replace(/\s+/g, ''),
+            expiry_date: form.expiry_date.value.trim(),
+            cvv: form.cvv.value.trim(),
+            amount: this.orderAmount + 5 // Include shipping
+          };
+
+          try {
+            const res = await fetch(
+              `/checkout/${window.paymentToken}`, 
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrf
+                },
+                body: JSON.stringify(payload)
+              }
+            );
+            
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Payment failed');
+            
+            this.showToast('Payment successful! Redirecting...', 'success');
+            setTimeout(() => {
+              window.location.href = data.redirect || '/thank-you';
+            }, 1500);
+          } catch (err) {
+            this.showToast(err.message, 'error');
+          } finally {
+            this.processingCard = false;
+          }
+        },
 
         redirectPayPal() {
-          window.location.href = `/payments/${window.orderId}/paypal`;
+          window.location.href = `/payments/${window.paymentToken}/paypal?amount=${(this.orderAmount + 5).toFixed(2)}`;
         },
 
         showToast(msg, type='success') {
