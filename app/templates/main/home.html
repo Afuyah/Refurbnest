@@ -6,10 +6,12 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
 
-<section class="relative overflow-hidden h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-purple-500 to-green-400">
-  <!-- Particle SVG Layer -->
-  <div class="absolute inset-0 -z-10">
-    <svg class="w-full h-full opacity-30" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+<!-- Revamped Hero Section -->
+<section class="relative h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-purple-600 via-indigo-600 to-green-400 text-white overflow-hidden">
+  
+  <!-- Particle Layer -->
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <svg class="w-full h-full opacity-20" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
       <circle cx="200" cy="150" r="4" class="fill-white animate-pulse"></circle>
       <circle cx="400" cy="300" r="2.5" class="fill-white animate-pulse delay-200"></circle>
       <circle cx="600" cy="180" r="3.5" class="fill-white animate-pulse delay-400"></circle>
@@ -18,35 +20,39 @@
     </svg>
   </div>
 
-  <!-- Glassmorphic Badges -->
-  <div class="flex space-x-4 mb-8 animate-fade-in-down">
-    <span class="px-4 py-2 bg-white/30 backdrop-blur-md rounded-full flex items-center space-x-2 text-white font-medium">
-      <i class="fas fa-shield-alt"></i>
-      <span>Certified Premium</span>
-    </span>
-    <span class="px-4 py-2 bg-white/30 backdrop-blur-md rounded-full flex items-center space-x-2 text-white font-medium">
-      <i class="fas fa-clock-rotate-left"></i>
-      <span>24-Month Warranty</span>
-    </span>
+  <!-- Floating Glass Badges -->
+  <div class="flex flex-wrap justify-center gap-4 mb-10 animate-fade-in-down">
+    <div class="px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium inline-flex items-center gap-2 shadow-md">
+      <i class="fas fa-shield-alt text-white"></i>
+      Certified Premium
+    </div>
+    <div class="px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium inline-flex items-center gap-2 shadow-md">
+      <i class="fas fa-clock-rotate-left text-white"></i>
+      24-Month Warranty
+    </div>
+    <div class="px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium inline-flex items-center gap-2 shadow-md">
+      <i class="fas fa-recycle text-white"></i>
+      Eco-Friendly Tech
+    </div>
   </div>
 
-  <!-- Headline -->
-  <h1 class="text-6xl font-extrabold mb-4 animate-fade-in-up">
-    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">Re</span>
+  <!-- Main Heading -->
+  <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up">
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">Re</span>
     <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">Imagine</span>
-    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">Tech</span>
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-100">Tech</span>
   </h1>
 
   <!-- Subheading -->
-  <p class="text-lg text-white/90 mb-6 animate-fade-in-up delay-200">
-    Premium refurbished electronics with expert certification
+  <p class="text-lg sm:text-xl text-white/80 max-w-xl mx-auto mb-8 animate-fade-in-up delay-200">
+    Experience next-gen refurbished electronics — expertly certified and environmentally conscious.
   </p>
 
   <!-- CTA Button -->
   <a href="{{ url_for('main.list_products') }}"
-     class="inline-flex items-center px-8 py-4 bg-white text-gray-900 rounded-full font-semibold hover:scale-105 transition-transform animate-fade-in-up delay-400">
+     class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 animate-fade-in-up delay-400">
     Explore Collection
-    <i class="fas fa-arrow-right ml-3"></i>
+    <i class="fas fa-arrow-right ml-3 text-sm"></i>
   </a>
 </section>
 
@@ -203,98 +209,126 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- Value Propositions Grid -->
-<section class="py-12 bg-gray-50">
+<section class="py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Expert Certification -->
-      <div class="group bg-white/80 backdrop-blur-lg rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-          <i class="fas fa-microscope text-3xl text-blue-600"></i>
+      <div class="relative group overflow-hidden rounded-lg bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300">
+        <div class="p-8">
+          <div class="w-14 h-14 bg-blue-50 rounded-lg flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Expert Certification</h3>
+          <p class="text-gray-600 leading-relaxed">Rigorous 112-point inspection process with OEM-grade testing standards and quality assurance.</p>
         </div>
-        <h3 class="text-2xl font-bold text-gray-900 mb-3">Expert Certification</h3>
-        <p class="text-gray-600">112-point inspection process with OEM-grade testing</p>
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
 
       <!-- Eco-Conscious -->
-      <div class="group bg-white/80 backdrop-blur-lg rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-          <i class="fas fa-leaf text-3xl text-green-600"></i>
+      <div class="relative group overflow-hidden rounded-lg bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300">
+        <div class="p-8">
+          <div class="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Sustainable Practice</h3>
+          <p class="text-gray-600 leading-relaxed">Environmentally responsible tech lifecycle management with verified carbon offset programs.</p>
         </div>
-        <h3 class="text-2xl font-bold text-gray-900 mb-3">Eco-Conscious</h3>
-        <p class="text-gray-600">Sustainable tech lifecycle management</p>
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
 
       <!-- Smart Value -->
-      <div class="group bg-white/80 backdrop-blur-lg rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-          <i class="fas fa-percent text-3xl text-yellow-600"></i>
+      <div class="relative group overflow-hidden rounded-lg bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300">
+        <div class="p-8">
+          <div class="w-14 h-14 bg-amber-50 rounded-lg flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Exceptional Value</h3>
+          <p class="text-gray-600 leading-relaxed">Premium certified quality at 40-60% below retail pricing with full warranty coverage.</p>
         </div>
-        <h3 class="text-2xl font-bold text-gray-900 mb-3">Smart Value</h3>
-        <p class="text-gray-600">Premium quality at 40-60% below retail</p>
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
     </div>
   </div>
 </section>
+<!-- Enhanced Stats Section -->
+<section class="relative py-20 bg-gray-900 overflow-hidden">
+  <!-- Decorative Blur Background -->
+  <div class="absolute top-0 left-0 w-72 h-72 bg-blue-500 opacity-20 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2 -z-10"></div>
+  <div class="absolute bottom-0 right-0 w-64 h-64 bg-purple-500 opacity-20 blur-3xl rounded-full translate-x-1/2 translate-y-1/2 -z-10"></div>
 
-<!-- Stats Section -->
-<section class="py-12 bg-gray-900">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div class="text-center mb-14">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white">Trusted by Thousands</h2>
+      <p class="mt-3 text-lg text-gray-400">Driven by quality. Powered by purpose.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      
       <!-- Thousand Renewed -->
-      <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-        <div class="text-4xl font-bold text-blue-400 mb-2" data-count="15">0</div>
-        <div class="text-gray-300 uppercase text-sm font-medium">Thousand Renewed</div>
+      <div class="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl duration-300">
+        <div class="text-5xl font-extrabold text-blue-400 mb-2 counter" data-count="15">0</div>
+        <div class="uppercase text-sm font-semibold text-gray-300 tracking-widest">Thousand Renewed</div>
       </div>
 
       <!-- Satisfaction Rate -->
-      <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-        <div class="text-4xl font-bold text-blue-400 mb-2" data-count="98.7">0</div>
-        <div class="text-gray-300 uppercase text-sm font-medium">Satisfaction Rate</div>
+      <div class="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl duration-300">
+        <div class="text-5xl font-extrabold text-green-400 mb-2 counter" data-count="98.7">0</div>
+        <div class="uppercase text-sm font-semibold text-gray-300 tracking-widest">Satisfaction Rate</div>
       </div>
+
+      <!-- Devices Sold -->
+      <div class="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl duration-300">
+        <div class="text-5xl font-extrabold text-yellow-400 mb-2 counter" data-count="25">0</div>
+        <div class="uppercase text-sm font-semibold text-gray-300 tracking-widest">Thousand Devices Sold</div>
+      </div>
+
+      <!-- Countries Reached -->
+      <div class="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl duration-300">
+        <div class="text-5xl font-extrabold text-purple-400 mb-2 counter" data-count="12">0</div>
+        <div class="uppercase text-sm font-semibold text-gray-300 tracking-widest">Countries Reached</div>
+      </div>
+
     </div>
   </div>
 </section>
 
+<!-- Count Animation Script -->
 <script>
-// Number animation script (remains the same)
 document.addEventListener('DOMContentLoaded', () => {
-  const animateCount = (element) => {
-    const target = parseFloat(element.dataset.count);
+  const animateCount = (el) => {
+    const target = parseFloat(el.dataset.count);
     const duration = 2000;
-    const start = Date.now();
-    const initial = parseFloat(element.textContent);
+    const start = performance.now();
 
-    const update = () => {
-      const elapsed = Date.now() - start;
+    const step = (timestamp) => {
+      const elapsed = timestamp - start;
       const progress = Math.min(elapsed / duration, 1);
-      const current = initial + (target - initial) * progress;
-      
-      element.textContent = Number.isInteger(target) 
-        ? Math.floor(current) 
-        : current.toFixed(1);
+      const current = (target * progress).toFixed(target % 1 === 0 ? 0 : 1);
+      el.textContent = current;
 
-      if (progress < 1) requestAnimationFrame(update);
+      if (progress < 1) requestAnimationFrame(step);
     };
 
-    requestAnimationFrame(update);
+    requestAnimationFrame(step);
   };
 
-  document.querySelectorAll('[data-count]').forEach(animateCount);
+  document.querySelectorAll('.counter').forEach(animateCount);
 });
 </script>
 
 <section class="py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900 mb-3">
-        <span class="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
-          Curated Picks
-        </span>
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-light text-gray-900 mb-2">
+        <span class="font-medium">Todays</span> Picks
       </h2>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-        Our most loved products this season
-      </p>
+      <p class="text-gray-500">Discover our Todays selection of premium products with Crazy Discounts of upto 99%</p>
     </div>
 
     <!-- Products Container - Max 3 items -->
