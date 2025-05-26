@@ -51,24 +51,30 @@
 </section>
 
 
-<section class="py-16 bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden">
-  <!-- Background elements -->
+<section class="py-16 bg-white relative overflow-hidden">
+  <!-- Subtle background elements -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
-    <div class="absolute top-0 left-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-    <div class="absolute bottom-0 right-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute top-0 left-0 w-64 h-64 bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute bottom-0 right-0 w-64 h-64 bg-indigo-50 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
   </div>
 
-  <div class="container mx-auto px-4 relative">
-    <h2 class="text-center text-3xl font-bold text-gray-900 mb-12">✨ Featured Products</h2>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-light text-gray-900 mb-2">
+        <span class="font-medium">Featured</span> Collection
+      </h2>
+      <p class="text-gray-500">Discover our curated selection of premium products</p>
+    </div>
 
-    <div id="featured-products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Products Grid (limited to 3 items) -->
+    <div id="featured-products-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Product cards inserted dynamically -->
     </div>
 
     <div class="text-center mt-12">
-      <a href="/products" class="inline-flex items-center px-6 py-3 border border-blue-500 text-base font-medium rounded-full shadow-sm text-blue-600 bg-white hover:bg-blue-50 transition-colors duration-300">
-        View All Products
-        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <a href="/products" class="inline-flex items-center text-gray-900 font-medium hover:text-black transition-colors border-b border-transparent hover:border-gray-900 pb-1">
+        Browse all products
+        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </a>
@@ -76,39 +82,47 @@
   </div>
 </section>
 
-<!-- Product Card Template (Hidden) -->
+<!-- Modern Product Card Template -->
 <template id="product-card-template">
   <div class="group">
-    <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-1">
-      <div class="relative">
-        <img class="w-full h-64 object-cover product-image" loading="lazy" alt="Product image">
-        <div class="absolute top-3 right-3">
-          <button class="p-2 rounded-full bg-white shadow-md text-gray-400 hover:text-red-500 transition-colors wishlist-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-          </button>
-        </div>
-        <div class="absolute top-3 left-3">
-          <span class="px-2 py-1 bg-red-500 text-white text-xs font-semibold rounded-full sale-badge hidden">Sale</span>
-        </div>
+    <div class="relative overflow-hidden mb-4 rounded-lg">
+      <!-- Product Image -->
+      <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
+        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 product-image" 
+             loading="lazy" 
+             alt="Product image">
       </div>
-      <div class="p-5">
-        <div class="flex justify-between items-start mb-2">
-          <h3 class="text-lg font-semibold text-gray-900 product-title"></h3>
-          <div class="flex flex-col items-end">
-            <span class="text-lg font-bold text-blue-600 product-price"></span>
-            <span class="text-sm text-gray-400 line-through original-price hidden"></span>
-          </div>
-        </div>
-        <p class="text-gray-600 text-sm mb-4 product-description"></p>
-        <button class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center add-to-cart-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          Add To Cart
-        </button>
+      
+      <!-- Wishlist Button -->
+      <button class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-sm hover:bg-gray-100 transition-colors wishlist-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      </button>
+      
+      <!-- Sale Badge -->
+      <div class="absolute top-4 left-4 hidden sale-badge">
+        <span class="px-3 py-1 bg-black text-white text-xs font-medium tracking-wide rounded-sm">
+          SALE
+        </span>
       </div>
+    </div>
+    
+    <!-- Product Info -->
+    <div>
+      <h3 class="text-lg font-normal text-gray-900 mb-1 product-title"></h3>
+      <p class="text-gray-500 text-sm mb-3 product-description"></p>
+      
+      <!-- Price -->
+      <div class="flex items-baseline gap-2">
+        <span class="text-gray-900 font-medium product-price"></span>
+        <span class="text-sm text-gray-400 line-through original-price hidden"></span>
+      </div>
+      
+      <!-- Add to Cart -->
+      <button class="mt-4 w-full py-3 text-sm font-medium text-gray-900 hover:text-white hover:bg-gray-900 transition-colors border border-gray-900 rounded-sm add-to-cart-btn">
+        Add to Cart
+      </button>
     </div>
   </div>
 </template>
@@ -116,7 +130,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('featured-products-container');
-  const template = document.getElementById('product-card-template');
+  const template = document.getElementById('product-card-template').content;
 
   async function loadFeaturedProducts() {
     try {
@@ -127,16 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = '';
 
       if (products.length === 0) {
-        container.innerHTML = '<p class="text-center col-span-3 text-gray-600">No featured products available</p>';
+        container.innerHTML = '<p class="text-center col-span-3 text-gray-500 py-12">No featured products available</p>';
         return;
       }
 
-      products.forEach(product => {
-        const clone = template.content.cloneNode(true);
+      // Only show first 3 products
+      products.slice(0, 3).forEach(product => {
+        const clone = document.importNode(template, true);
 
         // Set image
         const img = clone.querySelector('.product-image');
-        img.src = product.image || '/static/img/placeholder.png';
+        img.src = product.image || '/placeholder-product.jpg';
         img.alt = product.name;
 
         // Set text content
@@ -170,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     } catch (error) {
       console.error('Error loading featured products:', error);
-      container.innerHTML = '<p class="text-center col-span-3 text-red-600">Failed to load products.</p>';
+      container.innerHTML = '<p class="text-center col-span-3 text-gray-500 py-12">Failed to load products</p>';
     }
   }
 
@@ -187,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadFeaturedProducts();
 });
 </script>
-
 
 <!-- Value Propositions Grid -->
 <section class="py-12 bg-gray-50">
@@ -383,6 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadOffers();
 });
 </script>
+
 <!-- Featured Brands Section -->
 <section class="py-12 bg-gray-900">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
