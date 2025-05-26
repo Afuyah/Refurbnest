@@ -51,124 +51,67 @@
 </section>
 
 
-<section class="featured-products-section py-5 position-relative">
-  <div class="section-background position-absolute top-0 start-0 w-100 h-100 z-0"></div>
+<section class="py-16 bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden">
+  <!-- Background elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 left-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute bottom-0 right-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+  </div>
 
-  <div class="container position-relative z-1">
-    <h2 class="text-center mb-5 display-5 fw-bold text-dark">✨ Featured Products</h2>
+  <div class="container mx-auto px-4 relative">
+    <h2 class="text-center text-3xl font-bold text-gray-900 mb-12">✨ Featured Products</h2>
 
-    <div id="featured-products-container" class="row g-4">
+    <div id="featured-products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Product cards inserted dynamically -->
     </div>
 
-    <div class="text-center mt-5">
-      <a href="/products" class="btn btn-gradient-light border border-primary px-5 fw-medium rounded-pill shadow-sm">
-        View All Products <i class="fas fa-arrow-right ms-2"></i>
+    <div class="text-center mt-12">
+      <a href="/products" class="inline-flex items-center px-6 py-3 border border-blue-500 text-base font-medium rounded-full shadow-sm text-blue-600 bg-white hover:bg-blue-50 transition-colors duration-300">
+        View All Products
+        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
       </a>
     </div>
   </div>
 </section>
-<style>
-/* Section Background */
-.featured-products-section {
-  background: linear-gradient(135deg, #f5f9ff 0%, #e4f0ff 100%);
-  overflow: hidden;
-}
-
-.section-background {
-  background: radial-gradient(circle at top left, rgba(0, 183, 255, 0.05), transparent 70%),
-              radial-gradient(circle at bottom right, rgba(255, 94, 247, 0.07), transparent 70%);
-  pointer-events: none;
-}
-
-/* Glassmorphic Card Styling */
-.product-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
-  transition: all 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* Buttons */
-.btn-gradient-light {
-  background: linear-gradient(135deg, #ffffff, #f0f7ff);
-  color: #0d6efd;
-  transition: all 0.3s ease;
-}
-
-.btn-gradient-light:hover {
-  background: linear-gradient(135deg, #e0e8ff, #ffffff);
-  color: #0a58ca;
-}
-.product-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-    color: #000000;
-}
-/* Price */
-.product-price {
-  font-weight: 600;
-  color: #0d6efd;
-}
-
-/* Sale badge */
-.sale-badge {
-  font-size: 0.75rem;
-  font-weight: 600;
-  background-color: #ff4c60;
-}
-
-/* Wishlist Icon */
-.wishlist-btn {
-  background: white;
-  transition: color 0.2s ease;
-}
-
-.wishlist-btn:hover {
-  color: #ff4c60;
-}
-</style>
-
 
 <!-- Product Card Template (Hidden) -->
 <template id="product-card-template">
-  <div class="col-md-6 col-lg-4">
-    <article class="product-card card h-100 border-0 shadow-hover">
-      <div class="position-relative">
-        <img class="card-img-top product-image" loading="lazy" alt="Product image">
-        <div class="card-actions position-absolute top-0 end-0 p-2">
-          <button class="btn btn-sm btn-light rounded-circle shadow-sm wishlist-btn">
-            <i class="far fa-heart"></i>
+  <div class="group">
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-1">
+      <div class="relative">
+        <img class="w-full h-64 object-cover product-image" loading="lazy" alt="Product image">
+        <div class="absolute top-3 right-3">
+          <button class="p-2 rounded-full bg-white shadow-md text-gray-400 hover:text-red-500 transition-colors wishlist-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
           </button>
         </div>
-      </div>
-      <div class="card-body pb-0">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <h3 class="h6 mb-0 product-title"></h3>
-          <span class="badge bg-danger sale-badge d-none">Sale</span>
+        <div class="absolute top-3 left-3">
+          <span class="px-2 py-1 bg-red-500 text-white text-xs font-semibold rounded-full sale-badge hidden">Sale</span>
         </div>
-        <p class=" small mb-3 product-description"></p>
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="price">
-            <span class="h5 text-primary product-price"></span>
-            <del class="small text-black ms-2 original-price d-none"></del>
+      </div>
+      <div class="p-5">
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="text-lg font-semibold text-gray-900 product-title"></h3>
+          <div class="flex flex-col items-end">
+            <span class="text-lg font-bold text-blue-600 product-price"></span>
+            <span class="text-sm text-gray-400 line-through original-price hidden"></span>
           </div>
-          <button class="btn btn-sm btn-primary add-to-cart-btn">
-            <i class="fas fa-cart-plus me-1"></i>Add To Cart
-          </button>
         </div>
+        <p class="text-gray-600 text-sm mb-4 product-description"></p>
+        <button class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center add-to-cart-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          Add To Cart
+        </button>
       </div>
-    </article>
+    </div>
   </div>
 </template>
-
-
-
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -184,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = '';
 
       if (products.length === 0) {
-        container.innerHTML = '<p class="text-center">No featured products available</p>';
+        container.innerHTML = '<p class="text-center col-span-3 text-gray-600">No featured products available</p>';
         return;
       }
 
@@ -205,10 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (product.original_price && product.original_price > product.price) {
           const originalPrice = clone.querySelector('.original-price');
           originalPrice.textContent = `$${product.original_price.toFixed(2)}`;
-          originalPrice.classList.remove('d-none');
+          originalPrice.classList.remove('hidden');
 
           const saleBadge = clone.querySelector('.sale-badge');
-          saleBadge.classList.remove('d-none');
+          saleBadge.classList.remove('hidden');
         }
 
         // Set button actions
@@ -227,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     } catch (error) {
       console.error('Error loading featured products:', error);
-      container.innerHTML = '<p class="text-center text-danger">Failed to load products.</p>';
+      container.innerHTML = '<p class="text-center col-span-3 text-red-600">Failed to load products.</p>';
     }
   }
 
@@ -243,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadFeaturedProducts();
 });
-
 </script>
 
 
@@ -328,49 +270,58 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<section class="py-12 bg-gray-50">
+<section class="py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent">
-      Today's Best Offers 🔥
-    </h2>
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-gray-900 mb-3">
+        <span class="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+          Curated Picks
+        </span>
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Our most loved products this season
+      </p>
+    </div>
 
-    <!-- Products Container -->
-    <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Products Container - Max 3 items -->
+    <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-3 gap-10">
       <!-- Cards inserted here by JavaScript -->
     </div>
   </div>
 </section>
 
-<!-- Offer Card Template (hidden) -->
+<!-- Modern Card Template -->
 <template id="offer-card-template">
-  <div class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-    <div class="relative overflow-hidden rounded-t-xl">
-      <div class="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-medium z-10">
-        Featured Offer
-      </div>
-      <img class="w-full h-48 object-cover rounded-t-xl" loading="lazy" alt="Product image">
-      <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <a class="px-6 py-2 bg-white text-gray-900 rounded-full font-medium hover:bg-gray-100 transition-colors">
-          View Deal
-        </a>
-      </div>
+  <div class="group relative">
+    <!-- Image with subtle zoom effect -->
+    <div class="aspect-square overflow-hidden rounded-2xl mb-4 bg-gray-100">
+      <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" alt="Product image">
     </div>
     
-    <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-2"></h3>
+    <!-- Content -->
+    <div class="px-2">
+      <h3 class="text-xl font-medium text-gray-900 mb-2"></h3>
       
-      <div class="flex items-center gap-2 mb-3">
-        <span class="text-xl font-bold text-red-600"></span>
-        <span class="text-gray-400 line-through hidden"></span>
+      <!-- Price -->
+      <div class="flex items-center gap-3 mb-1">
+        <span class="text-xl font-semibold text-gray-900"></span>
+        <span class="text-sm text-gray-400 line-through hidden"></span>
       </div>
 
-      <div class="flex justify-between items-center text-sm">
-        <span class="text-red-600 font-medium"></span>
-        <div class="flex items-center text-yellow-400">
-          <i class="fas fa-star"></i>
-          <span class="ml-1 text-gray-600"></span>
-        </div>
+      <!-- Rating -->
+      <div class="flex items-center text-amber-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+        <span class="ml-1 text-sm text-gray-500"></span>
       </div>
+      
+      <!-- View button appears on hover -->
+      <a class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+        <span class="px-6 py-2 bg-white text-gray-900 rounded-full font-medium shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+          View Details
+        </span>
+      </a>
     </div>
   </div>
 </template>
@@ -387,20 +338,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const products = await res.json();
 
       if (!products.length) {
-        grid.innerHTML = '<p class="text-center text-gray-500">No offers available</p>';
+        grid.innerHTML = '<p class="text-center text-gray-500 col-span-full py-12">Check back soon for new arrivals</p>';
         return;
       }
 
-      products.slice(0, 8).forEach(p => {
+      // Only show top 3 products
+      products.slice(0, 3).forEach(p => {
         const clone = document.importNode(tpl, true);
-        const card = clone.querySelector('div');
 
         // Media
         const img = clone.querySelector('img');
-        img.src = p.image;
+        img.src = p.image || '/placeholder-product.jpg';
         img.alt = p.name;
         
-        // View Deal Link
+        // View Link
         const viewLink = clone.querySelector('a');
         viewLink.href = `/products/${p.id}`;
 
@@ -409,33 +360,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const priceEl = clone.querySelector('.text-xl');
         priceEl.textContent = `$${p.price.toFixed(2)}`;
 
-        // Original Price & Discount
+        // Original Price
         if (p.original_price) {
           const originalPrice = clone.querySelector('.line-through');
           originalPrice.textContent = `$${p.original_price.toFixed(2)}`;
           originalPrice.classList.remove('hidden');
-
-          const discount = Math.round((1 - (p.price / p.original_price)) * 100);
-          clone.querySelector('.text-red-600').textContent = `Save ${discount}%`;
         }
 
         // Rating
-        const ratingValue = clone.querySelector('.text-gray-600');
-        ratingValue.textContent = p.rating || '4.8';
+        const ratingValue = clone.querySelector('.text-gray-500');
+        ratingValue.textContent = p.rating?.toFixed(1) || '4.8';
 
         grid.appendChild(clone);
       });
 
     } catch (err) {
-      console.error('Could not load offers', err);
-      grid.innerHTML = '<p class="text-center text-red-500">Failed to load offers</p>';
+      console.error('Error loading products', err);
+      grid.innerHTML = '<p class="text-center text-gray-500 col-span-full py-12">Currently unavailable</p>';
     }
   }
 
   loadOffers();
 });
 </script>
-
 <!-- Featured Brands Section -->
 <section class="py-12 bg-gray-900">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
