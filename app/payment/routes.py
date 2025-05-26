@@ -341,11 +341,9 @@ def thank_you(order_id):
         addr = order.shipping_address
 
         # Safely construct payment method dict
-        if order.card_brand and order.card_last4:
-            payment_method = {
-                'brand': order.card_brand.lower(),
-                'last4': order.card_last4
-            }
+        pm = getattr(order, 'payment_method_record', None)
+        if pm:
+            payment_method = {'brand': pm.brand.lower(), 'last4': pm.last4}
         else:
             payment_method = None
 
