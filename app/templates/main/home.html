@@ -5,56 +5,87 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
+<section class="relative bg-gray-50 overflow-hidden border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-0 lg:px-0">
+    <div class="relative flex flex-col-reverse md:flex-row items-center md:h-[620px]">
+      
+      <!-- Textual Content -->
+      <div class="w-full md:w-1/2 relative z-20 md:-mr-5 md:ml-8">
+        <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-8 sm:p-8 rounded-xl shadow-md translate-x-0 md:-translate-x-0">
+          <!-- Badge -->
+          <div class="mb-3">
+            <span class="inline-block px-3 py-0.5 text-xs font-semibold tracking-wide text-blue-700 uppercase bg-blue-100 rounded-full">
+              Premium Refurbished
+            </span>
+          </div>
 
-<!-- Revamped Hero Section -->
-<section class="relative h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-purple-600 via-indigo-600 to-green-400 text-white overflow-hidden">
-  
-  <!-- Particle Layer -->
-  <div class="absolute inset-0 -z-10 pointer-events-none">
-    <svg class="w-full h-full opacity-20" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
-      <circle cx="200" cy="150" r="4" class="fill-white animate-pulse"></circle>
-      <circle cx="400" cy="300" r="2.5" class="fill-white animate-pulse delay-200"></circle>
-      <circle cx="600" cy="180" r="3.5" class="fill-white animate-pulse delay-400"></circle>
-      <circle cx="750" cy="400" r="2" class="fill-white animate-pulse delay-600"></circle>
-      <circle cx="900" cy="100" r="5" class="fill-white animate-pulse delay-800"></circle>
-    </svg>
+          <!-- Headline -->
+          <h1 class="text-4xl sm:text-5xl font-light text-gray-900 mb-2 leading-tight tracking-tight">
+            <span class="block">Redefined</span>
+            <span class="block font-semibold">Technology</span>
+          </h1>
+
+          <!-- Subheading -->
+          <p class="text-lg text-gray-600 mb-8 max-w-md">
+            Expertly restored electronics with rigorous inspections, elegant packaging, and extended warranties.
+          </p>
+
+          <!-- CTA -->
+          <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+            <a href="/products" 
+               class="px-6 py-3 bg-gray-900 text-white rounded-md font-medium hover:bg-gray-800 transition-colors flex items-center justify-center">
+              Explore Collection
+              <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M21 12H3"/>
+              </svg>
+            </a>
+            <a href="/about" 
+               class="text-gray-700 hover:text-gray-900 font-medium flex items-center text-sm justify-center mb-5 mt-3">
+              Learn about our process
+              <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+ 
+      
+
+      <!-- Hero Image -->
+      <div class="w-full md:w-1/2 h-[300px] md:h-[590px] relative z-10">
+        <div class="absolute inset-0 bg-gradient-to-l from-white via-white/60 to-transparent z-10 md:hidden rounded-t-[3rem]"></div>
+        <img 
+          src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1926&q=80" 
+          alt="Premium devices"
+          class="w-full h-full object-cover object-left-top md:rounded-l-[4rem]"
+          style="margin-right: 0; padding-right: 0;"
+          loading="eager"
+        />
+      </div>
+    </div>
   </div>
 
-  <!-- Floating Glass Badges -->
-  <div class="flex flex-wrap justify-center gap-4 mb-10 animate-fade-in-down">
-    <div class="px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium inline-flex items-center gap-2 shadow-md">
-      <i class="fas fa-shield-alt text-white"></i>
-      Certified Premium
+  <!-- Quality Indicators -->
+  <div class="absolute bottom-6 left-0 right-0 flex justify-center space-x-8 text-sm text-gray-500 z-30 px-5">
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      112-Point Inspection
     </div>
-    <div class="px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium inline-flex items-center gap-2 shadow-md">
-      <i class="fas fa-clock-rotate-left text-white"></i>
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
       24-Month Warranty
     </div>
-    <div class="px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium inline-flex items-center gap-2 shadow-md">
-      <i class="fas fa-recycle text-white"></i>
-      Eco-Friendly Tech
-    </div>
   </div>
-
-  <!-- Main Heading -->
-  <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up">
-    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">Re</span>
-    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">Imagine</span>
-    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-100">Tech</span>
-  </h1>
-
-  <!-- Subheading -->
-  <p class="text-lg sm:text-xl text-white/80 max-w-xl mx-auto mb-8 animate-fade-in-up delay-200">
-    Experience next-gen refurbished electronics — expertly certified and environmentally conscious.
-  </p>
-
-  <!-- CTA Button -->
-  <a href="{{ url_for('main.list_products') }}"
-     class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 animate-fade-in-up delay-400">
-    Explore Collection
-    <i class="fas fa-arrow-right ml-3 text-sm"></i>
-  </a>
 </section>
+
+
 
 
 <section class="py-16 bg-white relative overflow-hidden">
