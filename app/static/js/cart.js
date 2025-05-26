@@ -174,22 +174,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const onCheckout = async () => {
-    try {
-      const res = await fetch('/cart/summary', {
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      if (!res.ok) throw new Error('Could not fetch summary');
-      const data = await res.json();
-      if (data.count === 0) {
-        showToast('Your cart is empty.', 'info');
-        return;
-      }
-      window.location.href = '/cart/checkout';
-    } catch (err) {
-      showToast(err.message, 'danger');
+  try {
+    const res = await fetch('/cart/summary', {
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!res.ok) throw new Error('Could not fetch summary');
+    const data = await res.json();
+
+    if (data.count === 0) {
+      showToast('Your cart is empty.', 'info');
+      return;
     }
-  };
+
+    // ✅ Correct route to initiate checkout
+    window.location.href = '/cart/checkout/start';
+    
+  } catch (err) {
+    showToast(err.message, 'danger');
+  }
+};
+
 
   // ——————— Focus Trap ———————
   const trapFocus = () => {

@@ -340,10 +340,18 @@ def thank_you(order_id):
         # Grab the one-to-one ShippingAddress
         addr = order.shipping_address
 
+        # Safely construct payment method dict
+        if order.card_brand and order.card_last4:
+            payment_method = {
+                'brand': order.card_brand.lower(),
+                'last4': order.card_last4
+            }
+        else:
+            payment_method = None
+
         # Prepare context data with fallbacks
         if addr:
             customer_name = f"{addr.first_name} {addr.last_name}"
-            # Build a single-line address string
             parts = [
                 addr.address_line1,
                 addr.address_line2,
@@ -362,10 +370,9 @@ def thank_you(order_id):
         context = {
             'order_id': order.id,
             'order_date': order.created_at or datetime.utcnow(),
-            'payment_method': order.payment_method or "Credit Card",
+            'payment_method': payment_method,
             'order_total': float(order.total) if order.total else 0.00,
             'items': order.items or [],
-            # newly added:
             'customer_name': customer_name,
             'delivery_address': delivery_address,
             'contact_phone': contact_phone,

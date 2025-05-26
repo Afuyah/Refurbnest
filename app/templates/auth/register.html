@@ -3,329 +3,157 @@
 {% block title %}Register - Salesta{% endblock %}
 
 {% block content %}
-<div class="auth-container mt-5">
-    <div class="auth-wrapper">
-        <div class="auth-card glassmorphism">
-            <div class="auth-header">
-                <h2 class="auth-title">Join Salesta</h2>
-                <p class="auth-subtitle">Create your account to continue</p>
-            </div>
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden border border-white/10 p-8">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-emerald-400 bg-clip-text text-transparent">Join Salesta</h2>
+        <p class="text-gray-300 mt-2">Create your account to continue</p>
+      </div>
 
-            <form method="POST" action="{{ url_for('auth.register') }}" class="auth-form">
-                {{ form.hidden_tag() }}
+      <form method="POST" action="{{ url_for('auth.register') }}" class="space-y-6">
+        {{ form.hidden_tag() }}
 
-                <div class="form-group">
-                    <div class="input-group">
-                        {{ form.username(class="form-control", placeholder=" ") }}
-                        {{ form.username.label(class="form-label") }}
-                        <i class="fas fa-user input-icon"></i>
-                    </div>
-                    {% for error in form.username.errors %}
-                    <div class="form-error">
-                        <i class="fas fa-exclamation-circle error-icon"></i>
-                        {{ error }}
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        {{ form.email(class="form-control", placeholder=" ") }}
-                        {{ form.email.label(class="form-label") }}
-                        <i class="fas fa-envelope input-icon"></i>
-                    </div>
-                    {% for error in form.email.errors %}
-                    <div class="form-error">
-                        <i class="fas fa-exclamation-circle error-icon"></i>
-                        {{ error }}
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        {{ form.password(class="form-control", placeholder=" ", id="password") }}
-                        {{ form.password.label(class="form-label") }}
-                        <i class="fas fa-lock input-icon"></i>
-                        <button type="button" class="password-toggle">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="password-strength">
-                        <div class="strength-bar"></div>
-                        <span class="strength-text"></span>
-                    </div>
-                    {% for error in form.password.errors %}
-                    <div class="form-error">
-                        <i class="fas fa-exclamation-circle error-icon"></i>
-                        {{ error }}
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        {{ form.confirm_password(class="form-control", placeholder=" ", id="confirm-password") }}
-                        {{ form.confirm_password.label(class="form-label") }}
-                        <i class="fas fa-lock input-icon"></i>
-                    </div>
-                    <div class="password-match">
-                        <i class="fas fa-check-circle match-icon"></i>
-                        <span class="match-text"></span>
-                    </div>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-                </div>
-
-                {{ form.submit(class="btn btn-primary auth-submit") }}
-
-              
-
-               
-            </form>
-
-            <div class="auth-footer">
-                Already have an account? 
-                <a href="{{ url_for('auth.login') }}">Sign in</a>
-            </div>
+        <div class="space-y-2">
+          <div class="relative">
+            {{ form.username(class="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-transparent", placeholder=" ") }}
+            <label class="absolute left-3 -top-2.5 px-1 bg-gray-900 text-sm text-gray-300 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-300">
+              Username
+            </label>
+            <i class="fas fa-user absolute right-3 top-3.5 text-gray-400"></i>
+          </div>
+          {% for error in form.username.errors %}
+          <div class="flex items-center text-red-400 text-sm">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            {{ error }}
+          </div>
+          {% endfor %}
         </div>
+
+        <div class="space-y-2">
+          <div class="relative">
+            {{ form.email(class="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-transparent", placeholder=" ") }}
+            <label class="absolute left-3 -top-2.5 px-1 bg-gray-900 text-sm text-gray-300 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-300">
+              Email
+            </label>
+            <i class="fas fa-envelope absolute right-3 top-3.5 text-gray-400"></i>
+          </div>
+          {% for error in form.email.errors %}
+          <div class="flex items-center text-red-400 text-sm">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            {{ error }}
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="space-y-2">
+          <div class="relative">
+            {{ form.password(class="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-transparent", placeholder=" ", id="password") }}
+            <label class="absolute left-3 -top-2.5 px-1 bg-gray-900 text-sm text-gray-300 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-300">
+              Password
+            </label>
+            <i class="fas fa-lock absolute right-3 top-3.5 text-gray-400"></i>
+            <button type="button" class="absolute right-10 top-3.5 text-gray-400 hover:text-gray-200">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+            <div id="strength-bar" class="h-full w-0 bg-red-500 transition-all duration-300"></div>
+          </div>
+          <p id="strength-text" class="text-xs text-gray-400"></p>
+          {% for error in form.password.errors %}
+          <div class="flex items-center text-red-400 text-sm">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            {{ error }}
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="space-y-2">
+          <div class="relative">
+            {{ form.confirm_password(class="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-transparent", placeholder=" ", id="confirm-password") }}
+            <label class="absolute left-3 -top-2.5 px-1 bg-gray-900 text-sm text-gray-300 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-300">
+              Confirm Password
+            </label>
+            <i class="fas fa-lock absolute right-3 top-3.5 text-gray-400"></i>
+          </div>
+          <div id="password-match" class="flex items-center text-sm opacity-0 transition-opacity duration-300">
+            <i class="fas fa-check-circle mr-2 text-emerald-400"></i>
+            <span class="text-emerald-400">Passwords match</span>
+          </div>
+        </div>
+
+        <div class="flex items-center">
+          <input type="checkbox" id="terms" required class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+          <label for="terms" class="ml-2 block text-sm text-gray-300">
+            I agree to the <a href="#" class="text-purple-400 hover:text-purple-300">Terms of Service</a> and <a href="#" class="text-purple-400 hover:text-purple-300">Privacy Policy</a>
+          </label>
+        </div>
+
+        {{ form.submit(class="w-full bg-gradient-to-r from-purple-600 to-emerald-500 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-emerald-600 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg") }}
+
+        <div class="text-center text-gray-400 text-sm">
+          Already have an account? 
+          <a href="{{ url_for('auth.login') }}" class="text-purple-400 hover:text-purple-300 font-medium">Sign in</a>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
-
-<style>
-:root {
-    --primary: #7C3AED;
-    --secondary: #10B981;
-    --surface: rgba(255, 255, 255, 0.1);
-    --text-primary: #F0F0FC;
-    --error: #ef4444;
-    --success: #10B981;
-}
-
-.auth-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    padding: 2rem;
-}
-
-.auth-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px);
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.auth-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.auth-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.auth-subtitle {
-    color: var(--text-primary);
-    opacity: 0.8;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.form-control {
-    width: 100%;
-    padding: 1rem;
-    background: var(--surface);
-    border: 2px solid transparent;
-    border-radius: 0.75rem;
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
-}
-
-.form-label {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    transition: all 0.3s ease;
-    color: var(--text-primary);
-    opacity: 0.6;
-}
-
-.form-control:focus + .form-label,
-.form-control:not(:placeholder-shown) + .form-label {
-    transform: translateY(-180%);
-    font-size: 0.875rem;
-    opacity: 1;
-}
-
-.input-icon {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-primary);
-    opacity: 0.6;
-}
-
-.password-toggle {
-    position: absolute;
-    right: 2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    opacity: 0.6;
-    cursor: pointer;
-}
-
-.password-strength {
-    margin-top: 0.5rem;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.strength-bar {
-    height: 100%;
-    width: 0;
-    background: var(--error);
-    transition: all 0.3s ease;
-}
-
-.strength-text {
-    font-size: 0.75rem;
-    margin-top: 0.25rem;
-    display: block;
-    color: var(--text-primary);
-    opacity: 0.8;
-}
-
-.password-match {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--success);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.match-icon {
-    font-size: 1rem;
-}
-
-.form-error {
-    color: var(--error);
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.auth-submit {
-    width: 100%;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    transition: transform 0.3s ease;
-}
-
-.auth-submit:hover {
-    transform: translateY(-2px);
-}
-
-@media (max-width: 480px) {
-    .auth-card {
-        padding: 1.5rem;
-    }
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Password toggle
-    document.querySelectorAll('.password-toggle').forEach(button => {
-        button.addEventListener('click', () => {
-            const input = button.closest('.input-group').querySelector('input');
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
-            button.querySelector('i').classList.toggle('fa-eye-slash');
-        });
+  // Password toggle
+  document.querySelectorAll('.password-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const input = button.closest('.relative').querySelector('input');
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+      button.querySelector('i').classList.toggle('fa-eye-slash');
     });
+  });
 
-    // Password strength checker
-    const passwordInput = document.getElementById('password');
-    const strengthBar = document.querySelector('.strength-bar');
-    const strengthText = document.querySelector('.strength-text');
+  // Password strength checker
+  const passwordInput = document.getElementById('password');
+  const strengthBar = document.getElementById('strength-bar');
+  const strengthText = document.getElementById('strength-text');
 
-    passwordInput.addEventListener('input', () => {
-        const strength = calculatePasswordStrength(passwordInput.value);
-        strengthBar.style.width = `${strength.percentage}%`;
-        strengthBar.style.backgroundColor = strength.color;
-        strengthText.textContent = strength.text;
-    });
+  passwordInput.addEventListener('input', () => {
+    const strength = calculatePasswordStrength(passwordInput.value);
+    strengthBar.style.width = `${strength.percentage}%`;
+    strengthBar.className = `h-full w-0 ${strength.color} transition-all duration-300`;
+    strengthText.textContent = strength.text;
+    strengthText.className = `text-xs ${strength.textColor}`;
+  });
 
-    // Password match checker
-    const confirmPassword = document.getElementById('confirm-password');
-    const matchText = document.querySelector('.match-text');
-    const matchIcon = document.querySelector('.match-icon');
-    const passwordMatch = document.querySelector('.password-match');
+  // Password match checker
+  const confirmPassword = document.getElementById('confirm-password');
+  const passwordMatch = document.getElementById('password-match');
 
-    confirmPassword.addEventListener('input', () => {
-        if(confirmPassword.value === passwordInput.value) {
-            passwordMatch.style.opacity = '1';
-            matchIcon.style.color = 'var(--success)';
-            matchText.textContent = 'Passwords match';
-        } else {
-            passwordMatch.style.opacity = '0';
-        }
-    });
-
-    function calculatePasswordStrength(password) {
-        let strength = 0;
-        if (password.length >= 8) strength += 1;
-        if (password.match(/[A-Z]/)) strength += 1;
-        if (password.match(/[0-9]/)) strength += 1;
-        if (password.match(/[^A-Za-z0-9]/)) strength += 1;
-
-        const levels = [
-            { text: 'Very Weak', color: '#ef4444', percentage: 25 },
-            { text: 'Weak', color: '#f59e0b', percentage: 50 },
-            { text: 'Moderate', color: '#3b82f6', percentage: 75 },
-            { text: 'Strong', color: '#10B981', percentage: 100 }
-        ];
-
-        return levels[Math.min(strength, 3)];
+  confirmPassword.addEventListener('input', () => {
+    if(confirmPassword.value && confirmPassword.value === passwordInput.value) {
+      passwordMatch.style.opacity = '1';
+    } else {
+      passwordMatch.style.opacity = '0';
     }
+  });
+
+  function calculatePasswordStrength(password) {
+    let strength = 0;
+    if (password.length >= 8) strength += 1;
+    if (password.match(/[A-Z]/)) strength += 1;
+    if (password.match(/[0-9]/)) strength += 1;
+    if (password.match(/[^A-Za-z0-9]/)) strength += 1;
+
+    const levels = [
+      { text: 'Very Weak', color: 'bg-red-500', textColor: 'text-red-400', percentage: 25 },
+      { text: 'Weak', color: 'bg-amber-500', textColor: 'text-amber-400', percentage: 50 },
+      { text: 'Moderate', color: 'bg-blue-500', textColor: 'text-blue-400', percentage: 75 },
+      { text: 'Strong', color: 'bg-emerald-500', textColor: 'text-emerald-400', percentage: 100 }
+    ];
+
+    return levels[Math.min(strength, 3)];
+  }
 });
 </script>
 {% endblock %}

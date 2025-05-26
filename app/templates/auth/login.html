@@ -3,236 +3,105 @@
 {% block title %}Login | Salesta{% endblock %}
 
 {% block content %}
-<div class="auth-container mt-5">
-    <div class="auth-wrapper">
-        <div class="auth-card glassmorphism">
-            <div class="auth-header">
-                <h2 class="auth-title">Welcome Back</h2>
-                <p class="auth-subtitle">Login to your Salesta account</p>
-            </div>
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden border border-white/10 p-8">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-emerald-400 bg-clip-text text-transparent">Welcome Back</h2>
+        <p class="text-gray-300 mt-2">Login to your Salesta account</p>
+      </div>
 
-            <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form">
-                {{ form.hidden_tag() }}
+      <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-6">
+        {{ form.hidden_tag() }}
 
-                <div class="form-group">
-                    <div class="input-group">
-                        {{ form.email(class="form-control", placeholder=" ") }}
-                        {{ form.email.label(class="form-label") }}
-                        <i class="fas fa-envelope input-icon"></i>
-                    </div>
-                    {% if form.email.errors %}
-                    <div class="form-error">
-                        <i class="fas fa-exclamation-circle error-icon"></i>
-                        {{ form.email.errors[0] }}
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        {{ form.password(class="form-control", placeholder=" ") }}
-                        {{ form.password.label(class="form-label") }}
-                        <i class="fas fa-lock input-icon"></i>
-                        <button type="button" class="password-toggle">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    {% if form.password.errors %}
-                    <div class="form-error">
-                        <i class="fas fa-exclamation-circle error-icon"></i>
-                        {{ form.password.errors[0] }}
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="form-options">
-                    <div class="form-check">
-                        <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">Remember me</label>
-                    </div>
-                    <a href="#" class="forgot-password">
-                        Forgot Password?
-                    </a>
-                </div>
-
-                {{ form.submit(class="btn btn-primary auth-submit") }}
-
-                
-            </form>
-
-            <div class="auth-footer">
-                Don't have an account? 
-                <a href="{{ url_for('auth.register') }}">Create account</a>
-            </div>
+        <div class="space-y-2">
+          <div class="relative">
+            {{ form.email(class="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-transparent", placeholder=" ") }}
+            <label class="absolute left-3 -top-2.5 px-1 bg-gray-900 text-sm text-gray-300 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-300">
+              Email
+            </label>
+            <i class="fas fa-envelope absolute right-3 top-3.5 text-gray-400"></i>
+          </div>
+          {% if form.email.errors %}
+          <div class="flex items-center text-red-400 text-sm">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            {{ form.email.errors[0] }}
+          </div>
+          {% endif %}
         </div>
+
+        <div class="space-y-2">
+          <div class="relative">
+            {{ form.password(class="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-transparent", placeholder=" ") }}
+            <label class="absolute left-3 -top-2.5 px-1 bg-gray-900 text-sm text-gray-300 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-300">
+              Password
+            </label>
+            <i class="fas fa-lock absolute right-3 top-3.5 text-gray-400"></i>
+            <button type="button" class="password-toggle absolute right-10 top-3.5 text-gray-400 hover:text-gray-200">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          {% if form.password.errors %}
+          <div class="flex items-center text-red-400 text-sm">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            {{ form.password.errors[0] }}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input type="checkbox" id="rememberMe" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-white/20 rounded bg-white/5">
+            <label for="rememberMe" class="ml-2 block text-sm text-gray-300">
+              Remember me
+            </label>
+          </div>
+          <a href="#" class="text-sm text-purple-400 hover:text-purple-300">
+            Forgot Password?
+          </a>
+        </div>
+
+        {{ form.submit(class="w-full bg-gradient-to-r from-purple-600 to-emerald-500 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-emerald-600 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg") }}
+
+        <div class="text-center text-gray-400 text-sm">
+          Don't have an account? 
+          <a href="{{ url_for('auth.register') }}" class="text-purple-400 hover:text-purple-300 font-medium">Create account</a>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
-
-<style>
-:root {
-    --primary: #7C3AED;
-    --secondary: #10B981;
-    --surface: rgba(255, 255, 255, 0.1);
-    --text-primary: #F0F0FC;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-}
-
-.auth-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    padding: 2rem;
-}
-
-.auth-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.auth-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-}
-
-.auth-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.auth-subtitle {
-    color: var(--text-primary);
-    opacity: 0.8;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.form-control {
-    width: 100%;
-    padding: 1rem;
-    background: var(--surface);
-    border: 2px solid transparent;
-    border-radius: 0.75rem;
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
-}
-
-.form-label {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    transition: all 0.3s ease;
-    color: var(--text-primary);
-    opacity: 0.6;
-}
-
-.form-control:focus + .form-label,
-.form-control:not(:placeholder-shown) + .form-label {
-    transform: translateY(-180%);
-    font-size: 0.875rem;
-    opacity: 1;
-}
-
-.input-icon {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-primary);
-    opacity: 0.6;
-}
-
-.password-toggle {
-    position: absolute;
-    right: 2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    opacity: 0.6;
-    cursor: pointer;
-}
-
-.form-error {
-    color: #ef4444;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.auth-submit {
-    width: 100%;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    font-weight: 600;
-    transition: transform 0.3s ease;
-}
-
-.auth-submit:hover {
-    transform: translateY(-2px);
-}
-
-
-
-.auth-footer {
-    text-align: center;
-    margin-top: 2rem;
-    color: var(--text-primary);
-    opacity: 0.8;
-}
-
-@media (max-width: 480px) {
-    .auth-card {
-        padding: 1.5rem;
-    }
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Password toggle
-    document.querySelectorAll('.password-toggle').forEach(button => {
-        button.addEventListener('click', () => {
-            const input = button.closest('.input-group').querySelector('input');
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
-            button.querySelector('i').classList.toggle('fa-eye-slash');
-        });
+  // Password toggle
+  document.querySelectorAll('.password-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const input = button.closest('.relative').querySelector('input');
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+      button.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+  });
+
+  // Form validation
+  document.querySelector('form').addEventListener('submit', (e) => {
+    const inputs = document.querySelectorAll('.form-control');
+    let isValid = true;
+    
+    inputs.forEach(input => {
+      if (!input.value) {
+        input.classList.add('border-red-500');
+        isValid = false;
+      } else {
+        input.classList.remove('border-red-500');
+      }
     });
 
-    // Form validation
-    document.querySelector('form').addEventListener('submit', (e) => {
-        const inputs = document.querySelectorAll('.form-control');
-        inputs.forEach(input => {
-            if (!input.value) {
-                input.classList.add('invalid');
-            }
-        });
-    });
+    if (!isValid) {
+      e.preventDefault();
+    }
+  });
 });
 </script>
 {% endblock %}

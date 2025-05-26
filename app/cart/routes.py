@@ -9,7 +9,7 @@ from app.email.confirm_email import send_order_confirmation
 from decimal import Decimal, ROUND_HALF_UP
 from .cart import CartError  
 from werkzeug.exceptions import HTTPException
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeTimedSerializer, BadSignature
 
 cart_bp = Blueprint('cart', __name__)
 
@@ -93,22 +93,60 @@ def remove_from_cart(product_id: int):
 
 from decimal import Decimal
 
-@cart_bp.route('/checkout', methods=['GET'])
-def checkout_page():
+
+def generate_cart_token(cart_items):
+    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return s.dumps({'cart_items': cart_items}, salt='cart-token')
+
+
+@cart_bp.route('/checkout/start', methods=['GET'])
+def start_checkout():
     cart = Cart()
     if cart.item_count == 0:
         return redirect(url_for('cart.cart_summary'))
 
-    cart_items = []
-    for pid, item in cart.get_items().items():
-        cart_items.append({
-            'name': item['name'],
+    minimal_cart = {
+        pid: {
             'quantity': item['quantity'],
-            'price': item['price'],
-            'image_url': item.get('image')
+            'price': str(item['price'])  # Decimal to string
+        }
+        for pid, item in cart.get_items().items()
+    }
+
+    cart_token = generate_cart_token(minimal_cart)
+    return redirect(url_for('cart.checkout_page_tokenized', cart_token=cart_token))
+
+
+
+
+
+@cart_bp.route('/checkout/<cart_token>', methods=['GET'])
+def checkout_page_tokenized(cart_token):
+    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        data = s.loads(cart_token, salt='cart-token')
+    except BadSignature:
+        flash("Invalid or expired cart token", "danger")
+        return redirect(url_for('cart.cart_summary'))
+
+    cart_items = []
+    subtotal = Decimal('0.00')
+
+    for pid, item in data['cart_items'].items():
+        product = Product.query.get(pid)
+        if not product or not product.is_active:
+            continue
+        quantity = item['quantity']
+        price = Decimal(item['price'])
+        subtotal += price * quantity
+
+        cart_items.append({
+            'name': product.name,
+            'quantity': quantity,
+            'price': price,
+            
         })
 
-    subtotal = cart.total  # assuming cart.total is a Decimal
     shipping = Decimal('5.00')
     total = subtotal + shipping
 
@@ -116,7 +154,8 @@ def checkout_page():
         'cart/checkout.html',
         cart_items=cart_items,
         subtotal=subtotal,
-        total=total
+        total=total,
+        cart_token=cart_token  
     )
 
 

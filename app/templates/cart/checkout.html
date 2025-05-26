@@ -60,6 +60,7 @@
           
           <form id="checkout-form" class="space-y-4" method="POST" action="{{ url_for('cart.checkout') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="cart_token" value="{{ cart_token }}">
 
             <!-- Contact Info -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
