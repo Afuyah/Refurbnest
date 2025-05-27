@@ -317,8 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- Countries Reached -->
       <div class="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl duration-300">
-        <div class="text-5xl font-extrabold text-purple-400 mb-2 counter" data-count="12">0</div>
-        <div class="uppercase text-sm font-semibold text-gray-300 tracking-widest">Countries Reached</div>
+        <div class="text-5xl font-extrabold text-purple-400 mb-2 ">24/7</div>
+        <div class="uppercase text-sm font-semibold text-gray-300 tracking-widest">Customer Support</div>
       </div>
 
     </div>
@@ -459,33 +459,309 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+<section class="relative py-20 bg-gradient-to-br from-indigo-50 to-blue-50 overflow-hidden">
+  <!-- Floating decorative elements -->
+  <div class="absolute top-0 left-0 w-32 h-32 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+  <div class="absolute bottom-0 right-0 w-32 h-32 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+  
+  <div class="container mx-auto px-4">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <span class="inline-block px-3 py-1 text-sm font-semibold text-blue-600 bg-blue-100 rounded-full mb-4">Client Voices</span>
+      <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">Trusted by businesses worldwide. Here's what they have to say about working with us.</p>
+    </div>
+
+    <!-- Testimonials Carousel -->
+    <div class="relative">
+      <!-- Scrolling Testimonials -->
+      <div class="flex overflow-x-auto pb-12 scrollbar-hide snap-x snap-mandatory">
+        <!-- Testimonial 1 -->
+        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-4 snap-center">
+          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full transform hover:-translate-y-2 transition-transform">
+            <div class="flex items-center mb-6">
+              <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Sarah Johnson" class="w-full h-full object-cover">
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Sarah Johnson</h4>
+                <p class="text-blue-600">CEO, TechSolutions</p>
+              </div>
+            </div>
+            <div class="text-gray-700 mb-6">
+              <svg class="w-8 h-8 text-blue-400 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+              </svg>
+              <p class="italic">"Working with Salesta transformed our digital presence. Their team delivered beyond our expectations with innovative solutions that increased our revenue by 150% in just six months."</p>
+            </div>
+            <div class="flex">
+              {% for i in range(5) %}
+                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-4 snap-center">
+          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full transform hover:-translate-y-2 transition-transform">
+            <div class="flex items-center mb-6">
+              <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Michael Chen" class="w-full h-full object-cover">
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Michael Chen</h4>
+                <p class="text-blue-600">CTO, InnovateX</p>
+              </div>
+            </div>
+            <div class="text-gray-700 mb-6">
+              <svg class="w-8 h-8 text-blue-400 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+              </svg>
+              <p class="italic">"The technical expertise of Salesta's team is unmatched. They implemented complex systems with flawless execution and provided exceptional ongoing support."</p>
+            </div>
+            <div class="flex">
+              {% for i in range(5) %}
+                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-4 snap-center">
+          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full transform hover:-translate-y-2 transition-transform">
+            <div class="flex items-center mb-6">
+              <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=776&q=80" alt="Emma Rodriguez" class="w-full h-full object-cover">
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Emma Rodriguez</h4>
+                <p class="text-blue-600">Marketing Director, BrandVision</p>
+              </div>
+            </div>
+            <div class="text-gray-700 mb-6">
+              <svg class="w-8 h-8 text-blue-400 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+              </svg>
+              <p class="italic">"Salesta's creative approach to our marketing challenges resulted in a 300% increase in engagement. Their team feels like an extension of our own."</p>
+            </div>
+            <div class="flex">
+              {% for i in range(5) %}
+                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 4 (hidden on mobile) -->
+        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-4 snap-center hidden sm:block">
+          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full transform hover:-translate-y-2 transition-transform">
+            <div class="flex items-center mb-6">
+              <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md">
+                <img src="https://images.unsplash.com/photo-1562788869-4ed32648eb72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=772&q=80" alt="David Kim" class="w-full h-full object-cover">
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">David Kim</h4>
+                <p class="text-blue-600">Product Manager, FutureTech</p>
+              </div>
+            </div>
+            <div class="text-gray-700 mb-6">
+              <svg class="w-8 h-8 text-blue-400 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+              </svg>
+              <p class="italic">"The speed and quality of delivery was exceptional. Salesta helped us launch our product 2 months ahead of schedule with zero compromises on quality."</p>
+            </div>
+            <div class="flex">
+              {% for i in range(5) %}
+                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Dots -->
+      <div class="flex justify-center mt-8 space-x-2 sm:hidden">
+        {% for i in range(3) %}
+          <button class="w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-600 transition-colors testimonial-dot"></button>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const testimonials = document.querySelector('.flex.overflow-x-auto');
+      const dots = document.querySelectorAll('.testimonial-dot');
+      
+      // Auto-scroll testimonials
+      let scrollPosition = 0;
+      const scrollTestimonials = () => {
+        const containerWidth = testimonials.scrollWidth;
+        scrollPosition += 1;
+        
+        if (scrollPosition > containerWidth / 2) {
+          scrollPosition = 0;
+          testimonials.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          testimonials.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+        }
+        
+        updateActiveDot();
+      };
+      
+      // Update active dot indicator
+      const updateActiveDot = () => {
+        const scrollLeft = testimonials.scrollLeft;
+        const containerWidth = testimonials.clientWidth;
+        const activeIndex = Math.round(scrollLeft / containerWidth);
+        
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('bg-blue-600', index === activeIndex);
+          dot.classList.toggle('bg-gray-300', index !== activeIndex);
+        });
+      };
+      
+      // Set up auto-scroll
+      let scrollInterval = setInterval(scrollTestimonials, 3000);
+      
+      // Pause on hover
+      testimonials.addEventListener('mouseenter', () => {
+        clearInterval(scrollInterval);
+      });
+      
+      testimonials.addEventListener('mouseleave', () => {
+        scrollInterval = setInterval(scrollTestimonials, 3000);
+      });
+      
+      // Dot navigation
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          const containerWidth = testimonials.clientWidth;
+          testimonials.scrollTo({
+            left: containerWidth * index,
+            behavior: 'smooth'
+          });
+        });
+      });
+      
+      // Update dots on scroll
+      testimonials.addEventListener('scroll', updateActiveDot);
+    });
+  </script>
+</section>
+
+
 <!-- Featured Brands Section -->
-<section class="py-12 bg-gray-900">
+<section class="py-16 bg-gray-900">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-8">
-      <h3 class="text-2xl font-semibold text-white">Trusted by Leading Brands</h3>
+    <div class="text-center mb-12">
+      <h3 class="text-2xl font-semibold text-white mb-2">Trusted by Leading Brands Worldwide</h3>
+      <p class="text-gray-400 max-w-2xl mx-auto">We partner with industry leaders to deliver exceptional results</p>
     </div>
     
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center">
-      <!-- Brand Logos -->
-      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
-        <img src="/path/to/apple-logo.png" alt="Apple" class="h-12 object-contain">
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-center">
+      <!-- Brand 1 -->
+      <div class="group flex items-center justify-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" class="h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100">
       </div>
       
-      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
-        <img src="/path/to/samsung-logo.png" alt="Samsung" class="h-12 object-contain">
+      <!-- Brand 2 -->
+      <div class="group flex items-center justify-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" alt="Samsung" class="h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100">
       </div>
 
-      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
-        <img src="/path/to/dell-logo.png" alt="Dell" class="h-12 object-contain">
+      <!-- Brand 3 -->
+      <div class="group flex items-center justify-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Dell_logo_2016.svg" alt="Dell" class="h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100">
       </div>
 
-      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
-        <img src="/path/to/sony-logo.png" alt="Sony" class="h-12 object-contain">
+      <!-- Brand 4 -->
+      <div class="group flex items-center justify-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+        <img src="{{url_for('static', filename='brands/son.png')}}" alt="Sony" class="h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100">
+      </div>
+
+      <!-- Brand 5 -->
+      <div class="group flex items-center justify-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/100px-HP_logo_2012.svg.png" alt="Nike" class="h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100">
+      </div>
+
+      <!-- Brand 6 -->
+      <div class="group flex items-center justify-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png?20210729021049" alt="Netflix" class="h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100">
       </div>
     </div>
+
+
+
+
+
+    <!-- Animated Scrolling Logos for Mobile -->
+    <div class="mt-8 md:hidden relative overflow-hidden">
+      <div class="flex animate-marquee whitespace-nowrap">
+        <div class="flex items-center justify-center mx-4">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" class="h-8 object-contain grayscale opacity-80">
+        </div>
+        <div class="flex items-center justify-center mx-4">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" alt="Samsung" class="h-8 object-contain grayscale opacity-80">
+        </div>
+        <div class="flex items-center justify-center mx-4">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Dell_logo_2016.svg" alt="Dell" class="h-8 object-contain grayscale opacity-80">
+        </div>
+        <div class="flex items-center justify-center mx-4">
+          <img src="{{url_for('static', filename='brands/son.png')}}" alt="Sony" class="h-8 object-contain grayscale opacity-80">
+        </div>
+        <div class="flex items-center justify-center mx-4">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/100px-HP_logo_2012.svg.png" alt="Nike" class="h-8 object-contain grayscale opacity-80">
+        </div>
+        
+      
+
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="#" class="inline-flex items-center text-blue-400 hover:text-blue-300 group transition-colors duration-200">
+        <span>View all client success stories</span>
+        <svg class="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+        </svg>
+      </a>
+    </div>
   </div>
+
+  <style>
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      animation: marquee 20s linear infinite;
+    }
+  </style>
 </section>
+
 
 <!-- Social Floating Buttons -->
 <div class="fixed bottom-6 right-6 z-50">
