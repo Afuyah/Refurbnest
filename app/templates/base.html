@@ -1,31 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark" class="h-100">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{% block title %}Salesta | Your Technology Hub{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Preload critical resources -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" as="style">
-    
-    <!-- External CSS with fallbacks -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/home.css')}}">
-    <!-- Inline Critical CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/output.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <title>{% block title %}Salesta | Your Technology Hub{% endblock %}</title>
 
-     <!-- Tailwind CSS v3 -->
- 
-  <!-- Alpine.js for lightweight reactivity -->
-  <script src="https://unpkg.com/alpinejs@3.x.x" defer></script>
-  <!-- Font Awesome for icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-    <style>
+  <!-- Preconnects and preload -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" as="style" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind config and CDN -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            orbitron: ['"Orbitron"', 'sans-serif'],
+            poppins: ['"Poppins"', 'sans-serif'],
+          },
+        },
+      },
+      safelist: ['bg-gradient-to-br', 'from-gray-900', 'to-gray-800']
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FOUC Prevention -->
+  <style>
+    .no-fouc {
+      visibility: hidden;
+    }
+  </style>
+  <script>
+    document.documentElement.classList.add("no-fouc");
+    window.addEventListener("load", () => {
+      document.documentElement.classList.remove("no-fouc");
+    });
+  </script>
+
+  <!-- External Libraries -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
+</head>
+<style>
 #cartBadge {
   font-size: 0.9rem;
   color: white;

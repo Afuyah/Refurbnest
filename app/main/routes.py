@@ -373,6 +373,11 @@ def privacy_policy():
     return render_template('main/privacy_policies.html')
 
 
+@main_bp.route('/about')
+def about():
+    return render_template('main/about.html')    
+
+
 @main_bp.route('/product/<int:product_id>/reviews')
 def all_reviews(product_id):
     product = Product.query.get_or_404(product_id)
