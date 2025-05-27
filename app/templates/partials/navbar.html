@@ -98,9 +98,7 @@
             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Profile</a>
             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Orders</a>
             <div class="border-t border-gray-100 my-1"></div>
-            <form method="POST" action="{{ url_for('auth.logout') }}">
-              <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50">Logout</button>
-            </form>
+             <a href="{{ url_for('auth.logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Logout</a>
           </div>
         </div>
         {% else %}
