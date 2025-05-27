@@ -156,9 +156,7 @@
         {% if current_user.is_authenticated %}
         <a href="#" class="block text-lg text-gray-700 hover:text-blue-600 transition-colors">Profile</a>
         <a href="#" class="block text-lg text-gray-700 hover:text-blue-600 transition-colors">Orders</a>
-        <form method="POST" action="{{ url_for('auth.logout') }}">
-          <button type="submit" class="w-full text-left text-lg text-gray-700 hover:text-blue-600 transition-colors">Logout</button>
-        </form>
+        <a href="{{ url_for('auth.logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Logout</a>
         {% else %}
         <a href="{{ url_for('auth.login') }}" class="block text-lg text-gray-700 hover:text-blue-600 transition-colors">Sign In</a>
         <a href="{{ url_for('auth.register') }}" class="block text-lg text-blue-600 hover:text-blue-700 transition-colors">Sign Up</a>
