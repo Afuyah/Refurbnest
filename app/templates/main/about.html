@@ -1,406 +1,353 @@
 {% extends 'base.html' %}
 
-{% block title %}About Us | Salesta{% endblock %}
+{% block title %}About Us | TechRevive{% endblock %}
 
 {% block content %}
-<div class="bg-white">
-  <!-- Hero Section -->
-  <div class="relative bg-gradient-to-r from-blue-900 to-indigo-800 overflow-hidden">
-    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-    <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 relative">
-      <div class="text-center">
-        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-          Our Story
-        </h1>
-        <p class="mt-6 max-w-2xl mx-auto text-xl text-blue-100">
-          Empowering businesses through innovative solutions since 2015
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mission Section -->
-  <div class="py-16 bg-gray-50 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
-        <div class="mt-12 lg:mt-0 lg:col-start-1">
-          <div class="relative text-base mx-auto max-w-prose lg:max-w-none">
-            <div class="relative lg:pr-8">
-              <div class="text-lg text-blue-600 font-semibold mb-4">
-                Our Mission
-              </div>
-              <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                Driving digital transformation
-              </h2>
-              <div class="mt-6 prose prose-indigo text-gray-500 space-y-6">
-                <p>
-                  At Salesta, we believe technology should empower businesses, not complicate them. Our mission is to deliver intuitive, powerful solutions that help companies of all sizes thrive in the digital age.
-                </p>
-                <p>
-                  We combine deep industry expertise with cutting-edge technology to create tools that solve real business challenges.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="lg:col-start-2 relative">
-          <div class="relative mx-auto rounded-xl shadow-xl overflow-hidden">
-            <img class="w-full h-auto" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Team working together">
-            <div class="absolute inset-0 bg-indigo-600 mix-blend-multiply"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-<!-- Mission Section -->
-<div class="py-16 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="lg:text-center">
-      <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Our Mission</h2>
-      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-        To revolutionize the way businesses connect with their customers
-      </p>
-    </div>
-
-    <div class="mt-10">
-      <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-        <div class="relative">
-          <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-          </div>
-          <div class="ml-16">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Innovation</h3>
-            <p class="mt-2 text-base text-gray-500">
-              We constantly push boundaries to deliver cutting-edge solutions that give our clients a competitive edge.
-            </p>
-          </div>
-        </div>
-
-        <div class="relative">
-          <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-            </svg>
-          </div>
-          <div class="ml-16">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Global Reach</h3>
-            <p class="mt-2 text-base text-gray-500">
-              With clients in over 20 countries, we bring a truly international perspective to every project.
-            </p>
-          </div>
-        </div>
-
-        <div class="relative">
-          <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
-          </div>
-          <div class="ml-16">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Security</h3>
-            <p class="mt-2 text-base text-gray-500">
-              Your data's safety is our top priority, with enterprise-grade security protocols at every level.
-            </p>
-          </div>
-        </div>
-
-        <div class="relative">
-          <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
-            </svg>
-          </div>
-          <div class="ml-16">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Partnership</h3>
-            <p class="mt-2 text-base text-gray-500">
-              We view every client relationship as a long-term partnership for mutual success.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
- <!-- Stats Section -->
-<div class="bg-blue-700 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
-        Trusted by businesses worldwide
-      </h2>
-      <p class="mt-3 text-xl text-blue-100">
-        Our numbers speak for themselves
-      </p>
-    </div>
-    <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="pt-6">
-        <div class="flow-root bg-blue-800/50 rounded-lg px-6 pb-8 h-full">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-white text-blue-700 mx-auto">
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-              </svg>
-            </div>
-            <h3 class="mt-4 text-4xl font-extrabold text-white text-center">5001+</h3>
-            <p class="mt-2 text-base text-blue-100 text-center">
-              Happy Clients
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="pt-6">
-        <div class="flow-root bg-blue-800/50 rounded-lg px-6 pb-8 h-full">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-white text-blue-700 mx-auto">
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-              </svg>
-            </div>
-            <h3 class="mt-4 text-4xl font-extrabold text-white text-center">99.9%</h3>
-            <p class="mt-2 text-base text-blue-100 text-center">
-              Uptime
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="pt-6">
-        <div class="flow-root bg-blue-800/50 rounded-lg px-6 pb-8 h-full">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-white text-blue-700 mx-auto">
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-              </svg>
-            </div>
-            <h3 class="mt-4 text-4xl font-extrabold text-white text-center">24/7</h3>
-            <p class="mt-2 text-base text-blue-100 text-center">
-              Customer Support
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="pt-6">
-        <div class="flow-root bg-blue-800/50 rounded-lg px-6 pb-8 h-full">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-white text-blue-700 mx-auto">
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
-            </div>
-            <h3 class="mt-4 text-4xl font-extrabold text-white text-center">10x</h3>
-            <p class="mt-2 text-base text-blue-100 text-center">
-              Faster Growth
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-  <!-- Team Section -->
-<div class="bg-gray-50 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Hero Section with Sustainability Focus -->
+<div class="relative bg-gradient-to-r from-green-800 to-blue-800 overflow-hidden">
+  <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
+  <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 relative">
     <div class="text-center">
-      <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Meet Our Team</h2>
-      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-        The people behind our success
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+        Reimagining Technology, <br>Reducing E-Waste
+      </h1>
+      <p class="mt-6 max-w-2xl mx-auto text-xl text-blue-100">
+        Premium renewed electronics + enterprise tech services since 2018
       </p>
-      <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
-        A diverse team of experts united by a passion for excellence.
-      </p>
-    </div>
-
-    <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      <!-- Team Member 1 -->
-      <div class="pt-6">
-        <div class="flow-root bg-white rounded-lg px-6 pb-8 shadow-lg h-full transform transition-all hover:scale-105">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-24 w-24 rounded-full bg-blue-500 mx-auto overflow-hidden border-4 border-white shadow-md">
-              <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="">
-            </div>
-            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Sarah Johnson</h3>
-            <p class="mt-1 text-base text-blue-600 text-center">CEO & Founder</p>
-            <p class="mt-3 text-base text-gray-500 text-center">
-              Visionary leader with 15+ years in tech innovation.
-            </p>
-            <div class="mt-4 flex justify-center space-x-4">
-              <a href="#" class="text-gray-400 hover:text-blue-500">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-blue-400">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Team Member 2 -->
-      <div class="pt-6">
-        <div class="flow-root bg-white rounded-lg px-6 pb-8 shadow-lg h-full transform transition-all hover:scale-105">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-24 w-24 rounded-full bg-blue-500 mx-auto overflow-hidden border-4 border-white shadow-md">
-              <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="">
-            </div>
-            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Michael Chen</h3>
-            <p class="mt-1 text-base text-blue-600 text-center">CTO</p>
-            <p class="mt-3 text-base text-gray-500 text-center">
-              Tech architect specializing in scalable systems.
-            </p>
-            <div class="mt-4 flex justify-center space-x-4">
-              <a href="#" class="text-gray-400 hover:text-blue-500">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-blue-400">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Team Member 3 -->
-      <div class="pt-6">
-        <div class="flow-root bg-white rounded-lg px-6 pb-8 shadow-lg h-full transform transition-all hover:scale-105">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-24 w-24 rounded-full bg-blue-500 mx-auto overflow-hidden border-4 border-white shadow-md">
-              <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=776&q=80" alt="">
-            </div>
-            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Emma Rodriguez</h3>
-            <p class="mt-1 text-base text-blue-600 text-center">Marketing Director</p>
-            <p class="mt-3 text-base text-gray-500 text-center">
-              Brand strategist with a data-driven approach.
-            </p>
-            <div class="mt-4 flex justify-center space-x-4">
-              <a href="#" class="text-gray-400 hover:text-blue-500">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-blue-400">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Team Member 4 -->
-      <div class="pt-6">
-        <div class="flow-root bg-white rounded-lg px-6 pb-8 shadow-lg h-full transform transition-all hover:scale-105">
-          <div class="-mt-6">
-            <div class="flex items-center justify-center h-24 w-24 rounded-full bg-blue-500 mx-auto overflow-hidden border-4 border-white shadow-md">
-              <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1562788869-4ed32648eb72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=772&q=80" alt="">
-            </div>
-            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">David Kim</h3>
-            <p class="mt-1 text-base text-blue-600 text-center">Lead Developer</p>
-            <p class="mt-3 text-base text-gray-500 text-center">
-              Full-stack wizard with a passion for clean code.
-            </p>
-            <div class="mt-4 flex justify-center space-x-4">
-              <a href="#" class="text-gray-400 hover:text-blue-500">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-blue-400">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
+      <div class="mt-8 flex justify-center space-x-4">
+        <a href="#consumer" class="px-6 py-3 bg-white text-green-800 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+          For Consumers
+        </a>
+        <a href="#business" class="px-6 py-3 text-white font-medium rounded-lg border-2 border-white hover:bg-white hover:bg-opacity-10 transition-colors">
+          For Businesses
+        </a>
       </div>
     </div>
   </div>
 </div>
 
-  <!-- Values Section -->
-<div class="py-16 bg-white">
+<!-- Consumer Section -->
+<section id="consumer" class="py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="lg:text-center">
-      <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Our Values</h2>
-      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-        What drives us every day
+    <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+      <div class="mb-12 lg:mb-0">
+        <div class="relative rounded-xl shadow-xl overflow-hidden">
+          <img class="w-full h-auto" src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Renewed electronics">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-0 left-0 p-6 text-white">
+            <p class="text-sm font-semibold">CERTIFIED RENEWED</p>
+            <h3 class="text-2xl font-bold">Like New, Without the Price Tag</h3>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span class="inline-block px-3 py-1 text-sm font-semibold text-green-600 bg-green-100 rounded-full mb-4">FOR CONSUMERS</span>
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Premium Renewed Electronics</h2>
+        <div class="prose prose-lg text-gray-600 space-y-4">
+          <p>
+            At TechRevive, we give top-tier electronics a second life through our rigorous 12-point renewal process. Each device undergoes:
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Full diagnostic testing</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Battery health verification</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Cosmetic restoration</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>90-day warranty included</span>
+            </li>
+          </ul>
+          <p class="pt-4">
+            Our process saves 7.5kg of e-waste per device while delivering premium tech at 30-70% below retail prices.
+          </p>
+        </div>
+        <div class="mt-8">
+          <a href="{{url_for('main.list_products')}}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 transition-colors">
+            Browse Renewed Tech
+            <svg class="ml-3 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Business Section -->
+<section id="business" class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+      <div class="order-last lg:order-first">
+        <span class="inline-block px-3 py-1 text-sm font-semibold text-blue-600 bg-blue-100 rounded-full mb-4">FOR BUSINESSES</span>
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Enterprise Tech Solutions</h2>
+        <div class="prose prose-lg text-gray-600 space-y-4">
+          <p>
+            We help businesses optimize their technology infrastructure while promoting sustainability through:
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Corporate device renewal programs</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Secure data sanitization services</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>IT asset disposition (ITAD)</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Custom enterprise solutions</span>
+            </li>
+          </ul>
+          <p class="pt-4">
+            Our certified technicians ensure compliance with data protection regulations while maximizing your technology ROI.
+          </p>
+        </div>
+        <div class="mt-8">
+          <a href="{{ url_for('main.business')}}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+            Enterprise Solutions
+            <svg class="ml-3 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="order-first lg:order-last mb-12 lg:mb-0">
+        <div class="relative rounded-xl shadow-xl overflow-hidden">
+          <img class="w-full h-auto" src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Enterprise tech services">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <div class="absolute bottom-0 left-0 p-6 text-white">
+            <p class="text-sm font-semibold">ENTERPRISE SOLUTIONS</p>
+            <h3 class="text-2xl font-bold">Sustainable Tech Infrastructure</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Stats -->
+<section class="py-16 bg-green-700 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold sm:text-4xl">
+        Our Environmental Impact
+      </h2>
+      <p class="mt-3 max-w-2xl mx-auto text-xl text-green-100">
+        Combining technology with sustainability
       </p>
     </div>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+      <div class="text-center">
+        <p class="text-5xl font-extrabold">12,500+</p>
+        <p class="mt-2 text-lg">Devices renewed</p>
+        <p class="mt-1 text-sm text-green-200">Preventing e-waste</p>
+      </div>
+      <div class="text-center">
+        <p class="text-5xl font-extrabold">93<span class="text-4xl align-top">%</span></p>
+        <p class="mt-2 text-lg">Recovery rate</p>
+        <p class="mt-1 text-sm text-green-200">Of materials reused</p>
+      </div>
+      <div class="text-center">
+        <p class="text-5xl font-extrabold">350+</p>
+        <p class="mt-2 text-lg">Business clients</p>
+        <p class="mt-1 text-sm text-green-200">With sustainable IT</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- Process Section -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Our 112-Point Renewal Process
+      </h2>
+      <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500">
+        Every device undergoes rigorous testing and refurbishment
+      </p>
+    </div>
+    
     <div class="mt-10">
-      <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-        <div class="relative bg-gray-50 p-6 rounded-xl">
-          <div class="absolute -top-4 -left-4 h-16 w-16 rounded-full bg-blue-500 flex items-center justify-center text-white">
-            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
+      <div class="relative">
+        <!-- Process Line -->
+        <div class="hidden lg:block absolute left-1/2 top-0 h-full w-0.5 bg-gray-200 transform -translate-x-1/2"></div>
+        
+        <!-- Process Steps -->
+        <div class="space-y-10 lg:space-y-0">
+          <!-- Step 1 -->
+          <div class="relative lg:flex lg:items-center lg:justify-between">
+            <div class="lg:w-5/12 lg:text-right lg:pr-8">
+              <h3 class="text-lg font-medium text-green-600">1. Initial Diagnostics</h3>
+              <p class="mt-2 text-gray-600">Comprehensive hardware and software evaluation</p>
+            </div>
+            <div class="mt-6 lg:mt-0 lg:w-5/12 lg:pl-8">
+              <div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600 border-4 border-white shadow-md mx-auto lg:mx-0 absolute lg:relative left-1/2 transform -translate-x-1/2 lg:translate-x-0 -top-6 lg:top-0">
+                <span class="font-bold">1</span>
+              </div>
+            </div>
           </div>
-          <h3 class="ml-8 text-lg leading-6 font-medium text-gray-900">Innovation</h3>
-          <p class="mt-4 text-base text-gray-500">
-            We challenge the status quo and constantly seek better ways to solve problems.
+          
+          <!-- Step 2 -->
+          <div class="relative lg:flex lg:flex-row-reverse lg:items-center lg:justify-between">
+            <div class="lg:w-5/12 lg:pl-8">
+              <h3 class="text-lg font-medium text-green-600">2. Data Sanitization</h3>
+              <p class="mt-2 text-gray-600">Military-grade data erasure (NIST 800-88 compliant)</p>
+            </div>
+            <div class="mt-6 lg:mt-0 lg:w-5/12 lg:pr-8">
+              <div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600 border-4 border-white shadow-md mx-auto lg:mx-0 absolute lg:relative left-1/2 transform -translate-x-1/2 lg:translate-x-0 -top-6 lg:top-0">
+                <span class="font-bold">2</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 3 -->
+          <div class="relative lg:flex lg:items-center lg:justify-between">
+            <div class="lg:w-5/12 lg:text-right lg:pr-8">
+              <h3 class="text-lg font-medium text-green-600">3. Component Testing</h3>
+              <p class="mt-2 text-gray-600">Individual verification of all critical components</p>
+            </div>
+            <div class="mt-6 lg:mt-0 lg:w-5/12 lg:pl-8">
+              <div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600 border-4 border-white shadow-md mx-auto lg:mx-0 absolute lg:relative left-1/2 transform -translate-x-1/2 lg:translate-x-0 -top-6 lg:top-0">
+                <span class="font-bold">3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-10 text-center">
+        <a href="/process" class="inline-flex items-center text-green-600 hover:text-green-800 font-medium">
+          See full renewal process
+          <svg class="ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Meet Our Tech Experts
+      </h2>
+      <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500">
+        Certified professionals dedicated to quality renewal
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Team Member 1 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6 text-center">
+          <div class="mx-auto h-32 w-32 rounded-full overflow-hidden border-4 border-white shadow-md mb-4">
+            <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Quality Assurance Lead">
+          </div>
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Sarah Johnson</h3>
+          <p class="mt-1 text-sm text-blue-600">Quality Assurance Lead</p>
+          <p class="mt-3 text-sm text-gray-500">
+            Apple Certified Mac Technician, 10+ years experience
           </p>
         </div>
-
-        <div class="relative bg-gray-50 p-6 rounded-xl">
-          <div class="absolute -top-4 -left-4 h-16 w-16 rounded-full bg-blue-500 flex items-center justify-center text-white">
-            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-            </svg>
+      </div>
+      
+      <!-- Team Member 2 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6 text-center">
+          <div class="mx-auto h-32 w-32 rounded-full overflow-hidden border-4 border-white shadow-md mb-4">
+            <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Data Security Specialist">
           </div>
-          <h3 class="ml-8 text-lg leading-6 font-medium text-gray-900">Integrity</h3>
-          <p class="mt-4 text-base text-gray-500">
-            We do what's right, not what's easy. Honesty and transparency guide every decision.
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Michael Chen</h3>
+          <p class="mt-1 text-sm text-blue-600">Data Security Specialist</p>
+          <p class="mt-3 text-sm text-gray-500">
+            Certified Data Erasure Professional
           </p>
         </div>
-
-        <div class="relative bg-gray-50 p-6 rounded-xl">
-          <div class="absolute -top-4 -left-4 h-16 w-16 rounded-full bg-blue-500 flex items-center justify-center text-white">
-            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
-            </svg>
+      </div>
+      
+      <!-- Team Member 3 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6 text-center">
+          <div class="mx-auto h-32 w-32 rounded-full overflow-hidden border-4 border-white shadow-md mb-4">
+            <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=776&q=80" alt="Enterprise Solutions">
           </div>
-          <h3 class="ml-8 text-lg leading-6 font-medium text-gray-900">Collaboration</h3>
-          <p class="mt-4 text-base text-gray-500">
-            We believe the best solutions come from diverse teams working together.
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Emma Rodriguez</h3>
+          <p class="mt-1 text-sm text-blue-600">Enterprise Solutions</p>
+          <p class="mt-3 text-sm text-gray-500">
+            IT Asset Disposition Expert
+          </p>
+        </div>
+      </div>
+      
+      <!-- Team Member 4 -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6 text-center">
+          <div class="mx-auto h-32 w-32 rounded-full overflow-hidden border-4 border-white shadow-md mb-4">
+            <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1562788869-4ed32648eb72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=772&q=80" alt="Technical Director">
+          </div>
+          <h3 class="text-lg leading-6 font-medium text-gray-900">David Kim</h3>
+          <p class="mt-1 text-sm text-blue-600">Technical Director</p>
+          <p class="mt-3 text-sm text-gray-500">
+            Microsoft Certified Systems Engineer
           </p>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-  <!-- CTA Section -->
-  <div class="bg-indigo-700">
-    <div class="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
-        <span class="block">Ready to transform your business?</span>
-      </h2>
-      <p class="mt-4 text-lg leading-6 text-indigo-200">
-        Join hundreds of businesses already growing with Salesta.
-      </p>
-      <a href="{{ url_for('main.contact') }}" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto">
-        Get in touch
-      </a>
+<!-- CTA Section -->
+<section class="bg-blue-700">
+  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+    <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+      <span class="block">Ready to experience premium renewed tech?</span>
+      <span class="block text-blue-200">Or explore our enterprise solutions?</span>
+    </h2>
+    <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 space-x-4">
+      <div class="inline-flex rounded-md shadow">
+        <a href="{{url_for('main.list_products')}}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50">
+          Shop Renewed Devices
+        </a>
+      </div>
+      <div class="ml-3 inline-flex rounded-md shadow">
+        <a href="/business" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 bg-opacity-80">
+          Business Solutions
+        </a>
+      </div>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}

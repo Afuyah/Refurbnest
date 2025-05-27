@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<section class="bg-gray-950 text-white py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-4">
+        Partner with Salesta for Reliable Tech Solutions
+      </h2>
+      <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+        Whether you’re a school in need of devices, a startup scaling your infrastructure, or a business sourcing bulk tech — we deliver tailored, professional services you can trust.
+      </p>
+    </div>
+
+    <!-- Value Section -->
+    <div class="grid md:grid-cols-2 gap-10 mb-16">
+      <div class="bg-gray-900 p-8 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-semibold mb-4 text-emerald-400">What We Offer</h3>
+        <ul class="list-disc list-inside text-gray-300 space-y-2">
+          <li>Bulk procurement of laptops, desktops, monitors, and accessories</li>
+          <li>Refurbished device programs for staff or student packages</li>
+          <li>Onsite & remote tech support, setup, and maintenance</li>
+          <li>Custom configurations and fleet-level asset tagging</li>
+          <li>Flexible billing and delivery options</li>
+        </ul>
+      </div>
+
+      <div class="bg-gray-900 p-8 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-semibold mb-4 text-emerald-400">How It Works</h3>
+        <ol class="list-decimal list-inside text-gray-300 space-y-3">
+          <li>Fill out the structured application form</li>
+          <li>Our business team will review your structure and needs</li>
+          <li>Receive a personalized quote and proposal</li>
+          <li>Finalize procurement and delivery schedule</li>
+          <li>Ongoing support & partnership options available</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Application Form -->
+    <div class="bg-gray-900 p-10 rounded-xl shadow-xl">
+      <h3 class="text-3xl font-bold text-white mb-6 text-center">Business Application Form</h3>
+      <form action="/apply-business" method="POST" class="space-y-6">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm mb-1 text-gray-300">Company Name</label>
+            <input type="text" name="company_name" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm mb-1 text-gray-300">Business Type / Structure</label>
+            <input type="text" name="business_structure" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm mb-1 text-gray-300">Contact Person</label>
+            <input type="text" name="contact_name" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm mb-1 text-gray-300">Email Address</label>
+            <input type="email" name="email" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1 text-gray-300">Describe the Services or Products You Need</label>
+          <textarea name="requirements" rows="4" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1 text-gray-300">Estimated Quantity (if applicable)</label>
+          <input type="text" name="quantity" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold transition">
+            Submit Application
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- CTA / Questions -->
+    <div class="text-center mt-14 text-gray-400">
+      <p>Questions? <a href="/contact" class="text-emerald-400 hover:underline">Contact our business support team</a>.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

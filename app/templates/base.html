@@ -26,6 +26,40 @@
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <style>
+
+#preloader {
+    position: fixed;
+    inset: 0;
+    background-color: #fff;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+  }
+
+  #preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Spinner */
+  #preloader .spinner {
+    border-top: 4px solid #2563eb; /* Blue-600 */
+    border-right: 4px solid transparent;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+  }
+
+
+        
 #cartBadge {
   font-size: 0.9rem;
   color: white;
@@ -79,9 +113,9 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
   <!-- Page Preloader -->
-<div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-white transition-opacity duration-500">
-  <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600 border-opacity-75"></div>
-</div>
+<div id="preloader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-white transition-opacity duration-500">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600 border-opacity-75"></div>
+  </div>
 
 
 
@@ -193,15 +227,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-  // Hide preloader once everything is loaded
   window.addEventListener('load', () => {
     const preloader = document.getElementById('preloader');
+    const html = document.documentElement;
     if (preloader) {
-      preloader.classList.add('opacity-0');
-      setTimeout(() => preloader.style.display = 'none', 500);
+      preloader.classList.add('fade-out');
+      html.style.overflow = ''; // Re-enable scroll after load
+      setTimeout(() => preloader.remove(), 500);
     }
   });
 </script>
+
 
 </body>
 </html>
