@@ -1,94 +1,501 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Server Error{% endblock %}
+{% block title %}Business Solutions | TechRevive{% endblock %}
 
 {% block content %}
-<section class="bg-gray-950 text-white py-20">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
+<!-- Hero Section -->
+<div class="relative bg-gradient-to-r from-blue-900 to-blue-700 overflow-hidden">
+  <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center mix-blend-overlay opacity-30"></div>
+  <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 relative">
+    <div class="text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+        Enterprise-Grade Tech Solutions
+      </h1>
+      <p class="mt-6 max-w-3xl mx-auto text-xl text-blue-100">
+        Custom technology services for businesses of all sizes - from device renewal programs to complete IT asset management
+      </p>
+      <div class="mt-8">
+        <a href="#application" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-blue-700 bg-white hover:bg-blue-50">
+          Begin Application
+          <svg class="ml-3 -mr-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Solutions Overview -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
-      <h2 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-4">
-        Partner with Salesta for Reliable Tech Solutions
+      <span class="inline-block px-3 py-1 text-sm font-semibold text-blue-600 bg-blue-100 rounded-full mb-4">ENTERPRISE SOLUTIONS</span>
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Tailored Technology Services
       </h2>
-      <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-        Whether you’re a school in need of devices, a startup scaling your infrastructure, or a business sourcing bulk tech — we deliver tailored, professional services you can trust.
+      <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500">
+        Our certified processes meet the highest industry standards
       </p>
     </div>
 
-    <!-- Value Section -->
-    <div class="grid md:grid-cols-2 gap-10 mb-16">
-      <div class="bg-gray-900 p-8 rounded-lg shadow-lg">
-        <h3 class="text-2xl font-semibold mb-4 text-emerald-400">What We Offer</h3>
-        <ul class="list-disc list-inside text-gray-300 space-y-2">
-          <li>Bulk procurement of laptops, desktops, monitors, and accessories</li>
-          <li>Refurbished device programs for staff or student packages</li>
-          <li>Onsite & remote tech support, setup, and maintenance</li>
-          <li>Custom configurations and fleet-level asset tagging</li>
-          <li>Flexible billing and delivery options</li>
-        </ul>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Service 1 -->
+      <div class="pt-6">
+        <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full border border-gray-200 hover:border-blue-300 transition-colors">
+          <div class="-mt-6">
+            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mx-auto">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Device Renewal Programs</h3>
+            <p class="mt-2 text-base text-gray-500 text-center">
+              Bulk procurement of renewed devices with custom configurations
+            </p>
+            <div class="mt-4 text-sm text-gray-600 space-y-2">
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Minimum order: 25 units
+              </p>
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Custom imaging available
+              </p>
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Extended warranty options
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="bg-gray-900 p-8 rounded-lg shadow-lg">
-        <h3 class="text-2xl font-semibold mb-4 text-emerald-400">How It Works</h3>
-        <ol class="list-decimal list-inside text-gray-300 space-y-3">
-          <li>Fill out the structured application form</li>
-          <li>Our business team will review your structure and needs</li>
-          <li>Receive a personalized quote and proposal</li>
-          <li>Finalize procurement and delivery schedule</li>
-          <li>Ongoing support & partnership options available</li>
-        </ol>
+      <!-- Service 2 -->
+      <div class="pt-6">
+        <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full border border-gray-200 hover:border-blue-300 transition-colors">
+          <div class="-mt-6">
+            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mx-auto">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">Secure Data Sanitization</h3>
+            <p class="mt-2 text-base text-gray-500 text-center">
+              Compliant data destruction for decommissioned devices
+            </p>
+            <div class="mt-4 text-sm text-gray-600 space-y-2">
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                NIST 800-88 compliant
+              </p>
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                On-site or off-site options
+              </p>
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Certificate of destruction
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Application Form -->
-    <div class="bg-gray-900 p-10 rounded-xl shadow-xl">
-      <h3 class="text-3xl font-bold text-white mb-6 text-center">Business Application Form</h3>
-      <form action="/apply-business" method="POST" class="space-y-6">
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Company Name</label>
-            <input type="text" name="company_name" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
+      <!-- Service 3 -->
+      <div class="pt-6">
+        <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8 h-full border border-gray-200 hover:border-blue-300 transition-colors">
+          <div class="-mt-6">
+            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mx-auto">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-900 text-center">IT Asset Disposition</h3>
+            <p class="mt-2 text-base text-gray-500 text-center">
+              End-to-end management of retired technology assets
+            </p>
+            <div class="mt-4 text-sm text-gray-600 space-y-2">
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Full audit trail reporting
+              </p>
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Environmentally responsible recycling
+              </p>
+              <p class="flex items-start">
+                <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Resale revenue sharing
+              </p>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Business Type / Structure</label>
-            <input type="text" name="business_structure" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
-          </div>
         </div>
-
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Contact Person</label>
-            <input type="text" name="contact_name" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
-          </div>
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Email Address</label>
-            <input type="email" name="email" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-sm mb-1 text-gray-300">Describe the Services or Products You Need</label>
-          <textarea name="requirements" rows="4" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500"></textarea>
-        </div>
-
-        <div>
-          <label class="block text-sm mb-1 text-gray-300">Estimated Quantity (if applicable)</label>
-          <input type="text" name="quantity" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-emerald-500">
-        </div>
-
-        <div class="text-center">
-          <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold transition">
-            Submit Application
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- CTA / Questions -->
-    <div class="text-center mt-14 text-gray-400">
-      <p>Questions? <a href="/contact" class="text-emerald-400 hover:underline">Contact our business support team</a>.</p>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- Process Flow -->
+<section class="py-16 bg-blue-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Our Business Engagement Process
+      </h2>
+      <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500">
+        Structured approach to ensure your requirements are perfectly met
+      </p>
+    </div>
+
+    <div class="mt-10">
+      <div class="relative">
+        <!-- Timeline line -->
+        <div class="hidden sm:block absolute left-0 right-0 top-1/2 h-1 bg-blue-200 transform -translate-y-1/2"></div>
+        
+        <div class="relative grid grid-cols-1 sm:grid-cols-4 gap-8">
+          <!-- Step 1 -->
+          <div class="relative">
+            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-600 text-white border-8 border-blue-50 mx-auto mb-4">
+              <span class="text-xl font-bold">1</span>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm text-center h-full">
+              <h3 class="text-lg font-medium text-gray-900">Initial Consultation</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                Discovery call to understand your needs and scope
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="relative">
+            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-600 text-white border-8 border-blue-50 mx-auto mb-4">
+              <span class="text-xl font-bold">2</span>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm text-center h-full">
+              <h3 class="text-lg font-medium text-gray-900">Formal Application</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                Submit business details and requirements
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="relative">
+            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-600 text-white border-8 border-blue-50 mx-auto mb-4">
+              <span class="text-xl font-bold">3</span>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm text-center h-full">
+              <h3 class="text-lg font-medium text-gray-900">Custom Proposal</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                Tailored solution with pricing and timeline
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="relative">
+            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-600 text-white border-8 border-blue-50 mx-auto mb-4">
+              <span class="text-xl font-bold">4</span>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm text-center h-full">
+              <h3 class="text-lg font-medium text-gray-900">Implementation</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                Deployment with dedicated account manager
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Application Form -->
+<section id="application" class="py-16 bg-white">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Business Application
+      </h2>
+      <p class="mt-3 text-lg text-gray-500">
+        Complete this form to begin our partnership process
+      </p>
+    </div>
+
+    <div class="bg-gray-50 shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6 bg-blue-700">
+        <h3 class="text-lg leading-6 font-medium text-white">
+          Enterprise Services Application
+        </h3>
+        <p class="mt-1 text-sm text-blue-100">
+          All fields are required unless marked optional
+        </p>
+      </div>
+      <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+        <form class="divide-y divide-gray-200">
+          <!-- Business Information -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="business-name" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Business Name
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <input type="text" name="business-name" id="business-name" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+            </div>
+          </div>
+
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="industry" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Industry
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <select id="industry" name="industry" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+                <option value="">Select industry</option>
+                <option>Technology</option>
+                <option>Healthcare</option>
+                <option>Education</option>
+                <option>Financial Services</option>
+                <option>Government</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="employees" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Number of Employees
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <select id="employees" name="employees" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+                <option value="">Select range</option>
+                <option>1-10</option>
+                <option>11-50</option>
+                <option>51-200</option>
+                <option>201-1000</option>
+                <option>1000+</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Service Selection -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Services Needed
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <fieldset class="space-y-2">
+                <div class="relative flex items-start">
+                  <div class="flex items-center h-5">
+                    <input id="device-renewal" name="services" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="device-renewal" class="font-medium text-gray-700">Device Renewal Program</label>
+                    <p class="text-gray-500">Bulk purchase of renewed devices</p>
+                  </div>
+                </div>
+                <div class="relative flex items-start">
+                  <div class="flex items-center h-5">
+                    <input id="data-sanitization" name="services" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="data-sanitization" class="font-medium text-gray-700">Data Sanitization</label>
+                    <p class="text-gray-500">Secure erasure of sensitive data</p>
+                  </div>
+                </div>
+                <div class="relative flex items-start">
+                  <div class="flex items-center h-5">
+                    <input id="itad" name="services" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="itad" class="font-medium text-gray-700">IT Asset Disposition</label>
+                    <p class="text-gray-500">End-of-life equipment management</p>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <!-- Device Requirements -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="device-types" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Device Types Needed (if applicable)
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <textarea id="device-types" name="device-types" rows="3" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md" placeholder="e.g. 50 laptops, 25 tablets, 10 workstations"></textarea>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="timeline" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Project Timeline
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <select id="timeline" name="timeline" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+                <option value="">Select urgency</option>
+                <option>Immediate (within 2 weeks)</option>
+                <option>Short-term (1-3 months)</option>
+                <option>Planning phase (3-6 months)</option>
+                <option>Future consideration (6+ months)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="contact-name" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Contact Name
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <input type="text" name="contact-name" id="contact-name" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+            </div>
+          </div>
+
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="contact-email" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Contact Email
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <input type="email" name="contact-email" id="contact-email" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+            </div>
+          </div>
+
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="contact-phone" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Contact Phone
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <input type="tel" name="contact-phone" id="contact-phone" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md">
+            </div>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div>
+              <label for="additional-info" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                Additional Information
+              </label>
+            </div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <textarea id="additional-info" name="additional-info" rows="4" class="block w-full shadow-sm sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md" placeholder="Any special requirements, existing systems, or other details"></textarea>
+            </div>
+          </div>
+
+          <!-- Submission -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div></div>
+            <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input id="terms" name="terms" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" required>
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="terms" class="font-medium text-gray-700">I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">terms and conditions</a></label>
+                  <p class="text-gray-500">By submitting this form, you agree to our privacy policy and terms of service.</p>
+                </div>
+              </div>
+              <div class="mt-5">
+                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Submit Application
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-8 text-center">
+      <p class="text-sm text-gray-500">
+        For enterprise inquiries with 500+ devices, please <a href="#" class="text-blue-600 hover:text-blue-500">contact our sales team directly</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Client Logos -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Trusted By Industry Leaders
+      </h2>
+    </div>
+    <div class="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" class="h-12 object-contain">
+      </div>
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="h-10 object-contain">
+      </div>
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" class="h-10 object-contain">
+      </div>
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Google_Scholar_logo_2014.svg" alt="Google" class="h-10 object-contain">
+      </div>
+      <div class="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM" class="h-8 object-contain">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="bg-blue-700">
+  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+    <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+      <span class="block">Ready to discuss your business needs?</span>
+      <span class="block text-blue-200">Our enterprise team is standing by.</span>
+    </h2>
+    <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+      <div class="inline-flex rounded-md shadow">
+        <a href="#application" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50">
+          Start Application
+        </a>
+      </div>
+      <div class="ml-3 inline-flex rounded-md shadow">
+        <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 bg-opacity-60">
+          Contact Sales
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

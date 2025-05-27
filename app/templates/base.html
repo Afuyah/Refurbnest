@@ -39,9 +39,12 @@
   }
 
   #preloader.fade-out {
-    opacity: 0;
-    visibility: hidden;
-  }
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
 
   /* Spinner */
   #preloader .spinner {
@@ -112,10 +115,10 @@
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
-  <!-- Page Preloader -->
-<div id="preloader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-white transition-opacity duration-500">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600 border-opacity-75"></div>
-  </div>
+  <div id="preloader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-gray-800 dark:text-white transition-opacity duration-700">
+  <div class="animate-spin rounded-full h-14 w-14 border-[3px] border-blue-500 border-t-transparent mb-4"></div>
+  <p class="text-base font-medium tracking-wide">Loading Salesta...</p>
+</div>
 
 
 
@@ -232,11 +235,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const html = document.documentElement;
     if (preloader) {
       preloader.classList.add('fade-out');
-      html.style.overflow = ''; // Re-enable scroll after load
+      html.style.overflow = ''; // Re-enable scroll
       setTimeout(() => preloader.remove(), 500);
     }
   });
 </script>
+
 
 
 </body>

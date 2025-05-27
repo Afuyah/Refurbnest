@@ -21,12 +21,13 @@
   <div class="skeleton absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse"></div>
 
 <img
-  data-src="{{ product.images[0]|product_image_url if product.images else url_for('static', filename='images/default.jpg') }}"
+  data-src="{{ product.image_url }}"
   alt="{{ product.name }}"
   class="lazy-load w-full h-full object-cover opacity-0 transition-opacity duration-500"
   loading="lazy"
   onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}';"
 />
+
 
 
 
