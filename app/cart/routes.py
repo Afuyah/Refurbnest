@@ -56,24 +56,40 @@ def get_cart_json():
     }), 200
 
 
-# ——————— POST Add to Cart ———————
 @cart_bp.route('/add/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id: int):
-    product = Product.query.get_or_404(product_id)  # 404 if missing :contentReference[oaicite:10]{index=10}
+    product = Product.query.get_or_404(product_id)
     if not product.is_active:
-        abort(400, description='Product currently unavailable')  # 400 on client error :contentReference[oaicite:11]{index=11}
+        abort(400, description='Product currently unavailable')
 
+    # Add to cart logic
     cart = Cart()
     cart.add(product_id, product.name, float(product.price))
 
+    # Determine image URL
+    if product.images and len(product.images) > 0:
+        filename = product.images[0].image_path.split('/')[-1]
+        image_url = url_for('product_image', filename=filename)
+    else:
+        image_url = url_for('static', filename='images/placeholder-product.png')
+
+    # Updated payload includes image_url
     payload = {
         'items': cart.get_items(),
         'count': cart.item_count,
         'unique_items': cart.unique_items,
         'total': float(cart.total),
-        'message': f"Added '{product.name}' to cart"
+        'message': f"Added '{product.name}' to cart",
+        'added_item': {
+            'id': product.id,
+            'name': product.name,
+            'price': float(product.price),
+            'image_url': image_url
+        }
     }
-    return jsonify(payload), 201  # 201 Created :contentReference[oaicite:12]{index=12}
+
+    return jsonify(payload), 201
+
 
 @cart_bp.route('/remove/<int:product_id>', methods=['DELETE'])
 def remove_from_cart(product_id: int):

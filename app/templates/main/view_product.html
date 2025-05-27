@@ -5,99 +5,175 @@
 
 
 
-<div class="container-fluid mt-5 px-3 px-md-5">
-    
-    <div class="product-detail d-flex flex-column gap-5">
-        <div class="row gx-5 gy-4 flex-column-reverse flex-lg-row align-items-start">
-            
-            <!-- Product Info -->
-            <div class="col-lg-5">
-                <div class="bg-dark text-light p-4 rounded-4 shadow-lg position-relative h-100">
-                    <h1 class="mb-3 display-5 text-neon">{{ product.name }}</h1>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex flex-col gap-8">
+        <!-- Product Row -->
+        <div class="flex flex-col-reverse lg:flex-row gap-8 items-start">
+            <!-- Product Info Card -->
+            <div class="w-full lg:w-5/12">
+                <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-3xl shadow-2xl relative overflow-hidden h-full">
+                    <!-- Glow effect -->
+                    <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-600 rounded-full filter blur-3xl opacity-10"></div>
+                    
+                    <h1 class="mb-4 text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                        {{ product.name }}
+                    </h1>
 
-                    <div class="mb-3">
-                        <span class="fs-2 fw-bold">${{ product.price }}</span>
+                    <!-- Price -->
+                    <div class="mb-6 flex items-center">
+                        <span class="text-3xl font-bold text-white">${{ product.price }}</span>
                         {% if product.original_price %}
-                        <span class="text-decoration-line-through text-muted ms-2">Ksh{{ product.original_price }}</span>
+                        <span class="ml-3 text-xl text-gray-400 line-through">${{ product.original_price }}</span>
+                        <span class="ml-3 px-2 py-1 bg-green-900/30 text-green-400 text-sm rounded-full">
+                            {{ ((1 - product.price/product.original_price) * 100)|round|int }}% OFF
+                        </span>
                         {% endif %}
                     </div>
 
-                    <div class="d-flex flex-wrap gap-3 my-4">
-                        <div class="spec-box"><i class="fas fa-database me-2"></i>{{ product.storage }}</div>
-                        <div class="spec-box"><i class="fas fa-memory me-2"></i>{{ product.ram }}</div>
-                        <div class="spec-box"><i class="fas fa-microchip me-2"></i>{{ product.processor }}</div>
-                        <div class="spec-box"><i class="fas fa-cog me-2"></i>{{ product.generation }}</div>
+                    <!-- Spec Chips -->
+                    <div class="flex flex-wrap gap-3 my-6">
+                        <div class="px-4 py-2 bg-gray-800/50 rounded-full flex items-center text-sm border border-gray-700 hover:border-blue-400 transition-colors">
+                            <i class="fas fa-database text-blue-400 mr-2"></i>{{ product.storage }}
+                        </div>
+                        <div class="px-4 py-2 bg-gray-800/50 rounded-full flex items-center text-sm border border-gray-700 hover:border-purple-400 transition-colors">
+                            <i class="fas fa-memory text-purple-400 mr-2"></i>{{ product.ram }}
+                        </div>
+                        <div class="px-4 py-2 bg-gray-800/50 rounded-full flex items-center text-sm border border-gray-700 hover:border-amber-400 transition-colors">
+                            <i class="fas fa-microchip text-amber-400 mr-2"></i>{{ product.processor }}
+                        </div>
+                        <div class="px-4 py-2 bg-gray-800/50 rounded-full flex items-center text-sm border border-gray-700 hover:border-emerald-400 transition-colors">
+                            <i class="fas fa-cog text-emerald-400 mr-2"></i>{{ product.generation }}
+                        </div>
                     </div>
 
-                    <div>
-                       <button class="add-to-cart-btn" 
-data-product-id="{{ product.id }}"
-data-product-name="{{ product.name }}"
-data-product-price="{{ product.price }}"
-<span class="btn-content">
-<i class="fas fa-cart-plus mr-1"></i>
-Add To Cart
-</span>
+                    <!-- Add to Cart Button -->
+                    <button class="add-to-cart-btn w-full py-4 px-6 mb-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold shadow-lg hover:shadow-xl hover:from-blue-500 hover:to-purple-500 transition-all transform hover:-translate-y-1"
+                            data-product-id="{{ product.id }}"
+                            data-product-name="{{ product.name }}"
+                            data-product-price="{{ product.price }}">
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-cart-plus mr-3 text-lg"></i>
+                            <span class="btn-content">Add To Cart</span>
+                        </div>
+                    </button>
 
-</button>
-                    </div>
-
-                    <div class="d-grid gap-3 mt-4">
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-1 gap-3 mt-6">
                         <a href="https://wa.me/{{ '+254711667718' }}?text={{ 'I\'m interested in ' + product.name|urlencode + ' (Ksh' + product.price|string + '). Details: ' + product.description|urlencode }}"
-                           class="btn btn-success btn-lg shadow"><i class="fab fa-whatsapp me-2"></i>Chat on WhatsApp</a>
-                        <a href="{{ url_for('main.list_products') }}" class="btn btn-outline-light btn-lg shadow"><i class="fas fa-arrow-left me-2"></i>Back to Products</a>
+                           class="flex items-center justify-center py-3 px-6 rounded-xl bg-green-600 text-white font-medium shadow hover:bg-green-700 transition-colors">
+                            <i class="fab fa-whatsapp text-xl mr-3"></i>
+                            Chat on WhatsApp
+                        </a>
+                        <a href="{{ url_for('main.list_products') }}" 
+                           class="flex items-center justify-center py-3 px-6 rounded-xl bg-transparent text-white font-medium border-2 border-gray-700 hover:border-blue-500 hover:text-blue-400 transition-colors">
+                            <i class="fas fa-arrow-left mr-3"></i>
+                            Back to Products
+                        </a>
                     </div>
                 </div>
             </div>
 
-<!-- Images -->
-<div class="col-lg-7">
-    <div class="position-relative bg-black rounded-4 overflow-hidden shadow-lg">
-        <!-- Main image -->
-        {% if product.images %}
-            <img id="main-image"
-                 src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
-                 class="img-fluid w-100 animate-fade-in zoom-on-hover"
-                 alt="{{ product.name }}">
-        {% else %}
-            <img id="main-image"
-                 src="{{ url_for('static', filename='images/default.jpg') }}"
-                 class="img-fluid w-100 animate-fade-in zoom-on-hover"
-                 alt="Default Image">
-        {% endif %}
+            <!-- Image Gallery -->
+            <div class="w-full lg:w-7/12">
+                <div class="relative bg-black rounded-3xl overflow-hidden shadow-2xl group">
+                    <!-- Main Image -->
+                    {% if product.images %}
+                        <img id="main-image"
+                             src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
+                             class="w-full h-auto aspect-square object-contain transition-opacity duration-300 group-hover:opacity-90"
+                             alt="{{ product.name }}">
+                    {% else %}
+                        <img id="main-image"
+                             src="{{ url_for('static', filename='images/default.jpg') }}"
+                             class="w-full h-auto aspect-square object-contain transition-opacity duration-300 group-hover:opacity-90"
+                             alt="Default Image">
+                    {% endif %}
 
-        <!-- Thumbnail gallery -->
-        {% if product.images %}
-            <div class="thumbnail-gallery d-flex gap-3 p-3 overflow-auto mt-3 bg-dark rounded-bottom-4">
-                {% for image in product.images %}
-                    <img src="{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}"
-                         class="img-thumbnail thumb-hover"
-                         style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
-                         onclick="changeMainImage('{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}')"
-                         alt="Thumbnail of {{ product.name }}">
-                {% endfor %}
+                    <!-- Thumbnail Gallery -->
+                    {% if product.images %}
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                            <div class="flex gap-3 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                                {% for image in product.images %}
+                                    <img src="{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}"
+                                         class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-400 transition-all"
+                                         onclick="changeMainImage('{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}')"
+                                         alt="Thumbnail of {{ product.name }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-        {% endif %}
-    </div>
-</div>
-
-
-            
-            
         </div>
 
-        <!-- Description -->
-        <div class="row">
-            <div class="col">
-                <div class="p-4 rounded-4 shadow-lg bg-dark text-light">
-                    <h3 class="mb-3 text-neon">Detailed Specifications</h3>
-                    <p class="fs-5">{{ product.description }}</p>
+        <!-- Description Card -->
+        <div class="w-full">
+            <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-3xl shadow-2xl">
+                <h3 class="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                    Detailed Specifications
+                </h3>
+                <div class="prose prose-invert max-w-none">
+                    <p class="text-gray-300 leading-relaxed">{{ product.description }}</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .add-to-cart-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .add-to-cart-btn::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(255,255,255,0) 45%,
+            rgba(255,255,255,0.1) 50%,
+            rgba(255,255,255,0) 55%
+        );
+        transform: rotate(30deg);
+        transition: all 0.3s ease;
+    }
+    
+    .add-to-cart-btn:hover::after {
+        left: 100%;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
+</style>
+
+<script>
+    function changeMainImage(src) {
+        const mainImg = document.getElementById('main-image');
+        mainImg.classList.add('opacity-0');
+        
+        setTimeout(() => {
+            mainImg.src = src;
+            mainImg.classList.remove('opacity-0');
+            mainImg.classList.add('animate-fade-in');
+            
+            // Remove animation class after it completes
+            setTimeout(() => {
+                mainImg.classList.remove('animate-fade-in');
+            }, 500);
+        }, 150);
+    }
+</script>
 
 
 <!-- Add after description section -->
