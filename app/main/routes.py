@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, session
 from flask import jsonify
-from app.admin.models import Product, Brand, Category, ContactMessage, Wishlist, ProductImage, Review
+from app.admin.models import Product, Brand, Category, ContactMessage, Wishlist, ProductImage, Review, Order, ShippingAddress, OrderItem
 from app.main.forms import InquiryForm, ContactForm, WishlistForm, VerifyPurchaseForm,ReviewForm
 from app.admin.forms import ProductForm
 from sqlalchemy.orm import joinedload
@@ -398,6 +398,48 @@ def all_reviews(product_id):
 from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
 import re
+import jwt
+from datetime import datetime, timedelta
+from flask import current_app
+
+def generate_verification_token(email, product_id):
+    """Generate a JWT token for email verification"""
+    payload = {
+        'email': email,
+        'product_id': product_id,
+        'exp': datetime.utcnow() + timedelta(hours=24)  # Token expires in 24 hours
+    }
+    return jwt.encode(
+        payload,
+        current_app.config['SECRET_KEY'],
+        algorithm='HS256'
+    )
+
+def verify_verification_token(token):
+    """Verify the JWT token and return email and product_id"""
+    try:
+        payload = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256']
+        )
+        return payload['email'], payload['product_id']
+    except jwt.ExpiredSignatureError:
+        return None, None
+    except jwt.InvalidTokenError:
+        return None, None
+
+def get_review_id_from_token(token):
+    """Get review ID from token (if stored in token)"""
+    try:
+        payload = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256']
+        )
+        return payload.get('review_id')
+    except:
+        return None
 
 @csrf.exempt
 @main_bp.route('/verify-purchase', methods=['POST'])
@@ -411,27 +453,36 @@ def verify_purchase():
         product_id = data.get('product_id')
 
         if not email or not product_id:
-            return jsonify({'error': 'Missing required fields', 'message': 'Both email and product ID are required'}), 400
+            return jsonify({'error': 'Missing fields', 'message': 'Email and Product ID are required'}), 400
 
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            return jsonify({'error': 'Invalid email format', 'message': 'Please provide a valid email address'}), 400
+            return jsonify({'error': 'Invalid email format'}), 400
 
         product = Product.query.get(product_id)
         if not product:
-            return jsonify({'error': 'Product not found', 'message': 'The specified product does not exist'}), 404
+            return jsonify({'error': 'Product not found'}), 404
 
-        # Create new unverified review
-        review = Review(
-            product_id=product_id,
-            author=email.split('@')[0],
-            rating=0,  # Temp placeholder
-            comment='',  # Placeholder
-            verified=False
+        # 🔒 Check if this email purchased this product in a completed order
+        order = (
+            db.session.query(Order)
+            .join(ShippingAddress)
+            .join(OrderItem)
+            .filter(
+                ShippingAddress.email == email,
+                OrderItem.product_id == product_id,
+                Order.payment_status.in_(['Paid'])  
+            )
+            .first()
         )
-        db.session.add(review)
-        db.session.commit()
 
-        token = review.generate_verification_token()
+        if not order:
+            return jsonify({
+                'error': 'Not a verified purchase',
+                'message': 'No completed order found for this email and product.'
+            }), 403
+
+        # ✅ Valid — send verification email
+        token = generate_verification_token(email, product_id)
         verification_url = url_for('main.verify_review_token', token=token, _external=True)
 
         msg = Message(
@@ -442,51 +493,108 @@ def verify_purchase():
         )
         mail.send(msg)
 
-        current_app.logger.info(f"Verification email sent to {email} for product {product_id}")
+        current_app.logger.info(f"Sent verification email to {email} for product {product_id}")
 
-        return jsonify({'success': True, 'message': 'Verification email sent! Please check your inbox.'}), 200
+        return jsonify({
+            'success': True,
+            'message': 'Verification email sent. Check your inbox.',
+            'token': token 
+        }), 200
 
     except Exception as e:
         current_app.logger.error(f"Error in verify_purchase: {str(e)}", exc_info=True)
-        return jsonify({'error': 'Internal server error', 'message': 'An unexpected error occurred.'}), 500
+        return jsonify({'error': 'Internal server error'}), 500
+
 
 
 
 @main_bp.route('/verify-review/<token>', methods=['GET'])
 def verify_review_token(token):
-    review = Review.verify_token(token)
-    
-    if not review:
-        flash('Invalid or expired verification link', 'error')
-        return redirect(url_for('main.home'))
+    try:
+        # Decode the token to extract email and product_id
+        email, product_id = verify_verification_token(token)
+        if not email or not product_id:
+            flash('Invalid or expired verification link', 'error')
+            return redirect(url_for('main.home'))
 
-    review.verified = True
-    db.session.commit()
+        # Check for existing unverified review
+        review = Review.query.filter_by(
+            product_id=product_id,
+            author=email.split('@')[0],
+            verified=False
+        ).order_by(Review.id.desc()).first()
 
-    flash('Purchase verified! You can now submit your review.', 'success')
-    
-    # Redirect to the review form page
-    return redirect(url_for('main.submit_review', review_id=review.id))
+        if not review:
+            flash('No pending review found for verification', 'error')
+            return redirect(url_for('main.home'))
 
-
-
-
-@main_bp.route('/submit-review/<int:review_id>', methods=['GET', 'POST'])
-def submit_review(review_id):
-    review = Review.query.get_or_404(review_id)
-    
-    if not review.verified:
-        flash('You must verify your purchase before submitting a review.', 'error')
-        return redirect(url_for('main.home'))
-
-    form = ReviewForm()  # Make sure this form exists with `comment` and `rating` fields
-
-    if form.validate_on_submit():
-        review.rating = form.rating.data
-        review.comment = form.comment.data
+        # Mark the review as verified
+        review.verified = True
         db.session.commit()
 
-        flash('Thanks for your review!', 'success')
+        # Optionally store in session (not required if using token in frontend)
+        session['pending_review_id'] = review.id
+
+        flash('Purchase verified! You can now submit your review.', 'success')
+
+        # Redirect to review form page with token and product_id
+        return redirect(url_for('main.review_form', product_id=product_id, token=token))
+
+    except Exception as e:
+        current_app.logger.error(f"Error verifying token: {str(e)}")
+        flash('Verification failed. Please try again.', 'error')
         return redirect(url_for('main.home'))
 
-    return render_template('partials/submit_review.html', form=form, product=review.product)
+
+
+@csrf.exempt
+@main_bp.route('/submit-review', methods=['POST'])
+def submit_review():
+    try:
+        if not request.is_json:
+            return jsonify({'error': 'Invalid content type'}), 415
+
+        data = request.get_json()
+        token = data.get('token')
+        rating = data.get('rating')
+        comment = data.get('comment')
+
+        if not token or not rating or not comment:
+            return jsonify({'error': 'Missing required fields'}), 400
+
+        # Verify the token and get email and product_id
+        email, product_id = verify_verification_token(token)
+        if not email or not product_id:
+            return jsonify({'error': 'Invalid or expired token'}), 400
+
+        # Find the verified review
+        review = Review.query.filter_by(
+            product_id=product_id,
+            author=email.split('@')[0],
+            verified=True
+        ).order_by(Review.id.desc()).first()
+
+        if not review:
+            return jsonify({'error': 'Review not found or not verified'}), 404
+
+        # Update the review
+        review.rating = rating
+        review.comment = comment
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'message': 'Review submitted successfully!',
+            'review': {
+                'id': review.id,
+                'author': review.author,
+                'rating': review.rating,
+                'comment': review.comment,
+                'date': review.date.strftime('%B %d, %Y'),
+                'verified': review.verified
+            }
+        }), 200
+
+    except Exception as e:
+        current_app.logger.error(f"Error submitting review: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500

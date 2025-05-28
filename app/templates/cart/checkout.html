@@ -183,8 +183,7 @@
           <div class="divide-y divide-gray-200">
             {% for item in cart_items %}
             <div class="py-4 flex">
-              <img src="{{ item.image_url or url_for('static', filename='images/placeholder-product.png') }}" 
-                   alt="{{ item.name }}" class="h-16 w-16 object-cover rounded-md border border-gray-200">
+              
               <div class="ml-4">
                 <h3 class="font-medium text-slate-800">{{ item.name }}</h3>
                 <p class="text-sm text-slate-500">{{ item.quantity }} × ${{ "%.2f"|format(item.price) }}</p>

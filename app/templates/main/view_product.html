@@ -2,9 +2,6 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-
-
-
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="flex flex-col gap-8">
         <!-- Product Row -->
@@ -119,13 +116,12 @@
         </div>
     </div>
 </div>
-
 <style>
     .add-to-cart-btn {
         position: relative;
         overflow: hidden;
     }
-    
+
     .add-to-cart-btn::after {
         content: '';
         position: absolute;
@@ -142,401 +138,42 @@
         transform: rotate(30deg);
         transition: all 0.3s ease;
     }
-    
+
     .add-to-cart-btn:hover::after {
         left: 100%;
     }
-    
+
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
     }
-    
+
     .animate-fade-in {
-        animation: fadeIn 0.5s ease-out;
+        animation: fadeIn 0.4s ease-in-out;
     }
 </style>
 
+
 <script>
-    function changeMainImage(src) {
+    function changeMainImage(imageUrl) {
         const mainImg = document.getElementById('main-image');
-        mainImg.classList.add('opacity-0');
         
-        setTimeout(() => {
-            mainImg.src = src;
-            mainImg.classList.remove('opacity-0');
-            mainImg.classList.add('animate-fade-in');
-            
-            // Remove animation class after it completes
-            setTimeout(() => {
-                mainImg.classList.remove('animate-fade-in');
-            }, 500);
-        }, 150);
+        // Remove animation class if it's there
+        mainImg.classList.remove("animate-fade-in");
+
+        // Force reflow to restart animation
+        void mainImg.offsetWidth;
+
+        // Change the image and add fade animation
+        mainImg.src = imageUrl;
+        mainImg.classList.add("animate-fade-in");
     }
 </script>
-
-
-<!-- Add after description section -->
-<section class="reviews-section mt-5 mb-3">
-    <div class="bg-dark rounded-4 shadow-lg p-4">
-        <!-- Reviews Header -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
-            <h3 class="text-neon mb-3 mb-md-0">Customer Reviews <span class="badge bg-neon text-dark ms-2">{{ reviews|length }}</span></h3>
-            <div>
-                <button class="btn btn-outline-neon" data-bs-toggle="modal" data-bs-target="#verifyModal">
-                    <i class="fas fa-pencil-alt me-2"></i>Write a Review
-                </button>
-            </div>
-        </div>
-
-        <!-- Verified Purchase Badge -->
-        <div class="alert alert-dark border-neon mb-4">
-            <i class="fas fa-shield-check text-neon me-2"></i>
-            Only verified purchasers can submit reviews. Verification link will be sent to your purchase email.
-        </div>
-
-        <!-- Top Reviews Grid -->
-        <div class="row g-4 mb-4">
-            {% for review in reviews[:5] %}
-            <div class="col-12">
-                <div class="review-card bg-darker p-3 rounded-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="d-flex align-items-center">
-                            <span class="fw-bold me-2">{{ review.author }}</span>
-                            {% if review.verified %}
-                            <span class="verified-badge">
-                                <i class="fas fa-check-circle text-success"></i>
-                                <small class="ms-1">Verified Buyer</small>
-                            </span>
-                            {% endif %}
-                        </div>
-                        <div class="stars text-neon">
-                            {{ '★' * review.rating + '☆' * (5 - review.rating) }}
-                        </div>
-                    </div>
-                    <small class="text-muted">{{ review.date.strftime('%B %d, %Y') }}</small>
-                    <p class="mt-2 mb-0">{{ review.comment }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Show More Button -->
-        {% if reviews|length > 5 %}
-        <div class="text-center">
-            <a href="{{ url_for('product_reviews', product_id=product.id) }}" class="btn btn-neon">
-                Show All Reviews <i class="fas fa-arrow-down ms-2"></i>
-            </a>
-        </div>
-        {% endif %}
-
-        <!-- No Reviews Placeholder -->
-        {% if not reviews %}
-        <div class="text-center py-5">
-            <i class="fas fa-comment-slash text-muted fa-3x mb-3"></i>
-            <p class="text-muted">No verified reviews yet. Be the first to review!</p>
-        </div>
-        {% endif %}
-    </div>
-</section>
-
-<!-- Verification Modal -->
-<div class="modal fade" id="verifyModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-light">
-            <div class="modal-header border-neon">
-                <h5 class="modal-title text-neon">Verify Purchase</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="verificationForm">
-                <div class="modal-body">
-                    <div class="mb-4">
-                        <label class="form-label">Enter purchase email</label>
-                        <input type="email" class="form-control bg-darker" required 
-                               placeholder="email@example.com" name="email">
-                    </div>
-                    <div class="alert alert-dark border-neon">
-                        <i class="fas fa-info-circle me-2"></i>
-                        We'll send a verification link to this email address
-                    </div>
-                </div>
-                <div class="modal-footer border-neon">
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-neon">Send Verification</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<!-- Review Submission Modal -->
-<div class="modal fade" id="reviewModal" tabindex="-1">
-    <!-- Keep previous review modal content but add verification check -->
-</div>
-{% if total_reviews > 5 %}
-<div class="text-end mt-3">
-    <a href="{{ url_for('main.all_reviews', product_id=product.id) }}"
-       class="btn btn-outline-neon btn-sm">
-        View All {{ total_reviews }} Reviews
-    </a>
-</div>
-{% endif %}
-
-
-
-{% if show_review_modal %}
-  <script>
-    window.onload = function () {
-      var reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
-      reviewModal.show();
-    };
-  </script>
-{% endif %}
-
-
-<style>
-.verified-badge {
-    background: rgba(0, 255, 128, 0.1);
-    padding: 0.25rem 0.5rem;
-    border-radius: 1rem;
-    font-size: 0.8rem;
-}
-
-.review-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0, 247, 255, 0.1);
-}
-
-.review-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 247, 255, 0.1);
-}
-
-.bg-darker {
-    background: #1a1a1a !important;
-}
-
-.btn-neon {
-    background: var(--neon-accent);
-    color: var(--dark-bg);
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-neon:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
-}
-</style>
-
-<script>
-    // --- Handle Verification Email Form Submission ---
-    document.getElementById('verificationForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        const emailInput = form.querySelector('input[name="email"]');
-        
-        try {
-            const response = await fetch('/verify-purchase', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    email: emailInput.value.trim(), 
-                    product_id: "{{ product.id }}" 
-                })
-            });
-    
-            if (response.ok) {
-                // Clear form
-                form.reset();
-                
-                // Close modal
-                const modal = bootstrap.Modal.getInstance('#verifyModal') || 
-                             new bootstrap.Modal(document.getElementById('verifyModal'));
-                modal.hide();
-    
-                showToast('✅ Verification email sent! Check your inbox.', 'success');
-            } else {
-                throw new Error('Failed to send verification');
-            }
-        } catch (error) {
-            showToast(`❌ ${error.message || 'Failed to send verification. Please try again.'}`, 'error');
-        }
-    });
-    
-    // --- Handle Review Form Submission ---
-    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        
-        try {
-            const response = await fetch('/submit-review', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    token: sessionStorage.getItem('reviewToken'),
-                    rating: form.querySelector('#reviewRating').value,
-                    comment: form.querySelector('#reviewComment').value.trim()
-                })
-            });
-    
-            if (response.ok) {
-                // Clear form and token
-                form.reset();
-                sessionStorage.removeItem('reviewToken');
-                
-                // Close modal
-                const modal = bootstrap.Modal.getInstance('#reviewModal') || 
-                             new bootstrap.Modal(document.getElementById('reviewModal'));
-                modal.hide();
-    
-                showToast('✅ Review submitted successfully!', 'success');
-                
-                // Optional: Refresh page or reload reviews
-                setTimeout(() => location.reload(), 1500); // Reload after 1.5 seconds
-            } else {
-                throw new Error('Failed to submit review');
-            }
-        } catch (error) {
-            showToast(`❌ ${error.message || 'Error submitting review. Please try again.'}`, 'error');
-        }
-    });
-    
-    // --- Improved Toast Notification ---
-    function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast-alert alert alert-${type} position-fixed top-0 end-0 m-3`;
-        toast.setAttribute('role', 'alert');
-        toast.innerHTML = `
-            <div class="d-flex align-items-center">
-                <span class="me-2">${type === 'success' ? '✅' : '❌'}</span>
-                <div>${message}</div>
-                <button type="button" class="btn-close ms-3" data-bs-dismiss="alert"></button>
-            </div>
-        `;
-    
-        document.body.appendChild(toast);
-        
-        // Initialize Bootstrap toast
-        const bsToast = new bootstrap.Toast(toast, {
-            autohide: true,
-            delay: 3000
-        });
-        bsToast.show();
-    
-        // Remove element after hide
-        toast.addEventListener('hidden.bs.toast', () => toast.remove());
-    }
-    </script>
-
-
-
-<style>
-:root {
-    --neon-accent: #00f7ff;
-    --dark-bg: #0d0d0d;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-}
-
-body {
-    background: var(--dark-bg);
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-}
-
-.text-neon {
-    color: var(--neon-accent);
-    text-shadow: 0 0 8px var(--neon-accent);
-}
-
-.product-detail {
-    margin-top: 100px;
-}
-
-.zoom-on-hover {
-    transition: transform 0.4s ease-in-out;
-}
-
-.zoom-on-hover:hover {
-    transform: scale(1.05);
-}
-
-.thumb-hover {
-    transition: transform 0.3s, border 0.3s;
-    border: 2px solid transparent;
-}
-
-.thumb-hover:hover {
-    transform: scale(1.1);
-    border-color: var(--neon-accent);
-}
-
-.spec-box {
-    background: var(--glass-bg);
-    border-radius: 12px;
-    padding: 0.75rem 1.2rem;
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-}
-
-/* FIXED MAIN IMAGE BOX */
-.position-relative.bg-black.rounded-4.overflow-hidden.shadow-lg {
-    width: 100%;
-    height: 550px;          /* fixed height for all slides */
-    background: #000;
-    position: relative;
-}
-
-#main-image {
-    width: 100%;
-    height: 70%;
-    object-fit: cover;      /* cover the entire box, cropping as needed */
-    transition: var(--transition);
-    cursor: zoom-in;
-}
-
-/* Animations */
-@keyframes fade-in {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-    animation: fade-in 0.8s ease-out;
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-    .spec-box {
-        flex: 1 1 100%;
-        justify-content: center;
-    }
-
-    .product-detail {
-        padding-bottom: 3rem;
-    }
-
-    .btn-lg {
-        font-size: 1rem;
-        padding: 0.75rem 1.25rem;
-    }
-
-    .display-5 {
-        font-size: 1.75rem;
-    }
-}
-</style>
-
-<script>
-function changeMainImage(imageUrl) {
-    const mainImg = document.getElementById('main-image');
-    mainImg.classList.remove("animate-fade-in");
-    void mainImg.offsetWidth; // reset animation
-    mainImg.src = imageUrl;
-    mainImg.classList.add("animate-fade-in");
-}
-</script>
+  {% include 'partials/reviews.html' %}
 {% endblock %}

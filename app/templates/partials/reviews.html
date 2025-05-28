@@ -1,0 +1,476 @@
+<section class="reviews-section my-8">
+    <!-- Main Container -->
+    <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 border border-indigo-900/50 backdrop-blur-sm bg-opacity-90">
+        <!-- Header with Glow Effect -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <div class="group">
+                <h3 class="text-2xl font-bold text-white inline-flex items-center">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                        Customer Reviews
+                    </span>
+                    <span class="ml-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm font-medium px-3 py-1 rounded-full shadow-lg shadow-indigo-500/20">
+                        {{ reviews|length }}
+                    </span>
+                </h3>
+                <div class="h-0.5 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 w-0 group-hover:w-full transition-all duration-500"></div>
+            </div>
+            
+            <button 
+                class="relative overflow-hidden group flex items-center px-4 py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium transition-all duration-300 shadow-lg hover:shadow-indigo-500/30"
+                data-bs-toggle="modal" 
+                data-bs-target="#verifyModal"
+            >
+                <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                <i class="fas fa-pencil-alt mr-2 text-indigo-200"></i>
+                Write a Review
+            </button>
+        </div>
+
+        <!-- Verification Notice with Animated Border -->
+        <div class="relative bg-gray-800/60 border-l-4 border-indigo-500 rounded-r-lg p-4 mb-6 flex items-start overflow-hidden">
+            <div class="absolute -left-[2px] -top-[2px] -bottom-[2px] w-1 bg-gradient-to-b from-indigo-400 to-purple-500 animate-pulse"></div>
+            <i class="fas fa-shield-check text-indigo-400 mt-0.5 mr-3 text-lg"></i>
+            <div>
+                <h4 class="font-medium text-white">Verified Reviews Only</h4>
+                <p class="text-gray-400 text-sm mt-1">Only verified purchasers can submit reviews. We'll send a verification link to your purchase email.</p>
+            </div>
+        </div>
+
+        <!-- Reviews Grid -->
+        <div class="space-y-4 mb-6">
+            {% for review in reviews[:5] %}
+            <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700 hover:border-indigo-500/30 transition-all duration-300 group">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <div class="flex items-center">
+                            <span class="font-bold text-white mr-2">{{ review.author }}</span>
+                            {% if review.verified %}
+                            <span class="inline-flex items-center bg-indigo-900/30 text-indigo-400 text-xs px-2.5 py-0.5 rounded-full">
+                                <i class="fas fa-check-circle text-indigo-400 mr-1.5 text-xs"></i>
+                                Verified Buyer
+                            </span>
+                            {% endif %}
+                        </div>
+                        <small class="text-gray-500 text-xs">{{ review.date.strftime('%B %d, %Y') }}</small>
+                    </div>
+                    <div class="stars text-amber-400 text-lg">
+                        {{ '★' * review.rating + '☆' * (5 - review.rating) }}
+                    </div>
+                </div>
+                <p class="text-gray-300 mt-3 group-hover:text-gray-100 transition-colors duration-200">{{ review.comment }}</p>
+                
+                <!-- Review Actions -->
+                <div class="flex justify-end mt-4 space-x-3">
+                    <button class="text-gray-400 hover:text-indigo-400 text-sm flex items-center transition-colors duration-200">
+                        <i class="far fa-thumbs-up mr-1.5"></i>
+                        Helpful
+                    </button>
+                    <button class="text-gray-400 hover:text-indigo-400 text-sm flex items-center transition-colors duration-200">
+                        <i class="far fa-comment mr-1.5"></i>
+                        Comment
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Show More Button -->
+        {% if reviews|length > 5 %}
+        <div class="text-center">
+            <a 
+                href="{{ url_for('product_reviews', product_id=product.id) }}" 
+                class="inline-flex items-center px-5 py-2.5 border border-indigo-600 text-indigo-400 font-medium rounded-lg hover:bg-indigo-900/30 transition-all duration-300 group"
+            >
+                Show All Reviews
+                <i class="fas fa-chevron-down ml-2 group-hover:translate-y-0.5 transition-transform duration-300"></i>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Empty State -->
+        {% if not reviews %}
+        <div class="text-center py-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-800 rounded-full mb-4">
+                <i class="fas fa-comment-slash text-gray-600 text-2xl"></i>
+            </div>
+            <h4 class="text-lg font-medium text-gray-300">No reviews yet</h4>
+            <p class="text-gray-500 mt-1 max-w-md mx-auto">Be the first to share your thoughts about this product!</p>
+            <button 
+                class="mt-4 inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
+                data-bs-toggle="modal" 
+                data-bs-target="#verifyModal"
+            >
+                Write a Review
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Verification Modal -->
+<div class="modal fade" id="verifyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
+            <div class="modal-header border-b border-gray-700 p-5">
+                <div class="flex items-center">
+                    <div class="mr-3 p-2 rounded-full bg-indigo-900/30 text-indigo-400">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h5 class="modal-title text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                        Verify Purchase
+                    </h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="verificationForm">
+                <div class="modal-body p-5">
+                    <div class="mb-5">
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Purchase Email</label>
+                        <div class="relative">
+                            <input 
+                                type="email" 
+                                class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200" 
+                                required 
+                                placeholder="email@example.com" 
+                                name="email"
+                            >
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800/60 border-l-2 border-indigo-500 rounded-r-lg p-3 flex items-start">
+                        <i class="fas fa-info-circle text-indigo-400 mt-0.5 mr-2"></i>
+                        <p class="text-gray-400 text-sm">We'll send a verification link to this email address</p>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-gray-700 p-5">
+                    <button 
+                        type="button" 
+                        class="px-5 py-2.5 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg transition-colors duration-200 ml-3"
+                        id="verifySubmitBtn"
+                    >
+                        <span id="verifyBtnText">Send Verification</span>
+                        <span id="verifySpinner" class="hidden ml-2">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Review Submission Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
+            <div class="modal-header border-b border-gray-700 p-5">
+                <div class="flex items-center">
+                    <div class="mr-3 p-2 rounded-full bg-amber-900/30 text-amber-400">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h5 class="modal-title text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+                        Write Your Review
+                    </h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="reviewForm">
+                <div class="modal-body p-5">
+                    <div class="mb-5">
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Your Rating</label>
+                        <div class="rating-stars flex space-x-2">
+                            {% for i in range(5, 0, -1) %}
+                            <input type="radio" id="star{{i}}" name="rating" value="{{i}}" class="hidden" required>
+                            <label for="star{{i}}" class="text-3xl cursor-pointer text-gray-600 hover:text-amber-400 transition-colors duration-200">
+                                ★
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Your Review</label>
+                        <textarea 
+                            id="reviewComment" 
+                            rows="5" 
+                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200" 
+                            placeholder="Share your experience with this product..."
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="bg-gray-800/60 border-l-2 border-indigo-500 rounded-r-lg p-3 flex items-start">
+                        <i class="fas fa-check-circle text-indigo-400 mt-0.5 mr-2"></i>
+                        <p class="text-gray-400 text-sm">Your review will be marked as "Verified Purchase"</p>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-gray-700 p-5">
+                    <button 
+                        type="button" 
+                        class="px-5 py-2.5 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg transition-colors duration-200 ml-3"
+                        id="reviewSubmitBtn"
+                    >
+                        <span id="reviewBtnText">Submit Review</span>
+                        <span id="reviewSpinner" class="hidden ml-2">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-3 w-80"></div>
+
+<script>
+// Enhanced Verification Form Submission
+document.getElementById('verificationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const emailInput = form.querySelector('input[name="email"]');
+    const submitBtn = document.getElementById('verifySubmitBtn');
+    const btnText = document.getElementById('verifyBtnText');
+    const spinner = document.getElementById('verifySpinner');
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    btnText.textContent = 'Sending...';
+    spinner.classList.remove('hidden');
+    
+    try {
+        const response = await fetch('/verify-purchase', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email: emailInput.value.trim(), 
+                product_id: "{{ product.id }}" 
+            })
+        });
+
+       if (response.ok) {
+    const data = await response.json();
+
+    // ✅ Store token in sessionStorage
+    if (data.token) {
+        sessionStorage.setItem('reviewToken', data.token);
+    }
+
+    // Clear form
+    form.reset();
+
+    // Close modal
+    const modal = bootstrap.Modal.getInstance('#verifyModal') || 
+                 new bootstrap.Modal(document.getElementById('verifyModal'));
+    modal.hide();
+
+    // Show success toast
+    showToast('Verification email sent! Check your inbox.', 'success');
+
+    // Open review modal after a delay
+    setTimeout(() => {
+        const reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+        reviewModal.show();
+    }, 1000);
+}
+ else {
+            throw new Error('Failed to send verification');
+        }
+    } catch (error) {
+        showToast(error.message || 'Failed to send verification. Please try again.', 'error');
+    } finally {
+        // Reset button state
+        submitBtn.disabled = false;
+        btnText.textContent = 'Send Verification';
+        spinner.classList.add('hidden');
+    }
+});
+
+// Enhanced Review Form Submission
+document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const submitBtn = document.getElementById('reviewSubmitBtn');
+    const btnText = document.getElementById('reviewBtnText');
+    const spinner = document.getElementById('reviewSpinner');
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    btnText.textContent = 'Submitting...';
+    spinner.classList.remove('hidden');
+    
+    try {
+        const response = await fetch('/submit-review', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                token: sessionStorage.getItem('reviewToken'),
+                rating: form.querySelector('input[name="rating"]:checked').value,
+                comment: form.querySelector('#reviewComment').value.trim()
+            })
+        });
+
+        if (response.ok) {
+            // Clear form and token
+            form.reset();
+            sessionStorage.removeItem('reviewToken');
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance('#reviewModal') || 
+                         new bootstrap.Modal(document.getElementById('reviewModal'));
+            modal.hide();
+            
+            // Show success toast
+            showToast('Review submitted successfully!', 'success');
+            
+            // Refresh page after a delay
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            throw new Error('Failed to submit review');
+        }
+    } catch (error) {
+        showToast(error.message || 'Error submitting review. Please try again.', 'error');
+    } finally {
+        // Reset button state
+        submitBtn.disabled = false;
+        btnText.textContent = 'Submit Review';
+        spinner.classList.add('hidden');
+    }
+});
+
+// Star Rating Interaction
+document.querySelectorAll('.rating-stars label').forEach(star => {
+    star.addEventListener('click', (e) => {
+        const stars = e.currentTarget.parentElement.children;
+        const clickedIndex = Array.from(stars).indexOf(e.currentTarget);
+        
+        // Highlight all stars up to the clicked one
+        Array.from(stars).forEach((s, i) => {
+            if (i <= clickedIndex) {
+                s.classList.add('text-amber-400');
+                s.classList.remove('text-gray-600');
+            } else {
+                s.classList.remove('text-amber-400');
+                s.classList.add('text-gray-600');
+            }
+        });
+    });
+});
+
+// Enhanced Toast Notification
+function showToast(message, type = 'success') {
+    const toastContainer = document.getElementById('toastContainer');
+    const toastId = 'toast-' + Date.now();
+    
+    const toast = document.createElement('div');
+    toast.id = toastId;
+    toast.className = `relative p-4 rounded-lg shadow-lg border ${
+        type === 'success' 
+            ? 'bg-green-900/80 border-green-700' 
+            : 'bg-red-900/80 border-red-700'
+    } text-white overflow-hidden`;
+    
+    toast.innerHTML = `
+        <div class="flex items-start">
+            <div class="flex-shrink-0 mt-0.5 mr-3 text-lg ${
+                type === 'success' ? 'text-green-400' : 'text-red-400'
+            }">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-sm font-medium">${message}</p>
+            </div>
+            <button onclick="document.getElementById('${toastId}').remove()" 
+                class="ml-3 text-gray-300 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 h-1 ${
+            type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        } animate-progress"></div>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (document.getElementById(toastId)) {
+            toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 5000);
+}
+
+// Show review modal if flag is set
+{% if show_review_modal %}
+document.addEventListener('DOMContentLoaded', function() {
+    const reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+    reviewModal.show();
+});
+{% endif %}
+</script>
+
+<style>
+/* Custom animations */
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0; }
+}
+
+.animate-progress {
+    animation: progress 5s linear forwards;
+}
+
+/* Rating stars hover effect */
+.rating-stars label:hover ~ label {
+    color: #4b5563 !important; /* gray-600 */
+}
+
+/* Glow effect for verified badge */
+.verified-badge {
+    position: relative;
+}
+.verified-badge:after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: rgba(74, 222, 128, 0.3);
+    border-radius: 9999px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.verified-badge:hover:after {
+    opacity: 1;
+}
+
+/* Custom scrollbar for modals */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: #1f2937; /* gray-800 */
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: #4f46e5; /* indigo-600 */
+    border-radius: 3px;
+}
+</style>
