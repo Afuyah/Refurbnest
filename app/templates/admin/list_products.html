@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             const productId = this.dataset.id;
             const form = document.getElementById('deleteForm');
-            form.action = `/admin/products/delete/${productId}`;
+            form.action = `/admin/admin/products/delete/${productId}`;
             new bootstrap.Modal(document.getElementById('deleteModal')).show();
         });
     });

@@ -112,17 +112,17 @@ def list_products():
         joinedload(Product.images)
     )
 
-    # Apply filters
+    # Apply filters if provided
     if brand_id:
         query = query.filter(Product.brand_id == brand_id)
     if category_id:
         query = query.filter(Product.category_id == category_id)
 
-    # Paginate results
+    # Paginate results (8 per page)
     pagination = query.paginate(page=page, per_page=8, error_out=False)
     products = pagination.items
 
-    # Prepare product data with first image
+    # Prepare product data with first image or default image
     product_data = [{
         'id': product.id,
         'name': product.name,
@@ -132,13 +132,12 @@ def list_products():
         'image_url': url_for('product_image', filename=product.images[0].image_path)
                      if product.images else url_for('static', filename='images/default.jpg')
     } for product in products]
-    
 
-    # Get filter-related data
-    brands = Brand.query.all()  # Cache for 1 hour
+    # Get all brands and selected category for filter UI
+    brands = Brand.query.all()
     selected_category = Category.query.get(category_id) if category_id else None
 
-    # User feedback
+    # Inform user if no results
     if not pagination.total:
         flash("No products found matching your criteria.", "info")
 
@@ -156,12 +155,14 @@ def view_product(product_id):
     product = Product.query.get_or_404(product_id)
     image_url = product.images[0].image_path if product.images else 'default.jpg'
 
+    # Get recent reviews
     recent_reviews = Review.query.filter_by(product_id=product_id).order_by(Review.date.desc()).limit(5).all()
     total_reviews = Review.query.filter_by(product_id=product_id).count()
 
+    # Load inquiry form
     form = InquiryForm()
 
-    # Check if there's a verified review session for this product
+    # Handle verified review modal
     verified_review_id = session.pop('verified_review', None)
     show_review_modal = False
     review_to_edit = None
@@ -170,6 +171,9 @@ def view_product(product_id):
         review_to_edit = Review.query.get(verified_review_id)
         if review_to_edit and review_to_edit.product_id == product.id and not review_to_edit.verified:
             show_review_modal = True
+
+    # Fetch all flexible specs (assuming Product.specs is a relationship)
+    specs = product.specs  # List of ProductSpec(name, value)
 
     return render_template(
         'main/view_product.html',
@@ -180,9 +184,9 @@ def view_product(product_id):
         total_reviews=total_reviews,
         show_review_modal=show_review_modal,
         verified_review=verified_review_id,
-        review_to_edit=review_to_edit
+        review_to_edit=review_to_edit,
+        specs=specs  # Pass specs to the template
     )
-
 
 from flask import request
 

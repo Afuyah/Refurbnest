@@ -53,44 +53,39 @@
                             </div>
                         </div>
 
-                        <!-- Technical Specifications Section -->
-                        <div class="border-top border-bottom py-4 mb-4">
-                            <h5 class="mb-4">
-                                <i class="fas fa-microchip me-2"></i>Technical Specifications
-                            </h5>
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Storage</label>
-                                        {{ form.storage(class="form-select form-select-lg") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">RAM</label>
-                                        {{ form.ram(class="form-select form-select-lg") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Processor</label>
-                                        {{ form.processor(class="form-select form-select-lg") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Storage Type</label>
-                                        {{ form.storage_type(class="form-select form-select-lg") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Generation</label>
-                                        {{ form.generation(class="form-control form-control-lg") }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Dynamic Technical Specifications -->
+<div class="mb-5">
+    <h5 class="mb-4">
+        <i class="fas fa-sliders-h me-2"></i>Custom Specifications
+    </h5>
+    
+    <div id="spec-fields">
+        {% for spec in specs %}
+        <div class="row g-3 spec-item mb-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label fw-bold">Specification Name</label>
+                <input type="text" name="spec_name[]" class="form-control form-control-lg" value="{{ spec.name }}" required>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label fw-bold">Specification Value</label>
+                <input type="text" name="spec_value[]" class="form-control form-control-lg" value="{{ spec.value }}" required>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="button" class="btn btn-danger btn-lg remove-spec">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-grid">
+        <button type="button" class="btn btn-outline-primary btn-lg" id="add-spec">
+            <i class="fas fa-plus me-2"></i>Add Specification
+        </button>
+    </div>
+</div>
+
 
                         <!-- Category & Brand Selection -->
                         <div class="row g-4 mb-4">
@@ -140,28 +135,65 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- Form Validation and Input Formatting -->
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Bootstrap Validation
+document.addEventListener('DOMContentLoaded', function () {
+    // Bootstrap validation
     const forms = document.querySelectorAll('.needs-validation');
-    
-    Array.prototype.slice.call(forms).forEach(form => {
+    Array.from(forms).forEach(form => {
         form.addEventListener('submit', event => {
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
             }
             form.classList.add('was-validated');
-        }, false);
+        });
     });
 
-    // Price Input Formatting
-    document.getElementById('price').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    // Dynamic spec field logic
+    const specContainer = document.getElementById('spec-fields');
+    const addSpecBtn = document.getElementById('add-spec');
+
+    addSpecBtn.addEventListener('click', () => {
+        const count = specContainer.querySelectorAll('.spec-item').length;
+        if (count >= 10) {
+            alert("You can only add up to 10 specifications.");
+            return;
+        }
+
+        const specGroup = document.createElement('div');
+        specGroup.className = 'row g-3 spec-item mb-3 align-items-end';
+        specGroup.innerHTML = `
+            <div class="col-md-5">
+                <label class="form-label fw-bold">Specification Name</label>
+                <input type="text" name="spec_name[]" class="form-control form-control-lg" required>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label fw-bold">Specification Value</label>
+                <input type="text" name="spec_value[]" class="form-control form-control-lg" required>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="button" class="btn btn-danger btn-lg remove-spec">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        `;
+        specContainer.appendChild(specGroup);
+    });
+
+    specContainer.addEventListener('click', function (e) {
+        if (e.target.closest('.remove-spec')) {
+            const count = specContainer.querySelectorAll('.spec-item').length;
+            if (count <= 2) {
+                alert("You must have at least 2 specifications.");
+                return;
+            }
+            e.target.closest('.spec-item').remove();
+        }
     });
 });
 </script>
+
 {% endblock %}
 
 <style>

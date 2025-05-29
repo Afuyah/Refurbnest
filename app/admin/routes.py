@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash,current_a
 from app import db
 from app.auth.routes import roles_required
 from app.admin.forms import BrandForm, CategoryForm, ProductForm, ProductVarietyForm,ProductImageForm
-from app.admin.models import Brand, Category, Product, ProductImage, ProductVariety
+from app.admin.models import Brand, Category, Product, ProductImage, ProductVariety, ProductSpec
 from flask_login import login_required
 import os
 from slugify import slugify
@@ -122,8 +122,9 @@ def add_product():
         brand_id = request.form.get('brand_id')
         category_id = request.form.get('category_id')
 
-        specs_names = request.form.getlist('spec_name')
-        specs_values = request.form.getlist('spec_value')
+        specs_names = request.form.getlist('spec_name[]')
+        specs_values = request.form.getlist('spec_value[]')
+
         filled_specs = [
             (n.strip(), v.strip())
             for n, v in zip(specs_names, specs_values)
@@ -171,61 +172,62 @@ def add_product():
 
     return render_template('admin/add_product.html', form=form)
 
-@admin_bp.route('/admin/edit_product/<int:product_id>', methods=['GET', 'POST'])
+@admin_bp.route('/products/<int:product_id>/edit', methods=['GET', 'POST'])
 def edit_product(product_id):
     product = Product.query.get_or_404(product_id)
     form = ProductForm(obj=product)
     form.brand_id.choices = [(b.id, b.name) for b in Brand.query.all()]
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
+    
+    # Preload existing specs
+    existing_specs = ProductSpec.query.filter_by(product_id=product.id).all()
+    specs_data = [{'name': spec.name, 'value': spec.value} for spec in existing_specs]
 
-    if request.method == 'POST':
-        product.name = request.form.get('name')
-        product.description = request.form.get('description')
-        product.price = request.form.get('price')
-        product.brand_id = request.form.get('brand_id')
-        product.category_id = request.form.get('category_id')
+    if request.method == 'POST' and form.validate_on_submit():
+        # Update product basic fields
+        form.populate_obj(product)
+        db.session.commit()
 
-        specs_names = request.form.getlist('spec_name')
-        specs_values = request.form.getlist('spec_value')
+        # Get submitted specs
+        spec_names = request.form.getlist('spec_name[]')
+        spec_values = request.form.getlist('spec_value[]')
 
-        if len(specs_names) < 2 or len(specs_names) > 10:
-            flash('You must provide at least 2 and at most 10 specifications.', 'danger')
-            return render_template('admin/edit_product.html', form=form, specs=product.specs)
+        # Clean empty entries
+        specs = [(n.strip(), v.strip()) for n, v in zip(spec_names, spec_values) if n.strip() and v.strip()]
 
-        try:
-            # Remove old specs
-            ProductSpec.query.filter_by(product_id=product.id).delete()
+        # Enforce: at least 2 specs if total after update is <2
+        if len(specs) < 2:
+            flash('Please provide at least two product specifications.', 'danger')
+            return render_template('admin/edit_product.html', form=form, specs=specs)
 
-            # Add new specs
-            for name, value in zip(specs_names, specs_values):
-                if name.strip() and value.strip():
-                    spec = ProductSpec(name=name.strip(), value=value.strip(), product_id=product.id)
-                    db.session.add(spec)
+        # Delete old specs
+        ProductSpec.query.filter_by(product_id=product.id).delete()
 
-            db.session.commit()
-            flash('Product updated successfully!', 'success')
-            return redirect(url_for('admin.list_products'))
-        except SQLAlchemyError as e:
-            db.session.rollback()
-            flash(f'Error updating product: {str(e)}', 'danger')
+        # Insert updated specs
+        for name, value in specs:
+            db.session.add(ProductSpec(product_id=product.id, name=name, value=value))
+        db.session.commit()
 
-    return render_template('admin/edit_product.html', form=form, specs=product.specs)
+        flash('Product updated successfully.', 'success')
+        return redirect(url_for('admin.list_products'))
+
+    return render_template('admin/edit_product.html', form=form, specs=specs_data)
 
 
-@admin_bp.route('/admin/delete_product/<int:product_id>', methods=['POST'])
+
+@admin_bp.route('/admin/products/delete/<int:product_id>', methods=['POST'])
 def delete_product(product_id):
     product = Product.query.get_or_404(product_id)
-    
     try:
         db.session.delete(product)
         db.session.commit()
         flash(f'Product "{product.name}" deleted successfully.', 'success')
     except Exception as e:
         db.session.rollback()
-        flash(f'Error deleting product: {str(e)}', 'error')
+        flash(f'Error deleting product: {str(e)}', 'danger')
         current_app.logger.error(f'Delete error for product ID {product_id}: {e}')
-    
     return redirect(url_for('admin.list_products'))
+
 
 
 
