@@ -3,174 +3,170 @@
 
 {% block content %}
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex flex-col gap-8">
-        <!-- Product Row -->
-        <div class="flex flex-col-reverse lg:flex-row gap-8 items-start">
-            <!-- Product Info Card -->
-            <div class="w-full lg:w-5/12">
-                <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-3xl shadow-2xl relative overflow-hidden h-full">
-                    <!-- Glow effect -->
-                    <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-600 rounded-full filter blur-3xl opacity-10"></div>
-                    
-                    <h1 class="mb-4 text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                        {{ product.name }}
-                    </h1>
+  <div class="flex flex-col gap-12">
+    
+    <!-- Product Content -->
+    <div class="flex flex-col-reverse lg:flex-row gap-12 items-start">
+      
+      <!-- Product Info Panel -->
+      <div class="w-full lg:w-5/12 relative z-10">
+        <div class="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-3xl shadow-2xl overflow-hidden">
+          <!-- Subtle Glow -->
+          <div class="absolute -top-32 -right-32 w-80 h-80 bg-blue-500 rounded-full blur-3xl opacity-10"></div>
 
-                    <!-- Price -->
-                    <div class="mb-6 flex items-center">
-                        <span class="text-3xl font-bold text-white">${{ product.price }}</span>
-                        {% if product.original_price %}
-                        <span class="ml-3 text-xl text-gray-400 line-through">${{ product.original_price }}</span>
-                        <span class="ml-3 px-2 py-1 bg-green-900/30 text-green-400 text-sm rounded-full">
-                            {{ ((1 - product.price/product.original_price) * 100)|round|int }}% OFF
-                        </span>
-                        {% endif %}
-                    </div>
+          <!-- Product Title -->
+          <h1 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+            {{ product.name }}
+          </h1>
+          <p class="text-sm text-gray-400 italic mt-2">
+            Quality you can count on, performance you’ll love.
+          </p>
 
-                   <!-- Dynamic Spec Chips -->
-                        {% if specs %}
-                        <div class="flex flex-wrap gap-3 my-6">
-                            {% for spec in specs %}
-                                <div class="px-4 py-2 bg-gray-800/50 rounded-full flex items-center text-sm border border-gray-700 hover:border-blue-400 transition-colors">
-                                    <span class="text-blue-400 font-medium mr-2">{{ spec.name }}:</span>
-                                    <span>{{ spec.value }}</span>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
+          <!-- Price Section -->
+          <div class="mt-6 mb-4 flex items-center">
+            <span class="text-3xl font-bold">${{ product.price }}</span>
+            {% if product.original_price %}
+            <span class="ml-4 text-xl text-gray-400 line-through">${{ product.original_price }}</span>
+            <span class="ml-3 px-3 py-1 bg-green-900/30 text-green-400 text-xs rounded-full">
+              {{ ((1 - product.price/product.original_price) * 100)|round|int }}% OFF
+            </span>
+            {% endif %}
+          </div>
 
-
-                    <!-- Add to Cart Button -->
-                    <button class="add-to-cart-btn w-full py-4 px-6 mb-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold shadow-lg hover:shadow-xl hover:from-blue-500 hover:to-purple-500 transition-all transform hover:-translate-y-1"
-                            data-product-id="{{ product.id }}"
-                            data-product-name="{{ product.name }}"
-                            data-product-price="{{ product.price }}">
-                        <div class="flex items-center justify-center">
-                            <i class="fas fa-cart-plus mr-3 text-lg"></i>
-                            <span class="btn-content">Add To Cart</span>
-                        </div>
-                    </button>
-
-                    <!-- Action Buttons -->
-                    <div class="grid grid-cols-1 gap-3 mt-6">
-                        <a href="https://wa.me/{{ '+254711667718' }}?text={{ 'I\'m interested in ' + product.name|urlencode + ' (Ksh' + product.price|string + '). Details: ' + product.description|urlencode }}"
-                           class="flex items-center justify-center py-3 px-6 rounded-xl bg-green-600 text-white font-medium shadow hover:bg-green-700 transition-colors">
-                            <i class="fab fa-whatsapp text-xl mr-3"></i>
-                            Chat on WhatsApp
-                        </a>
-                        <a href="{{ url_for('main.list_products') }}" 
-                           class="flex items-center justify-center py-3 px-6 rounded-xl bg-transparent text-white font-medium border-2 border-gray-700 hover:border-blue-500 hover:text-blue-400 transition-colors">
-                            <i class="fas fa-arrow-left mr-3"></i>
-                            Back to Products
-                        </a>
-                    </div>
-                </div>
+          <!-- Spec Chips -->
+          {% if specs %}
+          <div class="flex flex-wrap gap-3 mt-6">
+            {% for spec in specs %}
+            <div class="px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-sm hover:border-blue-500 transition">
+              <span class="text-blue-400 font-medium">{{ spec.name }}:</span>
+              <span class="text-white/90 ml-1">{{ spec.value }}</span>
             </div>
+            {% endfor %}
+          </div>
+          {% endif %}
 
-            <!-- Image Gallery -->
-            <div class="w-full lg:w-7/12">
-                <div class="relative bg-black rounded-3xl overflow-hidden shadow-2xl group">
-                    <!-- Main Image -->
-                    {% if product.images %}
-                        <img id="main-image"
-                             src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
-                             class="w-full h-auto aspect-square object-contain transition-opacity duration-300 group-hover:opacity-90"
-                             alt="{{ product.name }}">
-                    {% else %}
-                        <img id="main-image"
-                             src="{{ url_for('static', filename='images/default.jpg') }}"
-                             class="w-full h-auto aspect-square object-contain transition-opacity duration-300 group-hover:opacity-90"
-                             alt="Default Image">
-                    {% endif %}
-
-                    <!-- Thumbnail Gallery -->
-                    {% if product.images %}
-                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                            <div class="flex gap-3 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
-                                {% for image in product.images %}
-                                    <img src="{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}"
-                                         class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-400 transition-all"
-                                         onclick="changeMainImage('{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}')"
-                                         alt="Thumbnail of {{ product.name }}">
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
+          <!-- Add to Cart -->
+          <button class="add-to-cart-btn w-full mt-8 py-4 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-md hover:shadow-lg hover:from-blue-500 hover:to-purple-500 transition-all transform hover:-translate-y-1"
+                  data-product-id="{{ product.id }}"
+                  data-product-name="{{ product.name }}"
+                  data-product-price="{{ product.price }}">
+            <div class="flex items-center justify-center">
+              <i class="fas fa-cart-plus mr-3 text-lg"></i>
+              <span>Add To Cart</span>
             </div>
+          </button>
+
+          <!-- Actions -->
+          <div class="grid grid-cols-1 gap-3 mt-6">
+            <a href="https://wa.me/{{ '+254711667718' }}?text={{ 'I\'m interested in ' + product.name|urlencode + ' (Ksh' + product.price|string + '). Details: ' + product.description|urlencode }}"
+               class="flex items-center justify-center py-3 px-6 rounded-xl bg-green-600 text-white font-medium shadow hover:bg-green-700 transition-colors">
+              <i class="fab fa-whatsapp text-xl mr-3"></i>
+              Chat on WhatsApp
+            </a>
+            <a href="{{ url_for('main.list_products') }}"
+               class="flex items-center justify-center py-3 px-6 rounded-xl border border-gray-600 text-white hover:border-blue-400 hover:text-blue-400 transition-colors">
+              <i class="fas fa-arrow-left mr-3"></i>
+              Back to Products
+            </a>
+          </div>
         </div>
+      </div>
 
-        <!-- Description Card -->
-        <div class="w-full">
-            <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-3xl shadow-2xl">
-                <h3 class="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                    Detailed Specifications
-                </h3>
-                <div class="prose prose-invert max-w-none">
-                    <p class="text-gray-300 leading-relaxed">{{ product.description }}</p>
-                </div>
+      <!-- Image Section -->
+      <div class="w-full lg:w-7/12 relative">
+        <!-- Background Decoration -->
+        <svg class="absolute -top-16 -left-16 w-80 h-80 text-blue-500/10" fill="none" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="2" />
+        </svg>
+
+        <!-- Image Card -->
+        <div class="relative bg-[#0f1116] rounded-3xl overflow-hidden shadow-2xl group perspective">
+          <div class="transition-transform duration-300 transform-gpu group-hover:rotate-x-1 group-hover:rotate-y-1">
+            {% if product.images %}
+              <img id="main-image"
+                   src="{{ url_for('product_image', filename=product.images[0].image_path.split('/')[-1]) }}"
+                   class="w-full h-auto aspect-square object-contain transition-opacity duration-300"
+                   alt="{{ product.name }}">
+            {% else %}
+              <img id="main-image"
+                   src="{{ url_for('static', filename='images/default.jpg') }}"
+                   class="w-full h-auto aspect-square object-contain"
+                   alt="Default Image">
+            {% endif %}
+          </div>
+
+          <!-- Thumbnails -->
+          {% if product.images %}
+          <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+            <div class="flex gap-3 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+              {% for image in product.images %}
+              <img src="{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}"
+                   class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-400 transition"
+                   onclick="changeMainImage('{{ url_for('product_image', filename=image.image_path.split('/')[-1]) }}')"
+                   alt="Thumbnail of {{ product.name }}">
+              {% endfor %}
             </div>
+          </div>
+          {% endif %}
         </div>
+      </div>
     </div>
+
+    <!-- Description -->
+   <!-- Description Section -->
+<div class="w-full">
+  <div class="relative bg-[#0f0f11]/80 backdrop-blur-xl border border-white/10 p-10 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
+
+    <!-- Animated Glow Border -->
+    <div class="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-br from-blue-600/40 to-purple-700/30 animate-border-glow z-0"></div>
+
+    <!-- Header -->
+    <h3 class="relative z-10 text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 flex items-center gap-3">
+      <i class="fas fa-microchip text-blue-400 animate-pulse"></i>
+      Detailed Specifications
+    </h3>
+
+    <!-- Description Text -->
+    <div class="relative z-10 mt-6 prose prose-invert prose-sm sm:prose-base max-w-none text-gray-300 leading-relaxed">
+      <p class="text-lg font-medium tracking-wide text-gray-200/90">
+        {{ product.description }}
+      </p>
+    </div>
+
+    <!-- Decorative Orb Glow -->
+    <div class="absolute -top-16 -right-16 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl opacity-50 z-0"></div>
+    <div class="absolute -bottom-20 -left-20 w-52 h-52 bg-blue-500/10 rounded-full blur-2xl opacity-40 z-0"></div>
+  </div>
 </div>
-<style>
-    .add-to-cart-btn {
-        position: relative;
-        overflow: hidden;
-    }
 
-    .add-to-cart-btn::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            to bottom right,
-            rgba(255,255,255,0) 45%,
-            rgba(255,255,255,0.1) 50%,
-            rgba(255,255,255,0) 55%
-        );
-        transform: rotate(30deg);
-        transition: all 0.3s ease;
-    }
-
-    .add-to-cart-btn:hover::after {
-        left: 100%;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: scale(0.98);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    .animate-fade-in {
-        animation: fadeIn 0.4s ease-in-out;
-    }
-</style>
-
+  </div>
+</div>
 
 <script>
-    function changeMainImage(imageUrl) {
-        const mainImg = document.getElementById('main-image');
-        
-        // Remove animation class if it's there
-        mainImg.classList.remove("animate-fade-in");
-
-        // Force reflow to restart animation
-        void mainImg.offsetWidth;
-
-        // Change the image and add fade animation
-        mainImg.src = imageUrl;
-        mainImg.classList.add("animate-fade-in");
-    }
+  function changeMainImage(imageUrl) {
+    const mainImg = document.getElementById('main-image');
+    mainImg.classList.remove("animate-fade-in");
+    void mainImg.offsetWidth;
+    mainImg.src = imageUrl;
+    mainImg.classList.add("animate-fade-in");
+  }
 </script>
-  {% include 'partials/reviews.html' %}
+
+<style>
+  @keyframes border-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.3), 0 0 30px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5), 0 0 45px rgba(139, 92, 246, 0.5);
+  }
+}
+.animate-border-glow {
+  animation: border-glow 4s ease-in-out infinite;
+  border-radius: 1.5rem;
+}
+
+</style>
+
+{% include 'partials/reviews.html' %}
 {% endblock %}
