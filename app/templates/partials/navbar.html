@@ -1,5 +1,4 @@
-<link rel="preload" href="{{ url_for('static', filename='dist/output.css') }}" as="style">
-
+ 
 <!-- Premium Navigation -->
 <nav class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50 border-b border-gray-100">
   <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,27 +28,46 @@
           </a>
 
           <!-- Categories Dropdown -->
-          <div x-data="{ open: false }" class="relative">
-            <button @mouseenter="open = true" @mouseleave="open = false" class="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition-colors font-medium">
-              Categories
-              <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div x-show="open" x-cloak
-                 class="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-20"
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 translate-y-1"
-                 x-transition:enter-end="opacity-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-150"
-                 x-transition:leave-start="opacity-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 translate-y-1">
-              {% for cat in categories %}
-              <a href="{{ url_for('main.list_products', category=cat.id) }}"
-                 class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">{{ cat.name }}</a>
-              {% endfor %}
-            </div>
-          </div>
+          <div x-data="{ open: false }" class="relative" @mouseenter="open = true" @mouseleave="open = false">
+  <!-- Button -->
+  <button 
+    :aria-expanded="open.toString()" 
+    aria-haspopup="true"
+    class="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition-colors font-medium"
+  >
+    Categories
+    <svg 
+      class="w-4 h-4 transition-transform duration-200" 
+      :class="{ 'rotate-180': open }" 
+      fill="none" 
+      stroke="currentColor" 
+      viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
+
+  <!-- Dropdown Menu -->
+  <div 
+    x-show="open" 
+    x-cloak
+    class="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-20"
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0 translate-y-1"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 translate-y-1"
+  >
+    {% for cat in categories %}
+      <a href="{{ url_for('main.list_products', category=cat.id) }}"
+         class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+        {{ cat.name }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
 
           <a href="{{ url_for('main.about') }}" class="text-gray-600 hover:text-blue-600 transition-colors font-medium relative group">
             About

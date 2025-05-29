@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, FloatField, IntegerField, TextAreaField, SelectField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Optional
 from wtforms import ValidationError
-from .models import Brand, Category, RAMType, StorageType, ProcessorType, ProductVariety
+from .models import Brand, Category, ProductVariety
 from flask_wtf.file import FileField, FileAllowed
 
 class BrandForm(FlaskForm):
@@ -25,26 +25,13 @@ class CategoryForm(FlaskForm):
 
 class ProductForm(FlaskForm):
     name = StringField('Product Name', validators=[DataRequired(), Length(max=200)])
-    description = TextAreaField('Description', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[Optional(), Length(max=1000)])  # Now optional
     price = FloatField('Price', validators=[DataRequired()])
     
-    # Display user-friendly labels for RAM options
-    ram = SelectField('RAM', choices=[(ram.value, ram.value) for ram in RAMType], validators=[DataRequired()])
-    
-    # Display user-friendly labels for Processor options
-    processor = SelectField('Processor', choices=[(proc.value, proc.value) for proc in ProcessorType], validators=[DataRequired()])
-    
-    # Display user-friendly labels for Storage Type options
-    storage_type = SelectField('Storage Type', choices=[(st.value, st.value) for st in StorageType], validators=[DataRequired()])
-    
-    storage = StringField('Storage', validators=[DataRequired(), Length(max=50)])
-    generation = StringField('Generation', validators=[DataRequired(), Length(max=50)])
-    
-    # Brand and Category should be populated from the database
     brand_id = SelectField('Brand', coerce=int, validators=[DataRequired()])
     category_id = SelectField('Category', coerce=int, validators=[DataRequired()])
-    
-    submit = SubmitField('Add Product')
+
+    submit = SubmitField('Save Product')
 
 
 class ProductVarietyForm(FlaskForm):

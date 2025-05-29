@@ -47,10 +47,20 @@
 </div>
 
 <script>
-// Toggle mobile sidebar
-document.getElementById('toggleBrandSidebar').addEventListener('click', () => {
+  const toggleBtn = document.getElementById('toggleBrandSidebar');
   const sidebar = document.getElementById('brandSidebar');
-  sidebar.classList.toggle('translate-x-0');
-});
+
+  toggleBtn.addEventListener('click', () => {
+    const isOpen = sidebar.classList.contains('translate-x-0');
+
+    sidebar.classList.toggle('translate-x-0');
+    sidebar.classList.toggle('-translate-x-full');
+
+    // Update button text and icon
+    toggleBtn.innerHTML = isOpen
+      ? `<i class="fas fa-filter mr-2"></i> Filter Brands`
+      : `<i class="fas fa-times mr-2"></i> Close`;
+  });
 </script>
+
 

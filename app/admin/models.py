@@ -13,27 +13,6 @@ from app.payment.crypto import decrypt_pan
 import uuid
 from enum import Enum
 
-# Enum for RAM size options
-class RAMType(Enum):
-    RAM_2GB = "RAM_2GB"
-    RAM_4GB = "RAM_4GB"
-    RAM_8GB = "RAM_8GB"
-    RAM_16GB = "RAM_16GB"
-    RAM_32GB = "RAM_32GB"
-
-# Enum for types of storage
-class StorageType(Enum):
-    HDD = "HDD"
-    SSD = "SSD"
-
-# Enum for types of processors
-class ProcessorType(Enum):
-    Intel_Core_i3 = "Intel_Core_i3"
-    Intel_Core_i5 = "Intel_Core_i5"
-    Intel_Core_i7 = "Intel_Core_i7"
-    Intel_Core_i9 = "Intel_Core_i9"
-
-
 
 # ---------------------------------------
 # Brand Model
@@ -77,31 +56,42 @@ class Category(db.Model):
 
     
 
+# Product Model
 class Product(db.Model):
     __tablename__ = 'products'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False, index=True)
-    description = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text, nullable=True)  # Optional
     price = db.Column(db.Float, nullable=False)
-    storage = db.Column(db.String(50), nullable=False)
-    ram = db.Column(db.Enum(RAMType), nullable=False)
-    processor = db.Column(db.Enum(ProcessorType), nullable=False)
-    storage_type = db.Column(db.Enum(StorageType), nullable=False)
-    generation = db.Column(db.String(50), nullable=False)
 
     brand_id = db.Column(db.Integer, db.ForeignKey('brands.id', ondelete='CASCADE'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False)
-    is_featured = db.Column(db.Boolean, default=False, nullable=True)
-    is_active = db.Column(db.Boolean, default=True, nullable=True)
-    created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
-    updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now(), nullable=False)
-    sku = db.Column(db.String(50),)
+    is_featured = db.Column(db.Boolean, default=False)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=func.now())
+    updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now())
+    sku = db.Column(db.String(50))
+
+    # Relationships
     images = db.relationship('ProductImage', backref='product', lazy=True, cascade='all, delete-orphan')
     reviews = db.relationship('Review', backref='product', lazy=True, cascade='all, delete-orphan')
+    specs = db.relationship('ProductSpec', backref='product', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<Product {self.name}>'
+
+# Flexible ProductSpec Model
+class ProductSpec(db.Model):
+    __tablename__ = 'product_specs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)  # e.g., "RAM", "Storage", "Battery"
+    value = db.Column(db.String(200), nullable=False) # e.g., "8GB", "512GB SSD", "6000mAh"
+
+    def __repr__(self):
+        return f'<Spec {self.name}: {self.value}>'
 
 
 # ---------------------------------------

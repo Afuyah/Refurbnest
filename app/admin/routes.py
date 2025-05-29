@@ -102,29 +102,72 @@ def list_products():
     products = Product.query.all()
     return render_template('admin/list_products.html', products=products, form=form)
 
+from flask import request, jsonify, render_template
+from sqlalchemy.exc import SQLAlchemyError
+
 @admin_bp.route('/admin/add_product', methods=['GET', 'POST'])
 def add_product():
     form = ProductForm()
-    form.brand_id.choices = [(b.id, b.name) for b in Brand.query.all()]
-    form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
+    form.brand_id.choices = [(b.id, b.name) for b in Brand.query.order_by(Brand.name).all()]
+    form.category_id.choices = [(c.id, c.name) for c in Category.query.order_by(Category.name).all()]
 
-    if form.validate_on_submit():
-        product = Product(
-            name=form.name.data,
-            description=form.description.data,
-            price=form.price.data,
-            storage=form.storage.data,
-            ram=form.ram.data,
-            processor=form.processor.data,
-            storage_type=form.storage_type.data,
-            generation=form.generation.data,
-            brand_id=form.brand_id.data,
-            category_id=form.category_id.data
-        )
-        db.session.add(product)
-        db.session.commit()
-        flash('Product added successfully!', 'success')
-        return redirect(url_for('admin.list_products'))
+    if request.method == 'POST':
+        if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+            return jsonify(success=False, message='Invalid request type.')
+
+        # Collect and clean input data
+        name = request.form.get('name', '').strip()
+        description = request.form.get('description', '').strip()
+        price = request.form.get('price', '').strip()
+        brand_id = request.form.get('brand_id')
+        category_id = request.form.get('category_id')
+
+        specs_names = request.form.getlist('spec_name')
+        specs_values = request.form.getlist('spec_value')
+        filled_specs = [
+            (n.strip(), v.strip())
+            for n, v in zip(specs_names, specs_values)
+            if n.strip() and v.strip()
+        ]
+
+        # Basic validation
+        if not name or not price or not brand_id or not category_id:
+            return jsonify(success=False, message='All required fields must be filled.')
+
+        if not (2 <= len(filled_specs) <= 10):
+            return jsonify(success=False, message='Provide between 2 and 10 valid specifications.')
+
+        try:
+            price_val = float(price)
+        except ValueError:
+            return jsonify(success=False, message='Invalid price format. Use numbers only.')
+
+        # Save product and specs to database
+        try:
+            product = Product(
+                name=name,
+                description=description,
+                price=price_val,
+                brand_id=brand_id,
+                category_id=category_id
+            )
+            db.session.add(product)
+            db.session.flush()  # Get product.id before committing
+
+            for spec_name, spec_value in filled_specs:
+                spec = ProductSpec(
+                    name=spec_name,
+                    value=spec_value,
+                    product_id=product.id
+                )
+                db.session.add(spec)
+
+            db.session.commit()
+            return jsonify(success=True, message='Product added successfully.')
+
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return jsonify(success=False, message=f'An error occurred: {str(e)}')
 
     return render_template('admin/add_product.html', form=form)
 
@@ -135,22 +178,40 @@ def edit_product(product_id):
     form.brand_id.choices = [(b.id, b.name) for b in Brand.query.all()]
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
 
-    if form.validate_on_submit():
-        product.name = form.name.data
-        product.description = form.description.data
-        product.price = form.price.data
-        product.storage = form.storage.data
-        product.ram = form.ram.data
-        product.processor = form.processor.data
-        product.storage_type = form.storage_type.data
-        product.generation = form.generation.data
-        product.brand_id = form.brand_id.data
-        product.category_id = form.category_id.data
-        db.session.commit()
-        flash('Product updated successfully!', 'success')
-        return redirect(url_for('admin.list_products'))
+    if request.method == 'POST':
+        product.name = request.form.get('name')
+        product.description = request.form.get('description')
+        product.price = request.form.get('price')
+        product.brand_id = request.form.get('brand_id')
+        product.category_id = request.form.get('category_id')
 
-    return render_template('admin/edit_product.html', form=form)
+        specs_names = request.form.getlist('spec_name')
+        specs_values = request.form.getlist('spec_value')
+
+        if len(specs_names) < 2 or len(specs_names) > 10:
+            flash('You must provide at least 2 and at most 10 specifications.', 'danger')
+            return render_template('admin/edit_product.html', form=form, specs=product.specs)
+
+        try:
+            # Remove old specs
+            ProductSpec.query.filter_by(product_id=product.id).delete()
+
+            # Add new specs
+            for name, value in zip(specs_names, specs_values):
+                if name.strip() and value.strip():
+                    spec = ProductSpec(name=name.strip(), value=value.strip(), product_id=product.id)
+                    db.session.add(spec)
+
+            db.session.commit()
+            flash('Product updated successfully!', 'success')
+            return redirect(url_for('admin.list_products'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            flash(f'Error updating product: {str(e)}', 'danger')
+
+    return render_template('admin/edit_product.html', form=form, specs=product.specs)
+
+
 @admin_bp.route('/admin/delete_product/<int:product_id>', methods=['POST'])
 def delete_product(product_id):
     product = Product.query.get_or_404(product_id)

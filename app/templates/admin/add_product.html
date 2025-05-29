@@ -1,12 +1,8 @@
-{% extends 'admin_base.html' %}
-
-{% block title %}Add New Product - Admin Dashboard{% endblock %}
-
+{% extends "base.html" %}
 {% block content %}
 <div class="container-fluid px-4">
     <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-12">
-            <!-- Header Section -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">
                     <i class="fas fa-box-open me-2"></i>Add New Product
@@ -20,7 +16,6 @@
                 </nav>
             </div>
 
-            <!-- Product Form Card -->
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-primary text-white py-3">
                     <h5 class="card-title mb-0">
@@ -28,107 +23,87 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" class="needs-validation" novalidate>
+                    <form id="productForm" method="POST" class="needs-validation" novalidate>
                         {{ form.hidden_tag() }}
 
-                        <!-- Basic Information Section -->
+                        <!-- Product Name and Price -->
                         <div class="row g-4 mb-4">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-tag me-1"></i>Product Name
-                                    </label>
+                                    <label class="form-label fw-bold"><i class="fas fa-tag me-1"></i>Product Name</label>
                                     {{ form.name(class="form-control form-control-lg", placeholder="Enter product name") }}
                                     <div class="invalid-feedback">Please enter a product name</div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-dollar-sign me-1"></i>Price
-                                    </label>
+                                    <label class="form-label fw-bold"><i class="fas fa-dollar-sign me-1"></i>Price</label>
                                     {{ form.price(class="form-control form-control-lg", placeholder="0.00", min="0", step="0.01") }}
                                     <div class="invalid-feedback">Please enter a valid price</div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Technical Specifications Section -->
+                        <!-- Technical Specifications -->
                         <div class="border-top border-bottom py-4 mb-4">
-                            <h5 class="mb-4">
-                                <i class="fas fa-microchip me-2"></i>Technical Specifications
-                            </h5>
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Storage</label>
-                                        {{ form.storage(class="form-select form-select-lg") }}
+                            <h5 class="mb-4"><i class="fas fa-microchip me-2"></i>Technical Specifications</h5>
+
+                            <div id="specs-wrapper">
+                                {% for i in range(2) %}
+                                <div class="row spec-row g-3 mb-3">
+                                    <div class="col-md-5">
+                                        <input type="text" name="spec_name[]" class="form-control form-control-lg"
+                                            placeholder="Specification Name (e.g., RAM)" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" name="spec_value[]" class="form-control form-control-lg"
+                                            placeholder="Specification Value (e.g., 8GB)" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger btn-lg w-100 remove-spec-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">RAM</label>
-                                        {{ form.ram(class="form-select form-select-lg") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Processor</label>
-                                        {{ form.processor(class="form-select form-select-lg") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Storage Type</label>
-                                        {{ form.storage_type(class="form-select form-select-lg") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label fw-bold">Generation</label>
-                                        {{ form.generation(class="form-control form-control-lg") }}
-                                    </div>
-                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="text-end">
+                                <button type="button" id="add-spec-btn" class="btn btn-outline-primary btn-lg mt-3">
+                                    <i class="fas fa-plus me-2"></i>Add Specification
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Category & Brand Selection -->
+                        <!-- Category and Brand -->
                         <div class="row g-4 mb-4">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-barcode me-1"></i>Brand
-                                    </label>
+                                    <label class="form-label fw-bold"><i class="fas fa-barcode me-1"></i>Brand</label>
                                     {{ form.brand_id(class="form-select form-select-lg") }}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-folder-open me-1"></i>Category
-                                    </label>
+                                    <label class="form-label fw-bold"><i class="fas fa-folder-open me-1"></i>Category</label>
                                     {{ form.category_id(class="form-select form-select-lg") }}
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Description Section -->
+                        <!-- Description -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">
-                                <i class="fas fa-align-left me-1"></i>Description
-                            </label>
-                            {{ form.description(class="form-control", rows="5", 
-                                placeholder="Enter detailed product description") }}
+                            <label class="form-label fw-bold"><i class="fas fa-align-left me-1"></i>Description</label>
+                            {{ form.description(class="form-control", rows="5", placeholder="Enter detailed product description") }}
                             <small class="form-text text-muted">Minimum 100 characters</small>
                         </div>
 
-                        <!-- Form Actions -->
+                        <!-- Actions -->
                         <div class="d-flex justify-content-between border-top pt-2">
-                            <a href="{{ url_for('admin.list_products') }}" 
-                               class="btn btn-secondary btn-lg px-4">
+                            <a href="{{ url_for('admin.list_products') }}" class="btn btn-secondary btn-lg px-4">
                                 <i class="fas fa-times me-2"></i>Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary btn-lg px-2 m-1">
+                            <button type="button" id="submitBtn" class="btn btn-primary btn-lg px-2 m-1">
                                 <i class="fas fa-save me-2"></i>Save Product
                             </button>
                         </div>
@@ -138,50 +113,91 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
-<!-- Form Validation and Enhancements -->
+<!-- jQuery + SweetAlert2 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Bootstrap Validation
-    const forms = document.querySelectorAll('.needs-validation');
-    
-    Array.prototype.slice.call(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
+$(document).ready(function () {
+    // Add new specification row dynamically
+    $('#add-spec-btn').on('click', function () {
+        const specRow = `
+            <div class="row spec-row g-3 mb-3">
+                <div class="col-md-5">
+                    <input type="text" name="spec_name[]" class="form-control form-control-lg" placeholder="Specification Name" required>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="spec_value[]" class="form-control form-control-lg" placeholder="Specification Value" required>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-lg w-100 remove-spec-btn" aria-label="Remove specification">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        $('#specs-wrapper').append(specRow);
     });
 
-    // Price Input Formatting
-    document.getElementById('price').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    // Remove specification row on click
+    $(document).on('click', '.remove-spec-btn', function () {
+        $(this).closest('.spec-row').remove();
+    });
+
+    // Handle form submission via AJAX
+    $('#submitBtn').on('click', function (e) {
+        e.preventDefault();
+
+        let form = $('#productForm')[0];
+        let formData = new FormData(form);
+
+        // Append specs manually - ensures specs included even if inputs change dynamically
+        $('#specs-wrapper .spec-row').each(function () {
+            let name = $(this).find('input[name="spec_name[]"]').val();
+            let value = $(this).find('input[name="spec_value[]"]').val();
+            formData.append('spec_name[]', name);
+            formData.append('spec_value[]', value);
+        });
+
+        // Setup CSRF token header for Flask-WTF CSRF protection
+        $.ajaxSetup({
+            headers: {
+                'X-CSRFToken': "{{ csrf_token() }}"
+            }
+        });
+
+        $.ajax({
+            url: "{{ url_for('admin.add_product') }}",
+            method: 'POST',
+            data: formData,
+            contentType: false,  // Required for FormData
+            processData: false,  // Required for FormData
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product Created',
+                    text: response.message || 'The product has been successfully created.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Redirect to product list after confirmation
+                    window.location.href = "{{ url_for('admin.list_products') }}";
+                });
+            },
+            error: function (xhr) {
+                let errorMsg = 'An error occurred. Please check your input.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMsg = xhr.responseJSON.message;
+                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMsg
+                });
+            }
+        });
     });
 });
 </script>
+
 {% endblock %}
-
-<style>
-.form-control:focus, .form-select:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
-}
-
-.card {
-    border-radius: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
-.card-header {
-    border-radius: 0.5rem 0.5rem 0 0 !important;
-}
-
-.btn-lg {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.1rem;
-}
-</style>
