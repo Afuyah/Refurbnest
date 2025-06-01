@@ -4,7 +4,7 @@ from . import tasks_bp
 from .jobs import test_task
 from app import csrf
 from functools import wraps
-from .facebook_posting import auto_post_products
+
 
 
 def json_response(f):
