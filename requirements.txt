@@ -38,3 +38,6 @@ WTForms==3.1.2
 flask_limiter
 flask_talisman
 PyJWT
+celery
+redis
+eventlet

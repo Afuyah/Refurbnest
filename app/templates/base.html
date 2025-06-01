@@ -128,23 +128,99 @@
 <main class="container-fluid flex-grow-1 pt-4 mt-5">
     <div class="row">
         <div class="col-12">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="col-12 col-md-10 mx-auto">
-                        {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            
             {% block content %}{% endblock %}
         </div>
     </div>
+
+    <!-- Tailwind Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        {% for category, message in messages %}
+                            showToast({{ message|tojson }}, '{{ category }}');
+                        {% endfor %}
+                    });
+                </script>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) return;
+
+            const toastId = `toast-${Date.now()}`;
+            const config = {
+                success: {
+                    bg: 'bg-green-900/80',
+                    border: 'border-green-700',
+                    icon: '✅',
+                    bar: 'bg-green-500'
+                },
+                error: {
+                    bg: 'bg-red-900/80',
+                    border: 'border-red-700',
+                    icon: '❌',
+                    bar: 'bg-red-500'
+                },
+                warning: {
+                    bg: 'bg-yellow-900/80',
+                    border: 'border-yellow-700',
+                    icon: '⚠️',
+                    bar: 'bg-yellow-500'
+                },
+                info: {
+                    bg: 'bg-blue-900/80',
+                    border: 'border-blue-700',
+                    icon: 'ℹ️',
+                    bar: 'bg-blue-500'
+                }
+            };
+
+            const cfg = config[type] || config.success;
+
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `relative flex items-start max-w-sm w-full p-4 rounded-lg shadow-lg text-white border ${cfg.bg} ${cfg.border} animate-fade-in`;
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="text-xl mr-3">${cfg.icon}</div>
+                <div class="flex-1 text-sm">${message}</div>
+                <button onclick="document.getElementById('${toastId}').remove()" class="ml-4 text-white hover:text-gray-300">&times;</button>
+                <div class="absolute bottom-0 left-0 h-1 w-full ${cfg.bar} animate-progress"></div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-6');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+    </script>
+
+    <style>
+        @keyframes progress {
+            0% { width: 100%; }
+            100% { width: 0%; }
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-progress {
+            animation: progress 5s linear forwards;
+        }
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out;
+        }
+    </style>
 </main>
+
 
 {% include 'partials/cart_sidebar.html' %}
 

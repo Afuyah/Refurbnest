@@ -31,3 +31,11 @@ class Config:
     SERVER_NAME="salesta.store"
     PREFERRED_URL_SCHEME="https"
     FLASK_ENV="production"
+
+
+    # Celery config
+    CELERY_BROKER_URL = "redis://default:GvFyxIZgUZpQEgQlvahCxbwRsBaOYIKa@switchback.proxy.rlwy.net:57401"
+    RESULT_BACKEND = "redis://default:GvFyxIZgUZpQEgQlvahCxbwRsBaOYIKa@switchback.proxy.rlwy.net:57401"
+
+    FB_PAGE_ACCESS_TOKEN="your_long_lived_token"
+    FB_PAGE_ID="your_page_id"
